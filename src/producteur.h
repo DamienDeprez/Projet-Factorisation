@@ -1,0 +1,8 @@
+//
+// Created by damien on 22/04/15.
+//
+
+#ifndef FACTORISATION_PRODUCTEUR_H
+#define FACTORISATION_PRODUCTEUR_H
+
+#endif //FACTORISATION_PRODUCTEUR_H

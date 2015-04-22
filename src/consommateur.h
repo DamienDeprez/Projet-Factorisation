@@ -1,0 +1,8 @@
+//
+// Created by damien on 22/04/15.
+//
+
+#ifndef FACTORISATION_CONSOMMATEUR_H
+#define FACTORISATION_CONSOMMATEUR_H
+
+#endif //FACTORISATION_CONSOMMATEUR_H
