@@ -2,6 +2,10 @@
 // Created by damien on 22/04/15.
 //
 
+/**
+ * Liste de fonctions utilisées pour la décomposition de nombre en facteur premier et l'analyse des résultats
+ */
+
 #ifndef FACTORISATION_FACTORISATION_H
 #define FACTORISATION_FACTORISATION_H
 
@@ -40,6 +44,6 @@ struct nombre
  * @return : tableau des facteurs premiers mis à jour ou NULL si erreur
  */
 
-extern struct facteurPremier* factorisation (struct nombre* nombre1, struct facteurPremier* facteurPremier1);
+struct facteurPremier* factorisation (struct nombre* nombre1, struct facteurPremier* facteurPremier1);
 
 #endif FACTORISATION_FACTORISATION_H
