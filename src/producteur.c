@@ -9,17 +9,17 @@
 
 struct nombre readOneFromFile (const int fd, const char* fileName)
 {
-	return NULL;
+	//return ;
 }
 
 struct nombre readOneFromStdin ()
 {
-	return NULL;
+	//return NULL;
 }
 
 struct nombre readOneFromInternet (const char* fileName)
 {
-	return NULL;
+	//return NULL;
 }
 
 void produceFromFile(const char* filePath)

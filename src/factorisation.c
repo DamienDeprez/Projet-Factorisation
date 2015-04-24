@@ -14,3 +14,4 @@ struct facteurPremier* factorisation (struct nombre* nombre1, struct facteurPrem
 
 
 
+
