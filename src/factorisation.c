@@ -26,7 +26,7 @@ struct listeFacteurPremier* factorisation (struct nombre* nbr, struct listeFacte
 	}
 	if (count != 0)
 	{
-		struct facteurPremier* facteurPremier2;
+		struct facteurPremier* facteurPremier2 = NULL;
 		facteurPremier2->file = (char**) nbr->file;
 		facteurPremier2->nombre = (unsigned) i;
 		facteurPremier2->multiplicite = count;
@@ -42,12 +42,12 @@ struct listeFacteurPremier* factorisation (struct nombre* nbr, struct listeFacte
 		}
 		if (count != 0)
 		{
-			struct facteurPremier* facteurPremier_i;
+			struct facteurPremier* facteurPremier_i = NULL;
 			facteurPremier_i->file = (char**) nbr->file;
 			facteurPremier_i->nombre = (unsigned) i;
 			facteurPremier_i->multiplicite = count;
 			if (liste != NULL) {
-				struct listeFacteurPremier* suivantListe;
+				struct listeFacteurPremier* suivantListe = NULL;
 				suivantListe->factP = facteurPremier_i;
 				suivantListe->precedent = liste;
 			}
