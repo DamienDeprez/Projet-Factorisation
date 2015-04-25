@@ -13,12 +13,20 @@ $(OBJ)%.o: $(SRC)%.c
 	@echo 'Compilation de '$<
 	@$(CC) -o $@ $< $(CFLAG)
 
-all:dir $(BIN)programme
+all:dir $(BIN)programme $(BIN)test
 
 
 $(BIN)programme: $(OBJ)factorisation.o $(OBJ)producteur.o $(OBJ)consommateur.o $(OBJ)main.o
 	@echo 'Compilation du programme'
 	@$(CC) -o $@ $^ -lm $(LFLAG)
+
+$(BIN)test: $(OBJ)test_factorisation.o
+	@echo 'Compilation des test'
+	@$(CC) -o $@ $^ -lcunit $(LFLAG)
+
+test:$(BIN)test
+	@echo 'Lancement des test'
+	@./bin/test
 
 .PHONY: clean purge dir
 

@@ -17,3 +17,10 @@ ${src_file}
 
 target_link_libraries(factorisation m)
 
+add_executable(
+test_factorisation
+src/test_factorisation.c
+)
+
+target_link_libraries(test_factorisation cunit)
+
