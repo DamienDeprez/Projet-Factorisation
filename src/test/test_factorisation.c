@@ -68,7 +68,24 @@ int main (int argc, char ** argv)
 		CU_cleanup_registry();
 		return CU_get_error();
 	}
-	if(NULL == CU_add_test(testSuite, "test string equals\n",test_string_equals_failure))
+
+	if(NULL == CU_add_test(testSuite,"test assert failure\n",test_failure))
+	{
+		CU_cleanup_registry();
+		return CU_get_error();
+	}
+	if(NULL == CU_add_test(testSuite,"test assert not equals\n",test_assert_2_not_equal_minus_1))
+	{
+		CU_cleanup_registry();
+		return CU_get_error();
+	}
+	if(NULL == CU_add_test(testSuite, "test string equals failure\n",test_string_equals_failure))
+	{
+		CU_cleanup_registry();
+		return CU_get_error();
+	}
+
+	if(NULL == CU_add_test(testSuite,"test string equals\n",test_string_equals));
 	{
 		CU_cleanup_registry();
 		return CU_get_error();
