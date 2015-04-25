@@ -1,7 +1,8 @@
 CC=gcc
 CFLAG=-Wall -c
 LFLAG=-Wall
-SRC=src/
+SRC=src/main/
+TEST=src/test/
 BIN=bin/
 OBJ=obj/
 
@@ -11,6 +12,14 @@ $(OBJ)%.o: $(SRC)%.c $(SRC)%.h
 
 $(OBJ)%.o: $(SRC)%.c
 	@echo 'Compilation de '$<
+	@$(CC) -o $@ $< $(CFLAG)
+
+$(OBJ)%.o: $(TEST)%.c $(TEST)%.h
+	@echo 'Compilation de '$^ ' pour les tests'
+	@$(CC) -o $@ $< $(CFLAG)
+
+$(OBJ)%.o: $(TEST)%.c
+	@echo 'Compilation de '$<' pour les tests'
 	@$(CC) -o $@ $< $(CFLAG)
 
 all:dir $(BIN)programme $(BIN)test

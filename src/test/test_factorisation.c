@@ -85,7 +85,7 @@ int main (int argc, char ** argv)
 		return CU_get_error();
 	}
 
-	if(NULL == CU_add_test(testSuite,"test string equals\n",test_string_equals));
+	if(NULL == CU_add_test(testSuite,"test string equals\n",test_string_equals))
 	{
 		CU_cleanup_registry();
 		return CU_get_error();
@@ -95,7 +95,7 @@ int main (int argc, char ** argv)
 		lance le test selon le mode choisi
 	*/
 	CU_basic_set_mode(CU_BRM_VERBOSE);
-	//CU_basic_run_tests();	// mode sans interraction avec la console
+	CU_basic_run_tests();	// mode sans interraction avec la console
 	//CU_console_run_tests(); // mode interraction avec la console
 	CU_automated_run_tests(); // mode automatique avec sortie vers un fichier
 
