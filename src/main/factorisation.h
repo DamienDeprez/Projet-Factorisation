@@ -48,10 +48,10 @@ struct nombre
  * Factorise un nombre et ajoute le résultat au tableau des facteurs premiers
  *
  * @param nombre1 : nombre a factoriser
- * @param facteurPremier1 : tableau contenant les facteurs premiers déjà utilisé
- * @return : tableau des facteurs premiers mis à jour ou NULL si erreur
+ * @param facteurPremier1 : tableau contenant les facteurs premiers déjà utilisé non
+ * @return : 0 si pas d'erreur et 1 si erreur liste ou nombre1 sont NULL
  */
 
-struct listeFacteurPremier* factorisation (struct nombre* nombre1, struct listeFacteurPremier* liste);
+int factorisation (struct nombre* nombre1, struct listeFacteurPremier* liste);
 
 #endif //FACTORISATION_FACTORISATION_H
