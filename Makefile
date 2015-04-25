@@ -13,14 +13,17 @@ $(OBJ)%.o: $(SRC)%.c
 	@echo 'Compilation de '$<
 	@$(CC) -o $@ $< $(CFLAG)
 
-all:$(BIN)programme
+all:dir $(BIN)programme
 
 
 $(BIN)programme: $(OBJ)factorisation.o $(OBJ)producteur.o $(OBJ)consommateur.o $(OBJ)main.o
 	@echo 'Compilation du programme'
 	@$(CC) -o $@ $^ -lm $(LFLAG)
 
-.PHONY: clean purge
+.PHONY: clean purge dir
+
+dir:
+	@mkdir $(OBJ) $(BIN) $(SRC) -p
 
 clean:
 	@echo 'Nettoyage des fichiers temporaires'
