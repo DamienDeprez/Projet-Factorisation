@@ -22,6 +22,14 @@ struct facteurPremier
 	int multiplicite;
 	char ** file;
 };
+/*
+ * Liste des facteurs d'un nombre
+ */
+struct listeFacteurPremier
+{
+	struct facteurPremier* factP;
+	struct facteurPremier* suivant;
+}
 
 /*
  * structure représentant un nombre provenant de l'entrée
