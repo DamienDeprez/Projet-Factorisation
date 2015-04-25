@@ -28,7 +28,7 @@ struct facteurPremier
 struct listeFacteurPremier
 {
 	struct facteurPremier* factP;
-	struct facteurPremier* suivant;
+	struct listeFacteurPremier* suivant;
 }
 
 /*
