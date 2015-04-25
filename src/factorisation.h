@@ -52,6 +52,6 @@ struct nombre
  * @return : tableau des facteurs premiers mis à jour ou NULL si erreur
  */
 
-struct facteurPremier* factorisation (struct nombre* nombre1, struct listeFacteurPremier* liste);
+struct listeFacteurPremier* factorisation (struct nombre* nombre1, struct listeFacteurPremier* liste);
 
 #endif //FACTORISATION_FACTORISATION_H

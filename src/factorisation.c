@@ -12,7 +12,7 @@
 /*
  * liste est null a l'appel de la fonction
  */
-struct facteurPremier* factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
+struct listeFacteurPremier* factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
 {
 	int count = 0;
 	int i = 2;
@@ -58,4 +58,5 @@ struct facteurPremier* factorisation (struct nombre* nbr, struct listeFacteurPre
 			}
 		}
 	}
+	return liste;
 }
