@@ -23,7 +23,10 @@ struct facteurPremier
 	char ** file;
 };
 /*
- * Liste des facteurs d'un nombre
+ * structure représantant une liste de facteur premier %TODO type de liste (stack/queue ?)
+ *
+ * @factP : %TODO complèter la description
+ * @precedent : %TODO complèter la description
  */
 struct listeFacteurPremier
 {
@@ -49,7 +52,7 @@ struct nombre
  *
  * @param nombre1 : nombre a factoriser
  * @param facteurPremier1 : tableau contenant les facteurs premiers déjà utilisé non
- * @return : 0 si pas d'erreur et 1 si erreur liste ou nombre1 sont NULL
+ * @return : 0 si pas d'erreur et 1 si erreur liste ou nombre1 sont NULL ou nombre1 n'est pas factorisable (cas 0 et 1)
  */
 
 int factorisation (struct nombre* nombre1, struct listeFacteurPremier* liste);

@@ -1,8 +1,8 @@
 CC=gcc
 CFLAG=-Wall -c
 LFLAG=-Wall
-SRC=src/main/
-TEST=src/test/
+SRC=src/
+TEST=src/
 BIN=bin/
 OBJ=obj/
 
@@ -14,14 +14,6 @@ $(OBJ)%.o: $(SRC)%.c
 	@echo 'Compilation de '$<
 	@$(CC) -o $@ $< $(CFLAG)
 
-$(OBJ)%.o: $(TEST)%.c $(TEST)%.h
-	@echo 'Compilation de '$^ ' pour les tests'
-	@$(CC) -o $@ $< $(CFLAG)
-
-$(OBJ)%.o: $(TEST)%.c
-	@echo 'Compilation de '$<' pour les tests'
-	@$(CC) -o $@ $< $(CFLAG)
-
 all:dir $(BIN)programme $(BIN)test
 
 
@@ -29,9 +21,9 @@ $(BIN)programme: $(OBJ)factorisation.o $(OBJ)producteur.o $(OBJ)consommateur.o $
 	@echo 'Compilation du programme'
 	@$(CC) -o $@ $^ -lm $(LFLAG)
 
-$(BIN)test: $(OBJ)test_factorisation.o
+$(BIN)test: $(OBJ)test_factorisation.o $(OBJ)factorisation.o
 	@echo 'Compilation des test'
-	@$(CC) -o $@ $^ -lcunit $(LFLAG)
+	@$(CC) -o $@ $^ -lcunit -lm $(LFLAG)
 
 test:$(BIN)test
 	@echo 'Lancement des test'

@@ -5,7 +5,8 @@
 #include <CUnit/CUnit.h>
 #include <CUnit/Automated.h>
 
-#include "../main/factorisation.h"
+#include "factorisation.h"
+
 
 /*
  * Liste des variables globales
@@ -26,9 +27,26 @@ int init_suite(void)
 	nbr2 = (struct nombre *) malloc(sizeof(struct nombre));
 	nbr3 = (struct nombre *) malloc(sizeof(struct nombre));
 	nbr4 = (struct nombre *) malloc(sizeof(struct nombre));
+
+	list1 = (struct listeFacteurPremier *)malloc(sizeof(struct listeFacteurPremier));
+	list2 = (struct listeFacteurPremier *)malloc(sizeof(struct listeFacteurPremier));
+	list3 = (struct listeFacteurPremier *)malloc(sizeof(struct listeFacteurPremier));
+	list4 = (struct listeFacteurPremier *)malloc(sizeof(struct listeFacteurPremier));
 	if (nbr1 == NULL || nbr2 == NULL || nbr3 == NULL || nbr4 == NULL) {
 		return EXIT_FAILURE;
 	}
+	if(list1 == NULL || list2 == NULL || list3 == NULL || list4 == NULL)
+	{
+		return EXIT_FAILURE;
+	}
+	nbr1->nombre=0;
+	nbr1->file="file1";
+	nbr2->nombre=1;
+	nbr2->file="file1";
+	nbr3->nombre=2;
+	nbr3->file="file2";
+	nbr4->nombre=3;
+	nbr4->file="file5";
 	return EXIT_SUCCESS;
 }
 
@@ -50,7 +68,31 @@ int clean_suite(void)
 		free(nbr4);
 		nbr4 = NULL;
 	}
+	if(list1 != NULL)
+	{
+		free(list1);
+		list1=NULL;
+	}
+	if(list2 != NULL)
+	{
+		free(list2);
+		list2=NULL;
+	}
+	if(list3 != NULL)
+	{
+		free(list3);
+		list3=NULL;
+	}
+	if(list4 != NULL)
+	{
+		free(list4);
+		list4=NULL;
+	}
 	if (nbr1 != NULL || nbr2 != NULL || nbr3 != NULL || nbr4 != NULL) {
+		return EXIT_FAILURE;
+	}
+	if(list1 != NULL || list2 != NULL || list3 != NULL ||list4 != NULL)
+	{
 		return EXIT_FAILURE;
 	}
 	return EXIT_SUCCESS;
@@ -58,7 +100,17 @@ int clean_suite(void)
 
 void test_factorisation_null(void)
 {
+	CU_ASSERT_TRUE(factorisation(NULL,NULL));
+	CU_ASSERT_TRUE(factorisation(nbr1,NULL));
+	CU_ASSERT_TRUE(factorisation(NULL,list1));
+}
 
+void test_nombre_infactorisable(void)
+{
+	CU_ASSERT_TRUE(factorisation(nbr1,list1));
+	CU_ASSERT_PTR_NULL(list1->factP);
+	CU_ASSERT_PTR_NULL(list1->precedent);
+	CU_ASSERT_TRUE(factorisation(nbr2,list1));
 }
 
 /**
@@ -75,7 +127,7 @@ int main(int argc, char **argv)
 	/*
 		ajoute la suite au registre avec une fonction d'initialisation et une fonction de fin (clean et free)
 	*/
-	factorisation = CU_add_suite("suite de tese sur la factorisation", init_suite, clean_suite);
+	factorisation = CU_add_suite("suite de tests sur la factorisation", init_suite, clean_suite);
 	if (NULL == factorisation) {
 		CU_cleanup_registry();
 		return CU_get_error();
@@ -84,14 +136,19 @@ int main(int argc, char **argv)
 	/*
 	 * met la suite inactive
 	 */
-	/*if (CU_set_suite_active(factorisation, CU_FALSE) != 0) {
+	if (CU_set_suite_active(factorisation, CU_TRUE) != 0) {
 		CU_cleanup_registry();
 		return CU_get_error();
-	}*/
+	}
 
 	/*
 		ajoute le test à la suite de test
 	*/
+	if(CU_add_test(factorisation,"test pointeur NULL\n",test_factorisation_null) == NULL)
+	{
+		CU_cleanup_registry();
+		return CU_get_error();
+	}
 
 	/*
 		lance le test selon le mode choisi
