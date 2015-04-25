@@ -27,10 +27,10 @@ dir:
 
 clean:
 	@echo 'Nettoyage des fichiers temporaires'
-	@find -name "*.o" -print0 | xargs -0 rm
-	@find -name "*~" -print0 | xargs -0 rm
+	@find ./ -name '*.o' -print0 | xargs -0 rm -f
+	@find ./ -name '*~' -print0 | xargs -0 rm -f
 
 purge: clean
 	@echo 'Suppression des fichiers exécutable'
-	@find $(BIN) -type f 
+	@find $(BIN) -type f -print0 | xargs -0 rm -f
 
