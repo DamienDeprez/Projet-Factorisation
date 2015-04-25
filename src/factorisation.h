@@ -54,4 +54,4 @@ struct nombre
 
 struct facteurPremier* factorisation (struct nombre* nombre1, struct facteurPremier* facteurPremier1);
 
-#endif FACTORISATION_FACTORISATION_H
+#endif //FACTORISATION_FACTORISATION_H
