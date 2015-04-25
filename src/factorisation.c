@@ -16,8 +16,8 @@ struct listeFacteurPremier* factorisation (struct nombre* nbr, struct listeFacte
 {
 	int count = 0;
 	int i = 2;
-	double r = sqrt(nbr);
 	int leNombre = nbr->nombre;
+	double r = sqrt(leNombre);
 
 	while (leNombre % i == 0)
 	{
