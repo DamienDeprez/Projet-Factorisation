@@ -4,7 +4,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <bits/mathcalls.h>
+#include <math.h>
+//#include <bits/mathcalls.h>
 
 #include "factorisation.h"
 

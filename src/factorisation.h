@@ -29,7 +29,7 @@ struct listeFacteurPremier
 {
 	struct facteurPremier* factP;
 	struct listeFacteurPremier* precedent;
-}
+};
 
 /*
  * structure représentant un nombre provenant de l'entrée
