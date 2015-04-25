@@ -28,7 +28,7 @@ struct facteurPremier
 struct listeFacteurPremier
 {
 	struct facteurPremier* factP;
-	struct listeFacteurPremier* suivant;
+	struct listeFacteurPremier* precedent;
 }
 
 /*
@@ -52,6 +52,6 @@ struct nombre
  * @return : tableau des facteurs premiers mis à jour ou NULL si erreur
  */
 
-struct facteurPremier* factorisation (struct nombre* nombre1, struct facteurPremier* facteurPremier1);
+struct facteurPremier* factorisation (struct nombre* nombre1, struct listeFacteurPremier* liste);
 
 #endif //FACTORISATION_FACTORISATION_H
