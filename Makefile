@@ -35,7 +35,7 @@ $(BIN)test: $(OBJ)test_factorisation.o
 
 test:$(BIN)test
 	@echo 'Lancement des test'
-	@valgrind --log-file="valgrind.log" ./bin/test
+	@valgrind --xml=yes --xml-file="valgrind.xml" ./bin/test
 
 .PHONY: clean purge dir
 
