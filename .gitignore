@@ -118,4 +118,9 @@ local.properties
 # TeXlipse plugin
 .texlipse
 
+# Tempfile from gedit
+*~
 
+# Custom log file
+valgrind.xml
+CUnitAutomated-Results.xml
