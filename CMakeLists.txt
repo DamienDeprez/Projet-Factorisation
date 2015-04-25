@@ -15,3 +15,5 @@ factorisation
 ${src_file}
 )
 
+target_link_libraries(factorisation m)
+
