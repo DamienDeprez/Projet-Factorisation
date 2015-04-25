@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <CUnit/Basic.h>
 #include <CUnit/CUnit.h>
 #include <CUnit/Automated.h>
 
@@ -42,7 +43,7 @@ void test_string_equals_failure(void)
 /**
 
 */
-int main (int argc, int *argv[])
+int main (int argc, char ** argv)
 {
 	CU_pSuite testSuite=NULL; // Suite de test
 
@@ -76,10 +77,12 @@ int main (int argc, int *argv[])
 	/*
 		lance le test selon le mode choisi
 	*/
-	//CU_basic_set_mode(CU_BRM_VERBOSE);
+	CU_basic_set_mode(CU_BRM_VERBOSE);
 	//CU_basic_run_tests();	// mode sans interraction avec la console
 	//CU_console_run_tests(); // mode interraction avec la console
 	CU_automated_run_tests(); // mode automatique avec sortie vers un fichier
+
+	//CU_list_tests_to_file();
 	CU_cleanup_registry();
 	return CU_get_error();
 }
