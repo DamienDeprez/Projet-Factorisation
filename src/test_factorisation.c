@@ -21,7 +21,7 @@ struct listeFacteurPremier *list2 = NULL;
 struct listeFacteurPremier *list3 = NULL;
 struct listeFacteurPremier *list4 = NULL;
 
-int init_suite(void)
+int init_suite_factorisation(void)
 {
 	nbr1 = (struct nombre *) malloc(sizeof(struct nombre));
 	nbr2 = (struct nombre *) malloc(sizeof(struct nombre));
@@ -47,10 +47,23 @@ int init_suite(void)
 	nbr3->file="file2";
 	nbr4->nombre=3;
 	nbr4->file="file5";
+
+	list1->precedent=NULL;
+	list1->factP=NULL;
+
+	list2->precedent=NULL;
+	list2->factP=NULL;
+
+	list3->precedent=NULL;
+	list3->factP=NULL;
+
+	list4->precedent=NULL;
+	list4->factP=NULL;
+
 	return EXIT_SUCCESS;
 }
 
-int clean_suite(void)
+int clean_suite_factorisation(void)
 {
 	if (nbr1 != NULL) {
 		free(nbr1);
@@ -98,6 +111,25 @@ int clean_suite(void)
 	return EXIT_SUCCESS;
 }
 
+int init_suite_consommateur(void)
+{
+	return EXIT_SUCCESS;
+}
+int clean_suite_consommateur(void)
+{
+	return EXIT_SUCCESS;
+}
+
+int init_suite_producteur(void)
+{
+	return EXIT_SUCCESS;
+}
+int clean_suite_producteur(void)
+{
+	return EXIT_SUCCESS;
+}
+
+
 void test_factorisation_null(void)
 {
 	CU_ASSERT_TRUE(factorisation(NULL,NULL));
@@ -119,6 +151,8 @@ void test_nombre_infactorisable(void)
 int main(int argc, char **argv)
 {
 	CU_pSuite factorisation = NULL; // Suite de test
+	CU_pSuite consomateur = NULL; // Suite de test pour les consommateurs
+	CU_pSuite producteur = NULL; // Suite de test pours les producteurs
 
 	if (CUE_SUCCESS != CU_initialize_registry()) //initialisation du registre de CUnit
 		return CU_get_error();
@@ -127,16 +161,29 @@ int main(int argc, char **argv)
 	/*
 		ajoute la suite au registre avec une fonction d'initialisation et une fonction de fin (clean et free)
 	*/
-	factorisation = CU_add_suite("suite de tests sur la factorisation", init_suite, clean_suite);
-	if (NULL == factorisation) {
+	factorisation = CU_add_suite("suite de tests sur la factorisation", init_suite_factorisation, clean_suite_factorisation);
+	consomateur = CU_add_suite("suite de tests sur les consommateurs",init_suite_consommateur,clean_suite_consommateur);
+	producteur = CU_add_suite("suite de tests sur les producteurs",init_suite_producteur,clean_suite_producteur);
+	if (factorisation == NULL || consomateur == NULL || producteur == NULL) {
 		CU_cleanup_registry();
 		return CU_get_error();
 	}
 
+
 	/*
-	 * met la suite inactive
+	 * met la suite active CU_TRUE ou inactive CU_FALSE
 	 */
 	if (CU_set_suite_active(factorisation, CU_TRUE) != 0) {
+		CU_cleanup_registry();
+		return CU_get_error();
+	}
+	if(CU_set_suite_active(consomateur,CU_FALSE) != 0)
+	{
+		CU_cleanup_registry();
+		return CU_get_error();
+	}
+	if(CU_set_suite_active(producteur,CU_FALSE) != 0)
+	{
 		CU_cleanup_registry();
 		return CU_get_error();
 	}
@@ -145,6 +192,11 @@ int main(int argc, char **argv)
 		ajoute le test à la suite de test
 	*/
 	if(CU_add_test(factorisation,"test pointeur NULL\n",test_factorisation_null) == NULL)
+	{
+		CU_cleanup_registry();
+		return CU_get_error();
+	}
+	if(CU_add_test(factorisation,"test nombre infactorisable",test_nombre_infactorisable) == NULL)
 	{
 		CU_cleanup_registry();
 		return CU_get_error();
