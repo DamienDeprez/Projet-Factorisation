@@ -128,6 +128,15 @@ int clean_suite_producteur(void)
 	return EXIT_SUCCESS;
 }
 
+int init_suite_buffer(void)
+{
+	return EXIT_SUCCESS;
+}
+
+int clean_suite_buffer(void)
+{
+	return EXIT_SUCCESS;
+}
 
 void test_factorisation_null(void)
 {
@@ -152,6 +161,7 @@ int main(int argc, char **argv)
 	CU_pSuite factorisation = NULL; // Suite de test
 	CU_pSuite consomateur = NULL; // Suite de test pour les consommateurs
 	CU_pSuite producteur = NULL; // Suite de test pours les producteurs
+	CU_pSuite buffer = NULL;
 
 	if (CUE_SUCCESS != CU_initialize_registry()) //initialisation du registre de CUnit
 		return CU_get_error();
@@ -163,7 +173,8 @@ int main(int argc, char **argv)
 	factorisation = CU_add_suite("suite de tests sur la factorisation", init_suite_factorisation, clean_suite_factorisation);
 	consomateur = CU_add_suite("suite de tests sur les consommateurs",init_suite_consommateur,clean_suite_consommateur);
 	producteur = CU_add_suite("suite de tests sur les producteurs",init_suite_producteur,clean_suite_producteur);
-	if (factorisation == NULL || consomateur == NULL || producteur == NULL) {
+	buffer = CU_add_suite("suite de tests sur le buffer",init_suite_buffer,clean_suite_buffer);
+	if (factorisation == NULL || consomateur == NULL || producteur == NULL || buffer == NULL) {
 		CU_cleanup_registry();
 		return CU_get_error();
 	}
@@ -182,6 +193,11 @@ int main(int argc, char **argv)
 		return CU_get_error();
 	}
 	if(CU_set_suite_active(producteur,CU_FALSE) != 0)
+	{
+		CU_cleanup_registry();
+		return CU_get_error();
+	}
+	if(CU_set_suite_active(buffer,CU_FALSE) != 0)
 	{
 		CU_cleanup_registry();
 		return CU_get_error();

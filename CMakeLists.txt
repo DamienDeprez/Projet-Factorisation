@@ -5,7 +5,7 @@ project(Factorisation)
 file(
 GLOB_RECURSE
 src_file
-src/*
+src/factorisation.c src/consommateur.c src/producteur.c src/main.c
 )
 
 file(
@@ -18,13 +18,13 @@ src/test_factorisation.c src/factorisation.c
 
 #add_executable(factorisation ${src_file})
 
-add_executable(factorisation ${src_file})
+add_executable(factorisation ${src_file} src/buffer.h src/buffer.c)
 
 target_link_libraries(factorisation m)
 
 enable_testing()
 
-add_executable(test_factorisation ${test_file})
+add_executable(test_factorisation ${test_file} src/buffer.h src/buffer.c)
 
 target_link_libraries(test_factorisation cunit)
 target_link_libraries(test_factorisation m)

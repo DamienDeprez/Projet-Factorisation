@@ -17,11 +17,11 @@ $(OBJ)%.o: $(SRC)%.c
 all:dir $(BIN)programme $(BIN)test
 
 
-$(BIN)programme: $(OBJ)factorisation.o $(OBJ)producteur.o $(OBJ)consommateur.o $(OBJ)main.o
+$(BIN)programme: $(OBJ)factorisation.o $(OBJ)producteur.o $(OBJ)consommateur.o $(OBJ)main.o $(OBJ)buffer.o
 	@echo 'Compilation du programme'
 	@$(CC) -o $@ $^ -lm $(LFLAG)
 
-$(BIN)test: $(OBJ)test_factorisation.o $(OBJ)factorisation.o
+$(BIN)test: $(OBJ)test_factorisation.o $(OBJ)factorisation.o $(OBJ)buffer.o
 	@echo 'Compilation des test'
 	@$(CC) -o $@ $^ -lcunit -lm $(LFLAG)
 
