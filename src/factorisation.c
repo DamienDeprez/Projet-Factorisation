@@ -2,10 +2,8 @@
 // Created by damien on 22/04/15.
 //
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-//#include <bits/mathcalls.h>
 
 #include "factorisation.h"
 
@@ -19,6 +17,12 @@ int factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
 	{
 		return 1;
 	}
+
+	if(nbr ->nombre == 0 || nbr->nombre == 1)
+	{
+		return 1;
+	}
+
 	int count = 0;
 	int i = 2;
 	int leNombre = nbr->nombre;
