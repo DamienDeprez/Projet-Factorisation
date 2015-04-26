@@ -9,6 +9,8 @@
 #ifndef FACTORISATION_FACTORISATION_H
 #define FACTORISATION_FACTORISATION_H
 
+#include <stdint.h>
+
 /*
  * structure représentant un facteur premier
  *
@@ -18,7 +20,7 @@
  */
 struct facteurPremier
 {
-	unsigned int nombre;
+	uint32_t nombre;
 	int multiplicite;
 	char ** file;
 };
@@ -42,7 +44,7 @@ struct listeFacteurPremier
  */
 struct nombre
 {
-	unsigned int nombre;
+	uint64_t nombre;
 	char * file;
 };
 
