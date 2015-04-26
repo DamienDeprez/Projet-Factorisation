@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include <CUnit/Basic.h>
-#include <CUnit/CUnit.h>
 #include <CUnit/Automated.h>
 
 #include "factorisation.h"
