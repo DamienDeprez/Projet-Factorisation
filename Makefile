@@ -1,6 +1,6 @@
 CC=gcc
-CFLAG=-Wall -c
-LFLAG=-Wall
+CFLAG=-Wall -c -g
+LFLAG=-Wall -g
 SRC=src/
 TEST=src/
 BIN=bin/
@@ -27,7 +27,7 @@ $(BIN)test: $(OBJ)test_factorisation.o $(OBJ)factorisation.o $(OBJ)buffer.o
 
 test:$(BIN)test
 	@echo 'Lancement des test'
-	@valgrind --xml=yes --xml-file="valgrind.xml" ./bin/test
+	@valgrind --xml=yes --xml-file="valgrind.xml" --leak-check=full --track-origins=yes --show-leak-kinds=all  ./bin/test
 
 .PHONY: clean purge dir
 

@@ -22,7 +22,7 @@
 struct buffer
 {
 	struct nombre* memory;
-	size_t size;
+	int size;
 	size_t cursor;
 };
 
@@ -31,7 +31,7 @@ struct buffer
  *
  * @return le pointeur vers le buffer sur le HEAP ou NULL si erreur
  */
-struct buffer* alloc ();
+struct buffer* newBuffer (int size);
 
 /*
  * fonction libérant la mémoire allouée au buffer
@@ -47,11 +47,11 @@ int freeBuffer(struct buffer* buffer1);
  * @buffer pointeur vers le buffer
  * @return structure nombre se trouvant à l'emplacement curseur
  */
-struct nombre getNombre (struct buffer* buffer1);
+struct nombre readBuffer (struct buffer* buffer1);
 
 /*
  * fonction mettant la structure nombre à la place du curseur si c'est vide et avance le curseur.
  *
  */
-int setNombre(struct buffer* buffer1, struct nombre nombre1);
+int writeBuffer(struct buffer* buffer1, struct nombre nombre1);
 #endif //FACTORISATION_BUFFER_H

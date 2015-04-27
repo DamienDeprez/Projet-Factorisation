@@ -25,10 +25,10 @@ struct facteurPremier
 	char ** file;
 };
 /*
- * structure représantant un noeud d'une liste (de type file) de facteurs premiers %TODO ok
+ * structure représantant un noeud d'une liste (de type file) de facteurs premiers
  *
- * @factP : factp est une structure de type facteur Premier %TODO ok
- * @precedent : représente un pointeur vers le noeud de type listeFacteur Premier précédent dans la file des facteurs premiers %TODO ok
+ * @factP : factp est une structure de type facteur Premier
+ * @precedent : représente un pointeur vers le noeud de type listeFacteur Premier précédent dans la file des facteurs premiers
  */
 struct listeFacteurPremier
 {
