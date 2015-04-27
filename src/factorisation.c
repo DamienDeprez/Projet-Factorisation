@@ -35,8 +35,8 @@ int factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
 	}
 	if (count != 0)
 	{
-		struct facteurPremier* facteurPremier2;
-		facteurPremier2->file = (char**) nbr->file;
+		struct facteurPremier* facteurPremier2 = malloc(sizeof *facteurPremier2);
+		facteurPremier2->file = (char**) nbr->file; // %TODO ok
 		facteurPremier2->nombre = (unsigned) 2;
 		facteurPremier2->multiplicite = count;
 		liste->factP = facteurPremier2;
@@ -51,7 +51,7 @@ int factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
 		}
 		if (count != 0)
 		{
-			struct facteurPremier* facteurPremier_i = NULL;
+			struct facteurPremier* facteurPremier_i = malloc(sizeof *facteurPremier_i);
 			facteurPremier_i->file = (char**) nbr->file;
 			facteurPremier_i->nombre = (unsigned) i;
 			facteurPremier_i->multiplicite = count;
@@ -68,7 +68,7 @@ int factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
 		}
 	}
 	//ajoute le dernier élement (qui est toujours un nbr premier) à la liste
-	struct facteurPremier* facteurPremier_l;
+	struct facteurPremier* facteurPremier_l = malloc(sizeof *facteurPremier_l);
 	facteurPremier_l->file = (char**) nbr->file;
 	facteurPremier_l->nombre = (unsigned) leNombre;
 	facteurPremier_l->multiplicite = 1;
