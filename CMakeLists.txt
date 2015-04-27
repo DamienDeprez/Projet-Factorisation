@@ -21,6 +21,7 @@ src/test_factorisation.c src/factorisation.c
 add_executable(factorisation ${src_file} src/buffer.h src/buffer.c)
 
 target_link_libraries(factorisation m)
+target_link_libraries(factorisation pthread)
 
 enable_testing()
 
@@ -28,3 +29,4 @@ add_executable(test_factorisation ${test_file} src/buffer.h src/buffer.c)
 
 target_link_libraries(test_factorisation cunit)
 target_link_libraries(test_factorisation m)
+target_link_libraries(test_factorisation pthread)
