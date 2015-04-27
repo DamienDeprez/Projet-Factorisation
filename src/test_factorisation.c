@@ -218,15 +218,13 @@ int main(int argc, char **argv)
 		return CU_get_error();
 	}
 
-	/*CU_pTest  test1 = CU_get_test(factorisation,"test pointeur NULL");
-	printf("test1 : name -> %s - active -> %d\n",test1->pName,test1->fActive);
+	CU_pTest  test1 = CU_get_test(factorisation,"test nombre premier");
 	CU_set_test_active(test1,CU_FALSE);
-	printf("test1 : name -> %s - active -> %d\n",test1->pName,test1->fActive);
 	if(CU_set_test_active(test1,CU_FALSE) == CUE_NOTEST)
 	{
 		CU_cleanup_registry();
 		return CU_get_error();
-	}*/
+	}
 
 	/*
 		lance le test selon le mode choisi
