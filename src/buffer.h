@@ -8,6 +8,7 @@
 #define N 4 // nombre de slot du buffer
 
 #include <stddef.h>
+#include <semaphore.h>
 #include "factorisation.h"
 
 // %TODO complèter la doc
@@ -24,6 +25,9 @@ struct buffer
 	struct nombre* memory;
 	int size;
 	size_t cursor;
+	pthread_mutex_t lock;
+	sem_t empty;
+	sem_t full;
 };
 
 /*

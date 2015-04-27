@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
+#include <pthread.h>
 #include "buffer.h"
 
 struct buffer * newBuffer(int size)
@@ -13,6 +14,9 @@ struct buffer * newBuffer(int size)
 	struct buffer *buffer1 = (struct buffer *) malloc(sizeof(*buffer1));
 	if (buffer1 == NULL)
 		return NULL;
+	sem_init(&(buffer1->empty),0,size);
+	sem_init(&(buffer1->full),0,0);
+	pthread_mutex_init(&(buffer1->lock),NULL);
 	printf("taille memory : %lu\n", sizeof(struct nombre)*size);
 	printf("taille memory : %lu\n", sizeof(*(buffer1->memory))*size);
 	buffer1->memory = (struct nombre *) malloc(sizeof(*(buffer1->memory)) * size);
@@ -30,6 +34,9 @@ int freeBuffer(struct buffer *buffer1)
 {
 	free(buffer1->memory);
 	buffer1->memory = NULL;
+	sem_destroy(&(buffer1->full));
+	sem_destroy(&(buffer1->empty));
+	pthread_mutex_destroy(&(buffer1->lock));
 	free(buffer1);
 	//buffer1 = NULL;
 	return EXIT_SUCCESS;
@@ -37,6 +44,8 @@ int freeBuffer(struct buffer *buffer1)
 
 struct nombre readBuffer(struct buffer *buffer1)
 {
+	sem_wait(&(buffer1->full)); // attente d'un slot rempli
+	pthread_mutex_lock(&(buffer1->lock)); // verouille l'accès à la mémoire
 	size_t debut = buffer1->cursor;
 	struct nombre retour = buffer1->memory[buffer1->cursor];
 	while (retour.nombre == 0) {
@@ -52,6 +61,8 @@ struct nombre readBuffer(struct buffer *buffer1)
 	}
 	buffer1->memory[buffer1->cursor].nombre=0;
 	buffer1->memory[buffer1->cursor].file="";
+	pthread_mutex_unlock(&(buffer1->lock)); // déverouille l'accès à la mémoire
+	sem_post(&(buffer1->empty));
 	return retour;
 }
 
