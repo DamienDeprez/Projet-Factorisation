@@ -62,12 +62,14 @@ struct nombre readBuffer(struct buffer *buffer1)
 	buffer1->memory[buffer1->cursor].nombre=0;
 	buffer1->memory[buffer1->cursor].file="";
 	pthread_mutex_unlock(&(buffer1->lock)); // déverouille l'accès à la mémoire
-	sem_post(&(buffer1->empty));
+	sem_post(&(buffer1->empty)); // augment le nombre de slot vide
 	return retour;
 }
 
 int writeBuffer(struct buffer *buffer1, struct nombre nombre1)
 {
+	sem_wait(&(buffer1->empty)); // attente d'un slot vide
+	pthread_mutex_lock(&(buffer1->lock)); // verouille l'accès à la mémoire
 	size_t debut = buffer1->cursor;
 	struct nombre cursor = buffer1->memory[buffer1->cursor];
 	while (cursor.nombre != 0) {
@@ -82,5 +84,7 @@ int writeBuffer(struct buffer *buffer1, struct nombre nombre1)
 		cursor = buffer1->memory[buffer1->cursor];
 	}
 	buffer1->memory[buffer1->cursor] = nombre1;
+	pthread_mutex_unlock(&(buffer1)->lock); // déverouille l'accès à la mémoire
+	sem_post(&(buffer1->full)); // augment le nombre de slot rempli
 	return 0;
 }
