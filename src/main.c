@@ -30,6 +30,20 @@ int main (int argc, char ** argv)
 	//buffer1->cursor=3;
 	struct nombre n2 = getNombre(buffer1);
 	printf("get -> nombre : nombre=%"PRIu64" - file : %s\n",n2.nombre,n2.file);
+	n2=getNombre(buffer1);
+	printf("get -> nombre : nombre=%"PRIu64" - file : %s\n",n2.nombre,n2.file);
+	n2=getNombre(buffer1);
+	printf("get -> nombre : nombre=%"PRIu64" - file : %s\n",n2.nombre,n2.file);
+	ret=setNombre(buffer1,n1);
+	printf("retour ajout : %d\n",ret);
+	ret=setNombre(buffer1,n1);
+	printf("retour ajout : %d\n",ret);
+	ret=setNombre(buffer1,n1);
+	printf("retour ajout : %d\n",ret);
+	ret=setNombre(buffer1,n1);
+	printf("retour ajout : %d\n",ret);
+	ret=setNombre(buffer1,n1);
+	printf("retour ajout : %d\n",ret);
 	freeBuffer(buffer1);
 	return EXIT_SUCCESS;
 }

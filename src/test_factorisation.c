@@ -6,7 +6,6 @@
 
 #include "factorisation.h"
 
-
 /*
  * Liste des variables globales
  */
@@ -140,6 +139,10 @@ int clean_suite_buffer(void)
 
 void test_factorisation_null(void)
 {
+	nbr1->nombre=6;
+	nbr1->file="file";
+	list1->factP=NULL;
+	list1->precedent=NULL;
 	CU_ASSERT_TRUE(factorisation(NULL,NULL));
 	CU_ASSERT_TRUE(factorisation(nbr1,NULL));
 	CU_ASSERT_TRUE(factorisation(NULL,list1));
@@ -147,12 +150,28 @@ void test_factorisation_null(void)
 
 void test_nombre_infactorisable(void)
 {
+	nbr1->nombre=0;
+	nbr1->file="file0";
+	nbr2->nombre=1;
+	nbr2->file="file1";
 	CU_ASSERT_TRUE(factorisation(nbr1,list1));
 	CU_ASSERT_PTR_NULL(list1->factP);
 	CU_ASSERT_PTR_NULL(list1->precedent);
 	CU_ASSERT_TRUE(factorisation(nbr2,list1));
+	CU_ASSERT_PTR_NULL(list1->factP);
+	CU_ASSERT_PTR_NULL(list1->precedent);
 }
 
+void test_nombre_premier(void)
+{
+	nbr1->nombre=2;
+	nbr1->file="file2";
+	list1->precedent=NULL;
+	list1->factP=NULL;
+	CU_ASSERT_FALSE(factorisation(nbr1,list1));
+	CU_ASSERT_EQUAL(list1->factP->nombre,2);
+	CU_ASSERT_PTR_NULL(list1->precedent);
+}
 /**
 
 */
@@ -181,32 +200,9 @@ int main(int argc, char **argv)
 
 
 	/*
-	 * met la suite active CU_TRUE ou inactive CU_FALSE
-	 */
-	if (CU_set_suite_active(factorisation, CU_TRUE) != 0) {
-		CU_cleanup_registry();
-		return CU_get_error();
-	}
-	if(CU_set_suite_active(consomateur,CU_FALSE) != 0)
-	{
-		CU_cleanup_registry();
-		return CU_get_error();
-	}
-	if(CU_set_suite_active(producteur,CU_FALSE) != 0)
-	{
-		CU_cleanup_registry();
-		return CU_get_error();
-	}
-	if(CU_set_suite_active(buffer,CU_FALSE) != 0)
-	{
-		CU_cleanup_registry();
-		return CU_get_error();
-	}
-
-	/*
 		ajoute le test à la suite de test
 	*/
-	if(CU_add_test(factorisation,"test pointeur NULL\n",test_factorisation_null) == NULL)
+	if(CU_add_test(factorisation,"test pointeur NULL",test_factorisation_null) == NULL)
 	{
 		CU_cleanup_registry();
 		return CU_get_error();
@@ -216,6 +212,21 @@ int main(int argc, char **argv)
 		CU_cleanup_registry();
 		return CU_get_error();
 	}
+	if(CU_add_test(factorisation,"test nombre premier",test_nombre_premier) == NULL)
+	{
+		CU_cleanup_registry();
+		return CU_get_error();
+	}
+
+	/*CU_pTest  test1 = CU_get_test(factorisation,"test pointeur NULL");
+	printf("test1 : name -> %s - active -> %d\n",test1->pName,test1->fActive);
+	CU_set_test_active(test1,CU_FALSE);
+	printf("test1 : name -> %s - active -> %d\n",test1->pName,test1->fActive);
+	if(CU_set_test_active(test1,CU_FALSE) == CUE_NOTEST)
+	{
+		CU_cleanup_registry();
+		return CU_get_error();
+	}*/
 
 	/*
 		lance le test selon le mode choisi

@@ -40,18 +40,17 @@ struct nombre getNombre(struct buffer *buffer1)
 	struct nombre retour = buffer1->memory[buffer1->cursor];
 	while (retour.nombre == 0) {
 		buffer1->cursor++;
-		if (buffer1->cursor == debut)
-			return retour; // si un tour complèt return avec 0
 		if (buffer1->cursor == N) // si on arrive au bout
 		{
 			buffer1->cursor = 0;
 		}
+		printf("get at buffer [%lu] - begin : %lu \n",buffer1->cursor,debut);
+		if (buffer1->cursor == debut)
+			return retour; // si un tour complèt return avec 0
 		retour = buffer1->memory[buffer1->cursor];
 	}
-	buffer1->cursor++;
-	if (buffer1->cursor == N) {
-		buffer1->cursor = 0;
-	}
+	buffer1->memory[buffer1->cursor].nombre=0;
+	buffer1->memory[buffer1->cursor].file="";
 	return retour;
 }
 
@@ -61,20 +60,15 @@ int setNombre(struct buffer *buffer1, struct nombre nombre1)
 	struct nombre cursor = buffer1->memory[buffer1->cursor];
 	while (cursor.nombre != 0) {
 		buffer1->cursor++;
-		if (buffer1->cursor == debut) {
-			return 1;
-		}
 		if (buffer1->cursor == N) {
 			buffer1->cursor = 0;
+		}
+		if (buffer1->cursor == debut) {
+			return 1;
 		}
 		cursor = buffer1->memory[buffer1->cursor];
 	}
 
-	buffer1->memory[buffer1->cursor].nombre = nombre1.nombre;
-	buffer1->memory[buffer1->cursor].file = nombre1.file;
-	buffer1->cursor++;
-	if (buffer1->cursor == N) {
-		buffer1->cursor = 0;
-	}
+	buffer1->memory[buffer1->cursor] = nombre1;
 	return 0;
 }
