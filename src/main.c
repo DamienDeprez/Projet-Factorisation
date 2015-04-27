@@ -20,31 +20,32 @@ void exit_on_error(char * msg)
 
 int main (int argc, char ** argv)
 {
-	printf("Programme de factorisation de nombre");
-	struct buffer* buffer1 = alloc();
+	printf("Programme de factorisation de nombre\n");
+	//struct buffer* buffer1 = newBuffer(8);
 	struct nombre n1 = {57,"file54"};
-	int ret = setNombre(buffer1,n1);
+	struct listeFacteurPremier list1={NULL,NULL};
+	/*int ret = writeBuffer(buffer1,n1);
 	printf("retour ajout : %d\n",ret);
-	ret = setNombre(buffer1,n1);
+	ret = writeBuffer(buffer1,n1);
 	printf("retour ajout : %d\n",ret);
-	//buffer1->cursor=3;
-	struct nombre n2 = getNombre(buffer1);
+	struct nombre n2 = readBuffer(buffer1);
 	printf("get -> nombre : nombre=%"PRIu64" - file : %s\n",n2.nombre,n2.file);
-	n2=getNombre(buffer1);
+	n2=readBuffer(buffer1);
 	printf("get -> nombre : nombre=%"PRIu64" - file : %s\n",n2.nombre,n2.file);
-	n2=getNombre(buffer1);
+	n2=readBuffer(buffer1);
 	printf("get -> nombre : nombre=%"PRIu64" - file : %s\n",n2.nombre,n2.file);
-	ret=setNombre(buffer1,n1);
+	ret=writeBuffer(buffer1,n1);
 	printf("retour ajout : %d\n",ret);
-	ret=setNombre(buffer1,n1);
+	ret=writeBuffer(buffer1,n1);
 	printf("retour ajout : %d\n",ret);
-	ret=setNombre(buffer1,n1);
+	ret=writeBuffer(buffer1,n1);
 	printf("retour ajout : %d\n",ret);
-	ret=setNombre(buffer1,n1);
+	ret=writeBuffer(buffer1,n1);
 	printf("retour ajout : %d\n",ret);
-	ret=setNombre(buffer1,n1);
+	ret=writeBuffer(buffer1,n1);
 	printf("retour ajout : %d\n",ret);
-	freeBuffer(buffer1);
+	freeBuffer(buffer1);*/
+	printf("factorisation de 57 : %d\n",factorisation(&n1,&list1));
 	return EXIT_SUCCESS;
 }
 
