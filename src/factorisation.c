@@ -36,7 +36,7 @@ int factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
 	if (count != 0)
 	{
 		struct facteurPremier* facteurPremier2 = NULL;
-		facteurPremier2->file = (char**) nbr->file;
+		facteurPremier2->file = (char**) nbr->file; // %TODO fix bug when testing factorisation with 2
 		facteurPremier2->nombre = (unsigned) i;
 		facteurPremier2->multiplicite = count;
 		liste->factP = facteurPremier2;
