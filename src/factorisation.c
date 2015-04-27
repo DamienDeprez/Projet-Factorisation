@@ -11,7 +11,7 @@
 /*
  * liste est null a l'appel de la fonction
  */
-int factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
+int factorisation (struct nombre* nbr, struct facteurPremier* liste, int size)
 {
 	if(liste == NULL || nbr == NULL)
 	{
@@ -36,7 +36,7 @@ int factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
 	if (count != 0)
 	{
 		struct facteurPremier* facteurPremier2 = malloc(sizeof *facteurPremier2);
-		facteurPremier2->file = (char**) nbr->file; // %TODO ok
+		facteurPremier2->file = (char**) nbr->file;
 		facteurPremier2->nombre = (unsigned) 2;
 		facteurPremier2->multiplicite = count;
 		liste->factP = facteurPremier2;

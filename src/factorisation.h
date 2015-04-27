@@ -53,10 +53,11 @@ struct nombre
  * Factorise un nombre et ajoute le résultat au tableau des facteurs premiers
  *
  * @param nombre1 : nombre a factoriser
- * @param facteurPremier1 : tableau contenant les facteurs premiers déjà utilisé non
+ * @param facteurPremier1 : tableau contenant les facteurs premiers déjà utilisé non (doit être alloué par malloc ou calloc)
+ * @param size : nombre de facteur premier contenu dans facteurPremier1
  * @return : 0 si pas d'erreur et 1 si erreur liste ou nombre1 sont NULL ou nombre1 n'est pas factorisable (cas 0 et 1)
  */
 
-int factorisation (struct nombre* nombre1, struct listeFacteurPremier* liste);
+int factorisation (struct nombre* nombre1, struct facteurPremier* facteurPremier1, int size);
 
 #endif //FACTORISATION_FACTORISATION_H
