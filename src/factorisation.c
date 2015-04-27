@@ -35,7 +35,10 @@ int factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
 	}
 	if (count != 0)
 	{
-		struct facteurPremier* facteurPremier2 = NULL;
+		struct facteurPremier* facteurPremier2;
+		facteurPremier2->file = NULL;
+		facteurPremier2->nombre = NULL;
+		facteurPremier2->multiplicite = 0;
 		facteurPremier2->file = (char**) nbr->file; // %TODO fix bug when testing factorisation with 2
 		facteurPremier2->nombre = (unsigned) i;
 		facteurPremier2->multiplicite = count;
@@ -67,5 +70,10 @@ int factorisation (struct nombre* nbr, struct listeFacteurPremier* liste)
 			}
 		}
 	}
+	//ajoute le dernier élement (qui est toujours un nbr premier) à la liste
+	struct facteurPremier* facteurPremier_l;
+	facteurPremier_l->file = (char**) nbr->file;
+	facteurPremier_l->nombre = (unsigned) leNombre;
+	facteurPremier_l->multiplicite = 1;
 	return 0;
 }
