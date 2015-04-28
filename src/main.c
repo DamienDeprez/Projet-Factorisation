@@ -12,6 +12,7 @@
 #include <string.h>
 #include "factorisation.h"
 #include "buffer.h"
+#include "producteur.h"
 
 void exit_on_error(char * msg)
 {
@@ -58,6 +59,7 @@ int main (int argc, char ** argv)
 			{
 				//lecture depuis internet
 				printf("lecture depuis l'URL : %s\n",argv[i]);
+				produceFromInternet(argv[i]);
 			}
 			else
 			{
