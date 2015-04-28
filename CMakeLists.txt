@@ -22,6 +22,7 @@ add_executable(factorisation ${src_file} src/buffer.h src/buffer.c)
 
 target_link_libraries(factorisation m)
 target_link_libraries(factorisation pthread)
+target_link_libraries(factorisation curl)
 
 enable_testing()
 
