@@ -10,33 +10,23 @@
 #define FACTORISATION_PRODUCTEUR_H
 
 /**
- * readOneFromFile
- * lit un nombre depuis le fichier
+ * readOneFromLocal
+ * lit un nombre depuis le descripteur fd
  *
- * @fd : descripteur de fichier correspondant au fichier où il faut lire une entrée
- * @fileName : nom du fichier d'origine du nombre
- * @return : structure nombre ou NULL si erreur
+ * @fd : descripteur correspondant à l'entreé d'où il faut lire les données
+ * @inputName : nom de l'entrée d'origine du nombre
+ * @return : structure nombre si erreur le nombre vaut 0
  */
-struct nombre readOneFromFile (const int fd, const char* fileName);
-
-/**
- * readOneFromStdin
- * lit un nombre depuis l'entrée standard
- *
- * %TODO compléter les arguments de la fonction
- * @return : structure nombre ou NULL si erreur
- */
-struct nombre readOneFromStdin ();
+struct nombre readOneFromLocal (const int fd, const char* inputName);
 
 /**
  * readOneFromInternet
  * lit un nombre depuis un fichier se trouvant sur le résau
  *
- * %TODO compléter les arguments de la fonction
- * @fileName : nom du fichier d'origine du nombre
- * @return : structure nombre ou NULL si erreur
+ * @URL : URL du fichier à lire
+ * @return : structure nombre si erreur le nombre vaut 0
  */
-struct nombre readOneFromInternet (const char* fileName);
+struct nombre readOneFromInternet (const char* URL);
 
 /**
  * produceFromFile
@@ -50,9 +40,8 @@ void produceFromFile(const char* filePath);
  * produceFromStdin
  * lit l'entrée standard et place le contenu dans le buffer
  *
- * @stdin : contenu de l'entrée standard
  */
-void produceFromStdin(const char** stdin);
+void produceFromStdin();
 
 /**
  * produceFromInternet
