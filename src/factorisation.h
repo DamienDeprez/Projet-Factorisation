@@ -24,17 +24,6 @@ struct facteurPremier
 	int multiplicite;
 	char ** file;
 };
-/*
- * structure représantant un noeud d'une liste (de type file) de facteurs premiers
- *
- * @factP : factp est une structure de type facteur Premier
- * @precedent : représente un pointeur vers le noeud de type listeFacteur Premier précédent dans la file des facteurs premiers
- */
-struct listeFacteurPremier
-{
-	struct facteurPremier* factP;
-	struct listeFacteurPremier* precedent;
-};
 
 /*
  * structure représentant un nombre provenant de l'entrée
@@ -58,6 +47,6 @@ struct nombre
  * @return : 0 si pas d'erreur et 1 si erreur liste ou nombre1 sont NULL ou nombre1 n'est pas factorisable (cas 0 et 1)
  */
 
-int factorisation (struct nombre* nombre1, struct facteurPremier* facteurPremier1, int size);
+int factorisation (struct nombre* nombre1, struct facteurPremier* facteurPremier1, int *size);
 
 #endif //FACTORISATION_FACTORISATION_H
