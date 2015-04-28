@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
+#include <string.h>
 #include "factorisation.h"
 #include "buffer.h"
 
@@ -20,32 +21,51 @@ void exit_on_error(char * msg)
 
 int main (int argc, char ** argv)
 {
+	long maxthreads=1;
+	char* argerror;
+	char* internet="http://";
 	printf("Programme de factorisation de nombre\n");
-	//struct buffer* buffer1 = newBuffer(8);
-	struct nombre n1 = {57,"file54"};
-	struct listeFacteurPremier list1={NULL,NULL};
-	/*int ret = writeBuffer(buffer1,n1);
-	printf("retour ajout : %d\n",ret);
-	ret = writeBuffer(buffer1,n1);
-	printf("retour ajout : %d\n",ret);
-	struct nombre n2 = readBuffer(buffer1);
-	printf("get -> nombre : nombre=%"PRIu64" - file : %s\n",n2.nombre,n2.file);
-	n2=readBuffer(buffer1);
-	printf("get -> nombre : nombre=%"PRIu64" - file : %s\n",n2.nombre,n2.file);
-	n2=readBuffer(buffer1);
-	printf("get -> nombre : nombre=%"PRIu64" - file : %s\n",n2.nombre,n2.file);
-	ret=writeBuffer(buffer1,n1);
-	printf("retour ajout : %d\n",ret);
-	ret=writeBuffer(buffer1,n1);
-	printf("retour ajout : %d\n",ret);
-	ret=writeBuffer(buffer1,n1);
-	printf("retour ajout : %d\n",ret);
-	ret=writeBuffer(buffer1,n1);
-	printf("retour ajout : %d\n",ret);
-	ret=writeBuffer(buffer1,n1);
-	printf("retour ajout : %d\n",ret);
-	freeBuffer(buffer1);*/
-	printf("factorisation de 57 : %d\n",factorisation(&n1,&list1));
+	if(argc>1) {
+		int i;
+		for (i = 0; i < argc; i++)
+		{
+			if(!strcmp(argv[i],"-stdin"))
+			{
+				//lecture depuis stdin
+				printf("lecture depuis stdin\n");
+			}
+			else if(!strcmp(argv[i],"-maxthreads"))
+			{
+				// max threads
+				i++;
+				if(i>=argc)
+				{
+					printf("erreur, pas assez d'argument\n");
+				}
+				else
+				{
+					maxthreads = strtol(argv[i],&argerror,10); // converti en long
+					if(*argerror != '\0') // si erreur dans la conversion
+					{
+						printf("erreur, argument invalide\n");
+						i--;
+						maxthreads=1;
+					}
+				}
+				printf("nombre maximum de consommateur : %ld\n",maxthreads);
+			}
+			else if(strstr(argv[i],internet)!=NULL)
+			{
+				//lecture depuis internet
+				printf("lecture depuis l'URL : %s\n",argv[i]);
+			}
+			else
+			{
+				//lecture depuis le fichier
+				printf("lecure depuis le fichier : %s\n",argv[i]);
+			}
+		}
+	}
 	return EXIT_SUCCESS;
 }
 
