@@ -143,9 +143,9 @@ void test_factorisation_null(void)
 	nbr1->file="file";
 	list1->factP=NULL;
 	list1->precedent=NULL;
-	CU_ASSERT_TRUE(factorisation(NULL,NULL));
-	CU_ASSERT_TRUE(factorisation(nbr1,NULL));
-	CU_ASSERT_TRUE(factorisation(NULL,list1));
+	CU_ASSERT_TRUE(factorisation(NULL,NULL,0));
+	CU_ASSERT_TRUE(factorisation(nbr1,NULL,0));
+	CU_ASSERT_TRUE(factorisation(NULL,list1,0));
 }
 
 void test_nombre_infactorisable(void)
@@ -154,10 +154,10 @@ void test_nombre_infactorisable(void)
 	nbr1->file="file0";
 	nbr2->nombre=1;
 	nbr2->file="file1";
-	CU_ASSERT_TRUE(factorisation(nbr1,list1));
+	CU_ASSERT_TRUE(factorisation(nbr1,list1,0));
 	CU_ASSERT_PTR_NULL(list1->factP);
 	CU_ASSERT_PTR_NULL(list1->precedent);
-	CU_ASSERT_TRUE(factorisation(nbr2,list1));
+	CU_ASSERT_TRUE(factorisation(nbr2,list1,0));
 	CU_ASSERT_PTR_NULL(list1->factP);
 	CU_ASSERT_PTR_NULL(list1->precedent);
 }
