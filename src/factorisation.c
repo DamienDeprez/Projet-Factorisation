@@ -49,7 +49,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 		}
 		if (ajout_element == 0) {
 			struct facteurPremier *facteurPremier2 = realloc(facteurPremier1,sizeof facteurPremier1+1);
-			facteurPremier2->file = (char **) nbr->file;
+			facteurPremier2->file = nbr->file;
 			facteurPremier2->nombre = (uint32_t) 2;
 			facteurPremier2->multiplicite = count;
 		}
@@ -73,7 +73,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			}
 			if (ajout_element == 0) {
 				struct facteurPremier *facteurPremier_i = realloc(facteurPremier1, sizeof facteurPremier1 + 1);
-				facteurPremier_i->file = (char **) nbr->file;
+				facteurPremier_i->file =  nbr->file;
 				facteurPremier_i->nombre = (uint32_t) i;
 				facteurPremier_i->multiplicite = count;
 			}
@@ -83,7 +83,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 	if (leNombre != 1) {
 		//ajoute le dernier élement (qui est toujours un nbr premier) à la liste
 		struct facteurPremier *facteurPremier_l = realloc(facteurPremier1, sizeof facteurPremier1 + 1);
-		facteurPremier_l->file = (char **) nbr->file;
+		facteurPremier_l->file = nbr->file;
 		facteurPremier_l->nombre = (unsigned) leNombre;
 		facteurPremier_l->multiplicite = 1;
 	}
