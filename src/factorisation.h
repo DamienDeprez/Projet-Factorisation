@@ -16,13 +16,13 @@
  *
  * @nombre : valeur du nombre premier
  * @multiplicite : nombre de fois que le nombre premier est rencontré
- * @file : fichier dans lequel le facteur premier a été trouvé
+ * @file : dernier input danslequel le nombre a été trouvé
  */
 struct facteurPremier
 {
 	uint32_t nombre;
 	int multiplicite;
-	char ** file;
+	char * file;
 };
 
 /*
