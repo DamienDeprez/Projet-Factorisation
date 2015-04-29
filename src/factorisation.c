@@ -49,20 +49,17 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 			}
 		}
-		if(ajout_element == 0 && (&facteurPremier1[*size-1]) == NULL) {
-			struct facteurPremier *facteurPremier2;
-			facteurPremier2->file = nbr->file;
-			facteurPremier2->nombre = 2;
-			facteurPremier2->multiplicite = count;
-			facteurPremier1[*size-1] = *facteurPremier2;
+		if(ajout_element == 0 && (facteurPremier1[*size-1].nombre) == 0) {
+			(facteurPremier1[*size-1].file) = nbr->file;
+			(facteurPremier1[*size-1].nombre) = (uint32_t) 2;
+			(facteurPremier1[*size-1].multiplicite) = count;
 			(*size)++;
 		}
-		else if (ajout_element == 0  && (&facteurPremier1[*size-1]) != NULL) {
-			struct facteurPremier *facteurPremier2 = realloc(facteurPremier1,(sizeof facteurPremier1) * 2);
-			facteurPremier2->file = nbr->file;
-			facteurPremier2->nombre = 2;
-			facteurPremier2->multiplicite = count;
-			facteurPremier1[*size-1] = *facteurPremier2;
+		else if (ajout_element == 0  && (facteurPremier1[*size-1].nombre) != 0) {
+			realloc_s (facteurPremier1,(sizeof *facteurPremier1) * 2);
+			(facteurPremier1[*size].file) = nbr->file;
+			(facteurPremier1[*size].nombre) = (uint32_t) 2;
+			(facteurPremier1[*size].multiplicite) = count;
 			(*size)++;
 		}
 	}
@@ -83,24 +80,21 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 					ajout_element = 1;
 				}
 			}
-			if(ajout_element == 0 && (&facteurPremier1[*size-1]) == NULL) {
-				struct facteurPremier *facteurPremier_i;
-				facteurPremier_i->file = nbr->file;
-				facteurPremier_i->nombre = (uint32_t) i;
-				facteurPremier_i->multiplicite = count;
+			if(ajout_element == 0 && (facteurPremier1[*size-1].nombre) == 0) {
 				int curseur2 = 0;
 				while (&facteurPremier1[curseur2] != NULL) {
 					curseur2 ++ ;
 				}
-				facteurPremier1[curseur2] = *facteurPremier_i;
+				facteurPremier1[curseur2].file = nbr->file;
+				facteurPremier1[curseur2].nombre = (uint32_t) i;
+				facteurPremier1[curseur2].multiplicite = count;
 				(*size)++;
 			}
-			else if (ajout_element == 0  && (&facteurPremier1[*size-1]) != NULL) {
-				struct facteurPremier *facteurPremier_i = realloc(facteurPremier1, (sizeof facteurPremier1)* 2);
-				facteurPremier_i->file = nbr->file;
-				facteurPremier_i->nombre = (uint32_t) i;
-				facteurPremier_i->multiplicite = count;
-				facteurPremier1[*size-1] = *facteurPremier_i;
+			else if (ajout_element == 0  && (facteurPremier1[*size-1].nombre) != 0) {
+				realloc_s (facteurPremier1,(sizeof *facteurPremier1) * 2);
+				(facteurPremier1[*size].file) = nbr->file;
+				(facteurPremier1[*size].nombre) = (uint32_t) i;
+				(facteurPremier1[*size].multiplicite) = count;
 				(*size)++;
 			}
 			count = 0;
@@ -108,36 +102,41 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 	}
 	//ajoute le dernier élement (qui est toujours un nbr premier) à la liste
 	if (leNombre != 1) {
-		if(ajout_element == 0 && (&facteurPremier1[*size-1]) == NULL) {
-			struct facteurPremier *facteurPremier_l;
-			facteurPremier_l->file = nbr->file;
-			facteurPremier_l->nombre = (uint32_t) i;
-			facteurPremier_l->multiplicite = count;
+		if(ajout_element == 0 && (facteurPremier1[*size-1].nombre) == 0) {
 			int curseur2 = 0;
-			while (&facteurPremier1[curseur2] != NULL) {
+			int true = 1;
+			while (facteurPremier1[curseur2].nombre != 0  && true == 1) {
+				if(facteurPremier1[curseur2].nombre == leNombre ) {
+					facteurPremier1[curseur2].multiplicite += count;
+					(*size)++;
+					ajout_element = 1;
+					true = 0;
+				}
 				curseur2 ++ ;
 			}
-			facteurPremier1[curseur2] = *facteurPremier_l;
-			(*size)++;
+			if (ajout_element == 0) {
+				facteurPremier1[curseur2].file = nbr->file;
+				facteurPremier1[curseur2].nombre = (uint32_t) leNombre;
+				facteurPremier1[curseur2].multiplicite = count;
+				(*size)++;
+			}
 		}
-		else if (ajout_element == 0  && (&facteurPremier1[*size-1]) != NULL) {
-			struct facteurPremier *facteurPremier_l = realloc ( facteurPremier1, (sizeof facteurPremier1) * 2);
-			facteurPremier_l->file = nbr->file;
-			facteurPremier_l->nombre = (uint32_t) leNombre;
-			facteurPremier_l->multiplicite = 1;
-			facteurPremier1[*size - 1] = *facteurPremier_l;
+		else if (ajout_element == 0  && (facteurPremier1[*size-1].nombre) != 0) {
+			realloc_s (facteurPremier1,(sizeof *facteurPremier1) * 2);
+			facteurPremier1[*size].file = nbr->file;
+			facteurPremier1[*size].nombre = (uint32_t) leNombre;
+			facteurPremier1[*size].multiplicite = count;
 			(*size)++;
 		}
 	}
 	return 0;
 }
 
-void* realloc_s (void **ptr, size_t taille)
+void realloc_s (void **ptr, size_t taille)
 {
 	void *ptr_realloc = realloc(*ptr, taille);
 
 	if (ptr_realloc != NULL) {
 		*ptr = ptr_realloc;
 	}
-	return ptr_realloc;
 }
