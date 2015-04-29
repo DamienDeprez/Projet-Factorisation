@@ -6,6 +6,8 @@
 
 #include "factorisation.h"
 
+#define N 128// 6542 nombre de nombre permier en dessous de 2^16 nombre de place initialisée dans la liste par défaut
+
 /*
  * Liste des variables globales
  */
@@ -14,22 +16,24 @@ struct nombre *nbr2 = NULL;
 struct nombre *nbr3 = NULL;
 struct nombre *nbr4 = NULL;
 
-struct listeFacteurPremier *list1 = NULL;
-struct listeFacteurPremier *list2 = NULL;
-struct listeFacteurPremier *list3 = NULL;
-struct listeFacteurPremier *list4 = NULL;
+struct facteurPremier* list1 = NULL;
+struct facteurPremier* list2 = NULL;
+struct facteurPremier* list3 = NULL;
+struct facteurPremier* list4 = NULL;
 
 int init_suite_factorisation(void)
 {
-	nbr1 = (struct nombre *) malloc(sizeof(struct nombre));
-	nbr2 = (struct nombre *) malloc(sizeof(struct nombre));
-	nbr3 = (struct nombre *) malloc(sizeof(struct nombre));
-	nbr4 = (struct nombre *) malloc(sizeof(struct nombre));
+	nbr1 = (struct nombre *) malloc(sizeof(*nbr1));
+	nbr2 = (struct nombre *) malloc(sizeof(*nbr2));
+	nbr3 = (struct nombre *) malloc(sizeof(*nbr3));
+	nbr4 = (struct nombre *) malloc(sizeof(*nbr4));
+	printf("sizeof nombre : %lu\n",sizeof(struct nombre));
 
-	list1 = (struct listeFacteurPremier *)malloc(sizeof(struct listeFacteurPremier));
-	list2 = (struct listeFacteurPremier *)malloc(sizeof(struct listeFacteurPremier));
-	list3 = (struct listeFacteurPremier *)malloc(sizeof(struct listeFacteurPremier));
-	list4 = (struct listeFacteurPremier *)malloc(sizeof(struct listeFacteurPremier));
+	list1 = (struct facteurPremier *)malloc(sizeof(*list1)*N);
+	list2 = (struct facteurPremier *)malloc(sizeof(*list2)*N);
+	list3 = (struct facteurPremier *)malloc(sizeof(*list3)*N);
+	list4 = (struct facteurPremier *)malloc(sizeof(*list4)*N);
+	printf("sizeof facteurPremier : %lu\n",sizeof(struct facteurPremier)*N);
 	if (nbr1 == NULL || nbr2 == NULL || nbr3 == NULL || nbr4 == NULL) {
 		return EXIT_FAILURE;
 	}
@@ -45,18 +49,26 @@ int init_suite_factorisation(void)
 	nbr3->file="file2";
 	nbr4->nombre=3;
 	nbr4->file="file5";
+	int cursor;
+	for(cursor=0;cursor<N;cursor++)
+	{
+		list1[cursor].nombre=0;
+		list1[cursor].multiplicite=0;
+		list1[cursor].file='\0';
 
-	list1->precedent=NULL;
-	list1->factP=NULL;
+		list2[cursor].nombre=0;
+		list2[cursor].multiplicite=0;
+		list2[cursor].file='\0';
 
-	list2->precedent=NULL;
-	list2->factP=NULL;
+		list3[cursor].nombre=0;
+		list3[cursor].multiplicite=0;
+		list3[cursor].file='\0';
 
-	list3->precedent=NULL;
-	list3->factP=NULL;
+		list4[cursor].nombre=0;
+		list4[cursor].multiplicite=0;
+		list4[cursor].file='\0';
+	}
 
-	list4->precedent=NULL;
-	list4->factP=NULL;
 
 	return EXIT_SUCCESS;
 }
@@ -102,8 +114,7 @@ int clean_suite_factorisation(void)
 	if (nbr1 != NULL || nbr2 != NULL || nbr3 != NULL || nbr4 != NULL) {
 		return EXIT_FAILURE;
 	}
-	if(list1 != NULL || list2 != NULL || list3 != NULL ||list4 != NULL)
-	{
+	if(list1 != NULL || list2 != NULL || list3 != NULL ||list4 != NULL) {
 		return EXIT_FAILURE;
 	}
 	return EXIT_SUCCESS;
@@ -141,11 +152,32 @@ void test_factorisation_null(void)
 {
 	nbr1->nombre=6;
 	nbr1->file="file";
-	list1->factP=NULL;
-	list1->precedent=NULL;
-	CU_ASSERT_TRUE(factorisation(NULL,NULL,0));
-	CU_ASSERT_TRUE(factorisation(nbr1,NULL,0));
-	CU_ASSERT_TRUE(factorisation(NULL,list1,0));
+	int size = N;
+	int cursor;
+	CU_ASSERT_TRUE(factorisation(NULL,NULL,&size));
+	CU_ASSERT_EQUAL(size,N)
+	for(cursor=0;cursor<size;cursor++)
+	{
+		CU_ASSERT_EQUAL(list1[cursor].nombre,0);
+		CU_ASSERT_EQUAL(list1[cursor].multiplicite,0);
+		CU_ASSERT_EQUAL(list1[cursor].file,'\0');
+	}
+	CU_ASSERT_TRUE(factorisation(nbr1,NULL,&size));
+	CU_ASSERT_EQUAL(size,N);
+	for(cursor=0;cursor<size;cursor++)
+	{
+		CU_ASSERT_EQUAL(list1[cursor].nombre,0);
+		CU_ASSERT_EQUAL(list1[cursor].multiplicite,0);
+		CU_ASSERT_EQUAL(list1[cursor].file,'\0');
+	}
+	CU_ASSERT_TRUE(factorisation(NULL,list1,&size));
+	CU_ASSERT_EQUAL(size,N);
+	for(cursor=0;cursor<size;cursor++)
+	{
+		CU_ASSERT_EQUAL(list1[cursor].nombre,0);
+		CU_ASSERT_EQUAL(list1[cursor].multiplicite,0);
+		CU_ASSERT_EQUAL(list1[cursor].file,'\0');
+	}
 }
 
 void test_nombre_infactorisable(void)
@@ -154,23 +186,60 @@ void test_nombre_infactorisable(void)
 	nbr1->file="file0";
 	nbr2->nombre=1;
 	nbr2->file="file1";
-	CU_ASSERT_TRUE(factorisation(nbr1,list1,0));
-	CU_ASSERT_PTR_NULL(list1->factP);
-	CU_ASSERT_PTR_NULL(list1->precedent);
-	CU_ASSERT_TRUE(factorisation(nbr2,list1,0));
-	CU_ASSERT_PTR_NULL(list1->factP);
-	CU_ASSERT_PTR_NULL(list1->precedent);
+	int size = N;
+	int cursor;
+	CU_ASSERT_TRUE(factorisation(nbr1,list1,&size));
+	CU_ASSERT_EQUAL(size,N);
+	for(cursor=0;cursor<size;cursor++)
+	{
+		CU_ASSERT_EQUAL(list1[cursor].nombre,0);
+		CU_ASSERT_EQUAL(list1[cursor].multiplicite,0);
+		CU_ASSERT_EQUAL(list1[cursor].file,'\0');
+	}
+	CU_ASSERT_TRUE(factorisation(nbr2,list1,&size));
+	CU_ASSERT_EQUAL(size,N);
+	for(cursor=0;cursor<size;cursor++)
+	{
+		CU_ASSERT_EQUAL(list1[cursor].nombre,0);
+		CU_ASSERT_EQUAL(list1[cursor].multiplicite,0);
+		CU_ASSERT_EQUAL(list1[cursor].file,'\0');
+	}
 }
 
 void test_nombre_premier(void)
 {
 	nbr1->nombre=2;
 	nbr1->file="file2";
-	list1->precedent=NULL;
-	list1->factP=NULL;
-	CU_ASSERT_FALSE(factorisation(nbr1,list1));
-	CU_ASSERT_EQUAL(list1->factP->nombre,2);
-	CU_ASSERT_PTR_NULL(list1->precedent);
+	nbr2->nombre=4;
+	nbr2->file="file4";
+	nbr3->nombre=3*5*7*9; //945 -> 3*3 + 1*5 + 1*7
+	nbr3->file="file2";
+	int size = N;
+	CU_ASSERT_FALSE(factorisation(nbr1,list1,&size));
+	CU_ASSERT_EQUAL(size,N);
+	CU_ASSERT_EQUAL(list1[0].nombre,2);
+	CU_ASSERT_EQUAL(list1[0].file,"file2");
+	CU_ASSERT_EQUAL(list1[0].multiplicite,1);
+	CU_ASSERT_FALSE(factorisation(nbr2,list1,&size));
+	CU_ASSERT_EQUAL(size,N);
+	CU_ASSERT_EQUAL(list1[0].nombre,2);
+	CU_ASSERT_EQUAL(list1[0].multiplicite,3);
+	CU_ASSERT_EQUAL(list1[0].file,"file4");
+
+	CU_ASSERT_FALSE(factorisation(nbr3,list1,&size));
+	CU_ASSERT_EQUAL(size,N);
+	CU_ASSERT_EQUAL(list1[0].nombre,2);
+	CU_ASSERT_EQUAL(list1[0].multiplicite,3);
+	CU_ASSERT_EQUAL(list1[0].file,"file4");
+	CU_ASSERT_EQUAL(list1[1].nombre,3);
+	CU_ASSERT_EQUAL(list1[1].multiplicite,3);
+	CU_ASSERT_EQUAL(list1[1].file,"file2");
+	CU_ASSERT_EQUAL(list1[2].nombre,5);
+	CU_ASSERT_EQUAL(list1[2].multiplicite,1);
+	CU_ASSERT_EQUAL(list1[2].file,"file2");
+	CU_ASSERT_EQUAL(list1[3].nombre,7);
+	CU_ASSERT_EQUAL(list1[3].multiplicite,1);
+	CU_ASSERT_EQUAL(list1[3].file,"file2");
 }
 /**
 
@@ -219,8 +288,7 @@ int main(int argc, char **argv)
 	}
 
 	CU_pTest  test1 = CU_get_test(factorisation,"test nombre premier");
-	CU_set_test_active(test1,CU_FALSE);
-	if(CU_set_test_active(test1,CU_FALSE) == CUE_NOTEST)
+	if(CU_set_test_active(test1,CU_TRUE) == CUE_NOTEST)
 	{
 		CU_cleanup_registry();
 		return CU_get_error();
