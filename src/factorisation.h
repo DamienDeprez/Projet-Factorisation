@@ -49,4 +49,10 @@ struct nombre
 
 int factorisation (struct nombre* nombre1, struct facteurPremier* facteurPremier1, int *size);
 
+/*
+ * Version sécurisée de realloc
+ * source : http://openclassrooms.com/courses/allocation-dynamique-en-c-complement/realloc-prototype-fonctionnement
+ */
+void* realloc_s (void **ptr, size_t taille) ;
+
 #endif //FACTORISATION_FACTORISATION_H
