@@ -18,7 +18,7 @@ src/test_factorisation.c src/factorisation.c
 
 #add_executable(factorisation ${src_file})
 
-add_executable(factorisation ${src_file} src/buffer.h src/buffer.c)
+add_executable(factorisation ${src_file} src/buffer.h src/buffer.c src/realloc_securise.h src/realloc_securise.cpp src/realloc_securise.c src/realloc_securise.h src/realloc_securise.c)
 
 target_link_libraries(factorisation m)
 target_link_libraries(factorisation pthread)
