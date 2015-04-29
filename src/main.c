@@ -25,7 +25,8 @@ int main (int argc, char ** argv)
 {
 	long maxthreads=1;
 	int threadNum=0;
-	pthread_t* pthread= (pthread_t*) malloc(sizeof(*pthread)*maxthreads); // talbeau de thread
+	int numofThread=0;
+	pthread_t* pthread= (pthread_t*) malloc(sizeof(*pthread)*(argc+maxthreads)); // talbeau de thread
 	char* argerror;
 	char* internet="http://";
 	struct buffer* buffer1 = newBuffer(128);
@@ -40,6 +41,7 @@ int main (int argc, char ** argv)
 				printf("lecture depuis stdin\n");
 				struct thread_param param={buffer1,"stdin",0,1};
 				pthread_create(&pthread[threadNum],NULL,produceFromFD,&param);
+				numofThread++;
 				threadNum++;
 			}
 			else if(!strcmp(argv[i],"-maxthreads"))
@@ -61,7 +63,7 @@ int main (int argc, char ** argv)
 					}
 				}
 				printf("nombre maximum de consommateur : %ld\n",maxthreads);
-				pthread_t* temp = realloc(pthread,sizeof(*pthread)*maxthreads);
+				pthread_t* temp = realloc(pthread,sizeof(*pthread)*(argc+maxthreads));
 				if(temp != NULL)
 				{
 					pthread=temp;
@@ -79,10 +81,12 @@ int main (int argc, char ** argv)
 				pipe(fd);
 				struct thread_param param1={buffer1,argv[i],fd[0],fd[1]};
 				pthread_create(&pthread[threadNum],NULL,produceFromInternet,&param1);
+				numofThread++;
 				threadNum++;
 				struct thread_param param2={buffer1,argv[i],fd[0],fd[1]};
 				pthread_create(&pthread[threadNum],NULL,produceFromFD,&param2);
 				threadNum++;
+				numofThread++;
 				//produceFromInternet(argv[i]);
 			}
 			else
@@ -91,22 +95,27 @@ int main (int argc, char ** argv)
 				int fd=open(argv[i],O_RDONLY);
 				if(fd==-1)
 				{
-					// erreur
+					printf("erreur de d'ouverture\n");
 				}
 				else
 				{
-					printf("lecure depuis le fichier : %s\n",argv[i]);
+
 					struct thread_param param = {buffer1,argv[i],fd,1};
 					pthread_create(&pthread[threadNum],NULL,produceFromFD,&param);
+					printf("lecure depuis le fichier : %s\n",argv[i]);
+					numofThread++;
 				}
 			}
 		}
 		int cursor;
-		for(cursor=0;cursor<maxthreads;cursor++)
+
+		for(cursor=0;cursor<numofThread;cursor++)
 		{
+			printf("join thread #%d\n",cursor);
 			pthread_join(pthread[cursor],NULL);
 		}
 		freeBuffer(buffer1);
+		free(pthread);
 		printf("end\n");
 	}
 	return EXIT_SUCCESS;

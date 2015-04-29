@@ -39,10 +39,12 @@ struct nombre readOneFromFD (const int fd, char* inputName)
 	else if (isReadOK == -1)
 	{
 		printf("erreur de lecture %d : %s\n",errno,strerror(errno));
+		printf("file descriptore : %d\n",fd);
 		retour.file="err";
 	}
 	else
 	{
+		//printf("nombre lu : %"PRIu64"\n",nombre);
 		retour.nombre=nombre;
 		retour.file=inputName;
 	}
@@ -51,21 +53,27 @@ struct nombre readOneFromFD (const int fd, char* inputName)
 
 void* produceFromFD(void* param)
 {
+	printf("lancement producefromFD\n");
 	struct thread_param* threadParam = (struct thread_param*)param;
-	struct nombre nombre1={1,"\0"};
-	while(!strcmp(nombre1.file,"eof"))
+	printf("thread param : fd:%d\n",threadParam->fd_read);
+	struct nombre nombre1 = {0,"null"};
+	printf("condition : %d\n",!strcmp(nombre1.file,"eof"));
+	while(strcmp(nombre1.file,"eof"))
 	{
 		nombre1 = readOneFromFD(threadParam->fd_read,threadParam->inputName);
-		writeBuffer(threadParam->buffer1,nombre1);
+		//printf("read numbre %"PRIu64" from %s\n",nombre1.nombre,nombre1.file);
+		//writeBuffer(threadParam->buffer1,nombre1);
 	}
 	if(threadParam->fd_read!=STDIN_FILENO) //si le descripteur de lecture n'est pas stdin, on le ferme
 	{
 		close(threadParam->fd_read);
 	}
-	if(threadParam->fd_write!=STDERR_FILENO || threadParam->fd_write != STDOUT_FILENO) // si le descritpeur d'écriture n'est pas stdout ou stderr, on le ferme
+	if(threadParam->fd_write!=STDERR_FILENO && threadParam->fd_write != STDOUT_FILENO) // si le descritpeur d'écriture n'est pas stdout ou stderr, on le ferme
 	{
 		close(threadParam->fd_write);
 	}
+	printf("fin de produceFromFD\n");
+	return NULL;
 }
 
 /*
@@ -96,4 +104,5 @@ void* produceFromInternet(void* param) // écrit
 			curl_easy_cleanup(url);
 		}
 	}
+	return NULL;
 }
