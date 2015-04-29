@@ -26,7 +26,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 	}
 
 	int count = 0;
-	uint32_t leNombre = nbr->nombre;
+	uint64_t leNombre = nbr->nombre;
 	uint64_t r = (uint64_t) sqrt(leNombre);
 	int i = 2;
 	int ajout_element = 0;
@@ -86,7 +86,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			if(ajout_element == 0 && (&facteurPremier1[*size-1]) == NULL) {
 				struct facteurPremier *facteurPremier_i;
 				facteurPremier_i->file = nbr->file;
-				facteurPremier_i->nombre = i;
+				facteurPremier_i->nombre = (uint32_t) i;
 				facteurPremier_i->multiplicite = count;
 				int curseur2 = 0;
 				while (&facteurPremier1[curseur2] != NULL) {
@@ -98,7 +98,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			else if (ajout_element == 0  && (&facteurPremier1[*size-1]) != NULL) {
 				struct facteurPremier *facteurPremier_i = realloc(facteurPremier1, sizeof facteurPremier1 * 2);
 				facteurPremier_i->file = nbr->file;
-				facteurPremier_i->nombre = i;
+				facteurPremier_i->nombre = (uint32_t) i;
 				facteurPremier_i->multiplicite = count;
 				facteurPremier1[*size-1] = *facteurPremier_i;
 				(*size)++;
@@ -111,7 +111,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 		if(ajout_element == 0 && (&facteurPremier1[*size-1]) == NULL) {
 			struct facteurPremier *facteurPremier_l;
 			facteurPremier_l->file = nbr->file;
-			facteurPremier_l->nombre = i;
+			facteurPremier_l->nombre = (uint32_t) i;
 			facteurPremier_l->multiplicite = count;
 			int curseur2 = 0;
 			while (&facteurPremier1[curseur2] != NULL) {
@@ -123,7 +123,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 		else if (ajout_element == 0  && (&facteurPremier1[*size-1]) != NULL) {
 			struct facteurPremier *facteurPremier_l = realloc(facteurPremier1, sizeof facteurPremier1 * 2);
 			facteurPremier_l->file = nbr->file;
-			facteurPremier_l->nombre = leNombre;
+			facteurPremier_l->nombre = (uint32_t) leNombre;
 			facteurPremier_l->multiplicite = 1;
 			facteurPremier1[*size - 1] = *facteurPremier_l;
 			(*size)++;
