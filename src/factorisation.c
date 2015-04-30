@@ -56,7 +56,9 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			(*size)++;
 		}
 		else if (ajout_element == 0  && (facteurPremier1[*size-1].nombre) != 0) {
-			realloc_s (facteurPremier1,(sizeof *facteurPremier1) * 2);
+			void *pointeurFacteurPremier = facteurPremier1;
+			void **ptrx = *(&pointeurFacteurPremier);
+			realloc_s (ptrx,(sizeof *facteurPremier1) * 2);
 			(facteurPremier1[*size].file) = nbr->file;
 			(facteurPremier1[*size].nombre) = (uint32_t) 2;
 			(facteurPremier1[*size].multiplicite) = count;
@@ -91,7 +93,9 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 				(*size)++;
 			}
 			else if (ajout_element == 0  && (facteurPremier1[*size-1].nombre) != 0) {
-				realloc_s (facteurPremier1,(sizeof *facteurPremier1) * 2);
+				void *pointeurFacteurPremier = facteurPremier1;
+				void **ptrx = *(&pointeurFacteurPremier);
+				realloc_s (ptrx,(sizeof *facteurPremier1) * 2);
 				(facteurPremier1[*size].file) = nbr->file;
 				(facteurPremier1[*size].nombre) = (uint32_t) i;
 				(facteurPremier1[*size].multiplicite) = count;
@@ -122,7 +126,9 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			}
 		}
 		else if (ajout_element == 0  && (facteurPremier1[*size-1].nombre) != 0) {
-			realloc_s (facteurPremier1,(sizeof *facteurPremier1) * 2);
+			void *pointeurFacteurPremier = facteurPremier1;
+			void **ptrx = *(&pointeurFacteurPremier);
+			realloc_s (ptrx,(sizeof *facteurPremier1) * 2);
 			facteurPremier1[*size].file = nbr->file;
 			facteurPremier1[*size].nombre = (uint32_t) leNombre;
 			facteurPremier1[*size].multiplicite = count;
@@ -139,4 +145,5 @@ void realloc_s (void **ptr, size_t taille)
 	if (ptr_realloc != NULL) {
 		*ptr = ptr_realloc;
 	}
+	// MANQUE PAS UN ELSE ??
 }
