@@ -39,10 +39,21 @@ int main (int argc, char ** argv)
 			{
 				//lecture depuis stdin
 				printf("lecture depuis stdin\n");
-				struct thread_param param={buffer1,"stdin",0,1};
-				pthread_create(&pthread[threadNum],NULL,produceFromFD,&param);
-				numofThread++;
-				threadNum++;
+				struct thread_param* param=(struct thread_param*)malloc(sizeof(*param));
+				if(param==NULL)
+				{
+					printf("erreur, pas assez de place\n");
+				}
+				else
+				{
+					param->inputName="stdin";
+					param->buffer1=buffer1;
+					param->fd_read=0;
+					param->fd_write=1;
+					pthread_create(&pthread[threadNum],NULL,produceFromFD,param);
+					numofThread++;
+					threadNum++;
+				}
 			}
 			else if(!strcmp(argv[i],"-maxthreads"))
 			{
@@ -79,15 +90,33 @@ int main (int argc, char ** argv)
 				printf("lecture depuis l'URL : %s\n",argv[i]);
 				int fd[2];
 				pipe(fd);
-				struct thread_param param1={buffer1,argv[i],fd[0],fd[1]};
-				pthread_create(&pthread[threadNum],NULL,produceFromInternet,&param1);
-				numofThread++;
-				threadNum++;
-				struct thread_param param2={buffer1,argv[i],fd[0],fd[1]};
-				pthread_create(&pthread[threadNum],NULL,produceFromFD,&param2);
-				threadNum++;
-				numofThread++;
-				//produceFromInternet(argv[i]);
+				//fcntl(fd[0],F_SETFL,O_NONBLOCK);
+				//fcntl(fd[1],F_SETFL,O_NONBLOCK);
+				struct thread_param* param1=(struct thread_param*)malloc(sizeof(*param1));
+				struct thread_param* param2=(struct thread_param*)malloc(sizeof(*param2));
+				if(param1==NULL)
+				{
+					printf("erreur pas assez de mémoire\n");
+				}
+				else
+				{
+					param1->buffer1=buffer1;
+					param1->inputName=argv[i];
+					param1->fd_read=fd[0];
+					param1->fd_write=fd[1];
+					param2->buffer1=buffer1;
+					param2->inputName=argv[i];
+					param2->fd_read=fd[0];
+					param2->fd_write=fd[1];
+					pthread_create(&pthread[threadNum],NULL,produceFromInternet,param1);
+					numofThread++;
+					threadNum++;
+					pthread_create(&pthread[threadNum],NULL,produceFromFD,param2);
+					threadNum++;
+					numofThread++;
+				}
+
+				//struct thread_param param2={buffer1,argv[i],fd[0],fd[1]};
 			}
 			else
 			{
@@ -100,15 +129,27 @@ int main (int argc, char ** argv)
 				else
 				{
 
-					struct thread_param param = {buffer1,argv[i],fd,1};
-					pthread_create(&pthread[threadNum],NULL,produceFromFD,&param);
-					printf("lecure depuis le fichier : %s\n",argv[i]);
-					numofThread++;
+					struct thread_param* param = (struct thread_param*)malloc(sizeof(*param));
+					if(param==NULL)
+					{
+						printf("erreur pas assez de mémoire\n");
+					}
+					else
+					{
+						param->buffer1=buffer1;
+						param->inputName=argv[i];
+						param->fd_read=fd;
+						param->fd_write=1;
+						pthread_create(&pthread[threadNum],NULL,produceFromFD,param);
+						printf("lecure depuis le fichier : %s\n",argv[i]);
+						numofThread++;
+					}
+
 				}
 			}
 		}
 		int cursor;
-
+		printf("number of thread to join : %d\n",numofThread);
 		for(cursor=0;cursor<numofThread;cursor++)
 		{
 			printf("join thread #%d\n",cursor);
