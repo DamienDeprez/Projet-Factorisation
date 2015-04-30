@@ -19,11 +19,11 @@ all:dir $(BIN)programme $(BIN)test
 
 $(BIN)programme: $(OBJ)factorisation.o $(OBJ)producteur.o $(OBJ)consommateur.o $(OBJ)main.o $(OBJ)buffer.o
 	@echo 'Compilation du programme'
-	@$(CC) -o $@ $^ -lm -lpthread $(LFLAG)
+	@$(CC) -o $@ $^ -lm -lpthread -lcurl $(LFLAG)
 
 $(BIN)test: $(OBJ)test_factorisation.o $(OBJ)factorisation.o $(OBJ)buffer.o
 	@echo 'Compilation des test'
-	@$(CC) -o $@ $^ -lcunit -lm -lpthread $(LFLAG)
+	@$(CC) -o $@ $^ -lcunit -lm -lpthread -lcurl $(LFLAG)
 
 test:$(BIN)test
 	@echo 'Lancement des test'
