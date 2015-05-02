@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <inttypes.h>
+#include <bits/pthreadtypes.h>
 #include "consommateur.h"
 //#include "factorisation.h"
 //#include "buffer.h"
@@ -45,13 +46,19 @@ void* consumme(void* param)
 	return NULL;
 }
 
-int publish_result(struct facteurPremier* facteurPremierG, int *size, struct facteurPremier* resultatsLocaux, int *localSize, pthread_mutex_t* protectGlobalList)
+int publish_result(struct facteurPremier* facteurPremierG, int *size, struct facteurPremier* resultatsLocaux, int *localSize, pthread_mutex_t *protectGlobalList)
 {
+	pthread_mutex_lock(protectGlobalList);
 	int indice = 0;
+	int nbr = 0;
+	int countUpdate = 0;
 
 	while (facteurPremierG[indice].nombre != 0 && indice < *size)
 	{
 		indice++;
+	}
+	while (resultatsLocaux[nbr].nombre != 0 && nbr < *localSize) {
+		nbr++;
 	}
 
 	int curseur1 = 0;	// curseur voyageant dans la liste locale
@@ -66,6 +73,7 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 				facteurPremierG[curseur2].multiplicite += resultatsLocaux[curseur1].multiplicite;
 				facteurPremierG[curseur2].file = resultatsLocaux[curseur1].file;
 				deja = 1;
+				countUpdate ++;
 			}
 		}
 		if (deja == 0) {
@@ -81,8 +89,16 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 				facteurPremierG[indice].multiplicite = resultatsLocaux[curseur1].multiplicite;
 				facteurPremierG[indice].file = resultatsLocaux[curseur1].file;
 				indice ++;
+				countUpdate ++;
 			}
 		}
 	}
-	return 0;
+	pthread_mutex_unlock(protectGlobalList);
+	if (countUpdate == nbr) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
+
 }

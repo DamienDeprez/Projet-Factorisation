@@ -39,7 +39,6 @@ void* consumme(void* param);
  * et un vers le mutex de protection de la liste globale) e 2 entiers (les tailles
  * des listes globale et locale.
  */
-int publish_result(struct facteurPremier* facteurPremier1, int *size, struct facteurPremier* resultatsLocaux, int *localSize, pthread_mutex_t* protectGlobalList);
-
+int publish_result(struct facteurPremier* facteurPremierG, int *size, struct facteurPremier* resultatsLocaux, int *localSize, pthread_mutex_t *protectGlobalList);
 
 #endif //FACTORISATION_CONSOMMATEUR_H
