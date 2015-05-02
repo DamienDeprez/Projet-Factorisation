@@ -84,5 +84,5 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 			}
 		}
 	}
-	return 0;
+	return indice;
 }
