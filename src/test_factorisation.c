@@ -209,7 +209,7 @@ void test_nombre_premier(void)
 {
 	nbr1->nombre=2;
 	nbr1->file="file2";
-	nbr2->nombre=4;
+	nbr2->nombre=8;
 	nbr2->file="file4";
 	nbr3->nombre=3*5*7*9; //945 -> 3*3 + 1*5 + 1*7
 	nbr3->file="file2";
@@ -225,13 +225,13 @@ void test_nombre_premier(void)
 	CU_ASSERT_FALSE(factorisation(nbr2,list1,&size2));
 	CU_ASSERT_EQUAL(size2,N);
 	CU_ASSERT_EQUAL(list1[0].nombre,2);
-	CU_ASSERT_EQUAL(list1[0].multiplicite,3);
+	CU_ASSERT_EQUAL(list1[0].multiplicite,4);
 	CU_ASSERT_EQUAL(list1[0].file,"file4");
 
 	CU_ASSERT_FALSE(factorisation(nbr3,list1,&size3));
 	CU_ASSERT_EQUAL(size3,N);
 	CU_ASSERT_EQUAL(list1[0].nombre,2);
-	CU_ASSERT_EQUAL(list1[0].multiplicite,3);
+	CU_ASSERT_EQUAL(list1[0].multiplicite,4);
 	CU_ASSERT_EQUAL(list1[0].file,"file4");
 	CU_ASSERT_EQUAL(list1[1].nombre,3);
 	CU_ASSERT_EQUAL(list1[1].multiplicite,3);

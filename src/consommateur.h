@@ -21,5 +21,4 @@ struct consommateur_param
 void* consumme(void* param);
 
 
-
 #endif //FACTORISATION_CONSOMMATEUR_H
