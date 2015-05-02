@@ -92,7 +92,6 @@ void writeBuffer(struct buffer *buffer1, struct nombre nombre1)
 	/*int value;
 	sem_getvalue(&(buffer1->full),&value);
 	printf("full - write : %d\n",value);*/
-	size_t debut = buffer1->cursor;
 	struct nombre cursor = buffer1->memory[buffer1->cursor];
 	while (cursor.nombre != 0) {
 		buffer1->cursor++;
