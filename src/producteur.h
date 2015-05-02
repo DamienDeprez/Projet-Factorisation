@@ -11,14 +11,12 @@
 
 #include "buffer.h"
 
-struct thread_param
+struct producteur_param
 {
     struct buffer* buffer1;
     char* inputName;
     int fd_read;
     int fd_write;
-    int mustJoin;
-    pthread_t toJoin;
 };
 
 /**
