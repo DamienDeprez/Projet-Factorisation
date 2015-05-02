@@ -48,21 +48,19 @@ void* consumme(void* param)
 
 int publish_result(struct facteurPremier* facteurPremierG, int *size, struct facteurPremier* resultatsLocaux, int *localSize, pthread_mutex_t *protectGlobalList)
 {
+	pthread_mutex_lock(protectGlobalList);
 	int indice = 0;
 	int nbr = 0;
 	int countUpdate = 0;
 
-	pthread_mutex_lock(protectGlobalList);
 	while (facteurPremierG[indice].nombre != 0 && indice < *size)
 	{
 		indice++;
 	}
-	pthread_mutex_unlock(protectGlobalList);
 	while (resultatsLocaux[nbr].nombre != 0 && nbr < *localSize) {
 		nbr++;
 	}
 
-	pthread_mutex_lock(protectGlobalList);
 	int curseur1 = 0;	// curseur voyageant dans la liste locale
 	for (curseur1; curseur1 < *localSize; curseur1++) {
 
