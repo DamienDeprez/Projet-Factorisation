@@ -30,7 +30,7 @@ int main (int argc, char ** argv)
 	isProducing=0;
 	pthread_mutex_init(&lock,NULL);
 
-	long maxthreads=2;
+	long maxthreads=1;
 	int threadNum=0;
 	int numofThread=0;
 	pthread_t* prodcuteur= (pthread_t*) malloc(sizeof(*prodcuteur)*argc);// talbeau de thread producteur
