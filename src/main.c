@@ -162,17 +162,15 @@ int main (int argc, char ** argv)
 			}
 		}
 		printf("threadNum : %d\n",threadNum);
-		struct consommateur_param* param = (struct consommateur_param*)malloc(sizeof(*param));
-		param->buffer1=buffer1;
-		param->lock=&lock;
-		param->isProducing=&isProducing;
-		pthread_create(&consommateur[0],NULL,consumme,param);
-
-		struct consommateur_param* param1 = (struct consommateur_param*)malloc(sizeof(*param));
-		param1->buffer1=buffer1;
-		param1->lock=&lock;
-		param1->isProducing=&isProducing;
-		pthread_create(&consommateur[1],NULL,consumme,param1);
+		int j;
+		for(j = 0; j<maxthreads;j++)
+		{
+			struct consommateur_param* param = (struct consommateur_param*)malloc(sizeof(*param));
+			param->lock=&lock;
+			param->buffer1=buffer1;
+			param->isProducing=&isProducing;
+			pthread_create(&consommateur[j],NULL,consumme,param);
+		}
 
 		int cursor;
 		printf("number of thread to join : %d\n",numofThread);
