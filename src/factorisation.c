@@ -46,7 +46,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 	if (count != 0)
 	{
 		int curseur = 0;	// indice de deplacement dans le tableau
-		for (curseur; curseur < indice ;curseur++) {
+		for (curseur; curseur < indice && ajout_element == 0;curseur++) {
 			//printf("print le nombre%"PRIu64"\n", leNombre);
 			if(facteurPremier1[curseur].nombre == 2) {
 				facteurPremier1[curseur].multiplicite += count;
@@ -57,15 +57,15 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			void *pointeurFacteurPremier = facteurPremier1;
 			void **ptrx = *(&pointeurFacteurPremier);
 			realloc_s (ptrx,(sizeof *facteurPremier1) * 2);
-			(facteurPremier1[indice].file) = nbr->file;
-			(facteurPremier1[indice].nombre) = (uint32_t) 2;
-			(facteurPremier1[indice].multiplicite) = count;
+			facteurPremier1[indice].file = nbr->file;
+			facteurPremier1[indice].nombre = (uint32_t) 2;
+			facteurPremier1[indice].multiplicite = count;
 			indice ++;
 		}
 		else if (ajout_element == 0 && (facteurPremier1[indice].nombre) == 0) {
-			(facteurPremier1[indice].file) = nbr->file;
-			(facteurPremier1[indice].nombre) = (uint32_t) 2;
-			(facteurPremier1[indice].multiplicite) = count;
+			facteurPremier1[indice].file = nbr->file;
+			facteurPremier1[indice].nombre = (uint32_t) 2;
+			facteurPremier1[indice].multiplicite = count;
 			indice ++;
 		}
 	}
@@ -79,7 +79,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 		if (count != 0)
 		{
 			int curseur = 0;
-			for(curseur; curseur < indice ;curseur++) {
+			for(curseur; curseur < indice && ajout_element == 0;curseur++) {
 
 				if(facteurPremier1[curseur].nombre == i) {
 					facteurPremier1[curseur].multiplicite += count;
@@ -90,9 +90,9 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
 				realloc_s (ptrx,(sizeof *facteurPremier1) * 2);		// realloc modifi-t-il *size ???
-				(facteurPremier1[indice].file) = nbr->file;
-				(facteurPremier1[indice].nombre) = (uint32_t) i;
-				(facteurPremier1[indice].multiplicite) = count;
+				facteurPremier1[indice].file = nbr->file;
+				facteurPremier1[indice].nombre = (uint32_t) i;
+				facteurPremier1[indice].multiplicite = count;
 				indice ++;
 			}
 			else if(ajout_element == 0 && (facteurPremier1[indice].nombre) == 0) {
@@ -108,7 +108,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 	if (leNombre != 1) {
 		int curseur2 = 0;
 		int true = 0;
-		for (curseur2; curseur2 < indice ;curseur2++) {
+		for (curseur2; curseur2 < indice && true == 0;curseur2++) {
 			if(facteurPremier1[curseur2].nombre == leNombre) {
 				facteurPremier1[curseur2].multiplicite += count;
 				true = 1;
