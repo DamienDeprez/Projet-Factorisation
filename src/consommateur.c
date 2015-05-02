@@ -6,8 +6,8 @@
 #include <pthread.h>
 #include <inttypes.h>
 #include "consommateur.h"
-#include "factorisation.h"
-#include "buffer.h"
+//#include "factorisation.h"
+//#include "buffer.h"
 
 void* consumme(void* param)
 {
