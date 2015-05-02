@@ -45,3 +45,43 @@ void* consumme(void* param)
 	return NULL;
 }
 
+int publish_result(struct facteurPremier* facteurPremierG, int *size, struct facteurPremier* resultatsLocaux, int *localSize, pthread_mutex_t* protectGlobalList)
+{
+	int indice = 0;
+
+	while (facteurPremierG[indice].nombre != 0 && indice < *size)
+	{
+		indice++;
+	}
+
+	int curseur1 = 0;	// curseur voyageant dans la liste locale
+	for (curseur1; curseur1 < *localSize; curseur1++) {
+
+		int deja = 0;	//booleen qui sert a savoir si l'update a ete faite apres parcours de toute la liste ou si il faut ajouter un nouvel element a la liste globale
+		int curseur2 = 0; // curseur voyageant dans la liste globale
+
+		for (curseur2; curseur2 < *size && deja ==0; curseur2++) {
+			if(resultatsLocaux[curseur1].nombre == facteurPremierG[curseur2].nombre) {
+
+				facteurPremierG[curseur2].multiplicite += resultatsLocaux[curseur1].multiplicite;
+				facteurPremierG[curseur2].file = resultatsLocaux[curseur1].file;
+				deja = 1;
+			}
+		}
+		if (deja == 0) {
+			if (indice == *size) {
+
+				void *pointeurFacteurPremierG = facteurPremierG;
+				void **ptrx = *(&pointeurFacteurPremierG);
+				realloc_s (ptrx,(sizeof *facteurPremierG) * 2);
+			}
+			if(facteurPremierG[indice].nombre == 0) {
+
+				facteurPremierG[indice].nombre = resultatsLocaux[curseur1].nombre ;
+				facteurPremierG[indice].multiplicite = resultatsLocaux[curseur1].multiplicite;
+				facteurPremierG[indice].file = resultatsLocaux[curseur1].file;
+				indice ++;
+			}
+		}
+	}
+}
