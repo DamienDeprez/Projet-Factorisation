@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #include "factorisation.h"
-#include <inttypes.h>
+//#include <inttypes.h>
 
 /*
  * liste est null a l'appel de la fonction
@@ -141,5 +141,4 @@ void realloc_s (void **ptr, size_t taille)
 	if (ptr_realloc != NULL) {
 		*ptr = ptr_realloc;
 	}
-	// MANQUE PAS UN ELSE ??
 }
