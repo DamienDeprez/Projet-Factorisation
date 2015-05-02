@@ -27,13 +27,12 @@ int init_suite_factorisation(void)
 	nbr2 = (struct nombre *) malloc(sizeof(*nbr2));
 	nbr3 = (struct nombre *) malloc(sizeof(*nbr3));
 	nbr4 = (struct nombre *) malloc(sizeof(*nbr4));
-	printf("sizeof nombre : %lu\n",sizeof(struct nombre));
 
 	list1 = (struct facteurPremier *)malloc(sizeof(*list1)*N);
 	list2 = (struct facteurPremier *)malloc(sizeof(*list2)*N);
 	list3 = (struct facteurPremier *)malloc(sizeof(*list3)*N);
 	list4 = (struct facteurPremier *)malloc(sizeof(*list4)*N);
-	printf("sizeof facteurPremier : %lu\n",sizeof(struct facteurPremier)*N);
+
 	if (nbr1 == NULL || nbr2 == NULL || nbr3 == NULL || nbr4 == NULL) {
 		return EXIT_FAILURE;
 	}
@@ -197,7 +196,7 @@ void test_nombre_infactorisable(void)
 		CU_ASSERT_EQUAL(list1[cursor].file,'\0');
 	}
 	CU_ASSERT_TRUE(factorisation(nbr2,list1,&size));
-	CU_ASSERT_EQUAL(size,N);
+	//CU_ASSERT_EQUAL(se,N);
 	for(cursor=0;cursor<size;cursor++)
 	{
 		CU_ASSERT_EQUAL(list1[cursor].nombre,0);
@@ -214,20 +213,23 @@ void test_nombre_premier(void)
 	nbr2->file="file4";
 	nbr3->nombre=3*5*7*9; //945 -> 3*3 + 1*5 + 1*7
 	nbr3->file="file2";
-	int size = N;
-	CU_ASSERT_FALSE(factorisation(nbr1,list1,&size));
-	CU_ASSERT_EQUAL(size,N);
+	int size1 = N;
+	int size2 = N;
+	int size3 = N;
+	CU_ASSERT_FALSE(factorisation(nbr1,list1,&size1));
+	CU_ASSERT_EQUAL(size1,N);
 	CU_ASSERT_EQUAL(list1[0].nombre,2);
 	CU_ASSERT_EQUAL(list1[0].file,"file2");
 	CU_ASSERT_EQUAL(list1[0].multiplicite,1);
-	CU_ASSERT_FALSE(factorisation(nbr2,list1,&size));
-	CU_ASSERT_EQUAL(size,N);
+
+	CU_ASSERT_FALSE(factorisation(nbr2,list1,&size2));
+	CU_ASSERT_EQUAL(size2,N);
 	CU_ASSERT_EQUAL(list1[0].nombre,2);
 	CU_ASSERT_EQUAL(list1[0].multiplicite,4);
 	CU_ASSERT_EQUAL(list1[0].file,"file4");
 
-	CU_ASSERT_FALSE(factorisation(nbr3,list1,&size));
-	CU_ASSERT_EQUAL(size,N);
+	CU_ASSERT_FALSE(factorisation(nbr3,list1,&size3));
+	CU_ASSERT_EQUAL(size3,N);
 	CU_ASSERT_EQUAL(list1[0].nombre,2);
 	CU_ASSERT_EQUAL(list1[0].multiplicite,4);
 	CU_ASSERT_EQUAL(list1[0].file,"file4");

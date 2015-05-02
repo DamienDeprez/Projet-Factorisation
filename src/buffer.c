@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <pthread.h>
+#include <errno.h>
 #include "buffer.h"
 
 struct buffer * newBuffer(int size)
@@ -22,6 +23,7 @@ struct buffer * newBuffer(int size)
 	buffer1->memory = (struct nombre *) malloc(sizeof(*(buffer1->memory)) * size);
 	buffer1->cursor = 0;
 	buffer1->size = size;
+	buffer1->nbrelem=0;
 	int cursor;
 	for (cursor = 0; cursor < buffer1->size; cursor++) {
 		buffer1->memory[cursor].nombre = 0;
@@ -42,34 +44,54 @@ int freeBuffer(struct buffer *buffer1)
 	return EXIT_SUCCESS;
 }
 
-struct nombre readBuffer(struct buffer *buffer1)
+int readBuffer(struct buffer *buffer1, struct nombre* nombre1)
 {
-	sem_wait(&(buffer1->full)); // attente d'un slot rempli
+	int test = sem_trywait(&(buffer1->full));// test s'il y a un slot rempli
+	 if(test==-1)
+	 {
+		 if(errno == EAGAIN)
+		 {
+			 return 1;
+		 }
+	 }
 	pthread_mutex_lock(&(buffer1->lock)); // verouille l'accès à la mémoire
+	/*int value;
+	sem_getvalue(&(buffer1->full),&value);
+	printf("full - read : %d\n",value);*/
 	size_t debut = buffer1->cursor;
-	struct nombre retour = buffer1->memory[buffer1->cursor];
-	while (retour.nombre == 0) {
+	nombre1->nombre=buffer1->memory[buffer1->cursor].nombre;
+	nombre1->file=buffer1->memory[buffer1->cursor].file;
+	while (nombre1->nombre == 0) {
 		buffer1->cursor++;
 		if (buffer1->cursor == buffer1->size) // si on arrive au bout
 		{
 			buffer1->cursor = 0;
 		}
-		printf("get at buffer [%lu] - begin : %lu \n",buffer1->cursor,debut);
+		//printf("get at buffer [%lu] - begin : %lu \n",buffer1->cursor,debut);
 		if (buffer1->cursor == debut)
-			return retour; // si un tour complèt return avec 0
-		retour = buffer1->memory[buffer1->cursor];
+		{
+			pthread_mutex_unlock(&buffer1->lock);
+			return 1; // si un tour complèt return avec 0
+		}
+
+		nombre1->nombre=buffer1->memory[buffer1->cursor].nombre;
+		nombre1->file=buffer1->memory[buffer1->cursor].file;
 	}
+	buffer1->nbrelem--;
 	buffer1->memory[buffer1->cursor].nombre=0;
 	buffer1->memory[buffer1->cursor].file="";
 	pthread_mutex_unlock(&(buffer1->lock)); // déverouille l'accès à la mémoire
 	sem_post(&(buffer1->empty)); // augment le nombre de slot vide
-	return retour;
+	return 0;
 }
 
 int writeBuffer(struct buffer *buffer1, struct nombre nombre1)
 {
 	sem_wait(&(buffer1->empty)); // attente d'un slot vide
 	pthread_mutex_lock(&(buffer1->lock)); // verouille l'accès à la mémoire
+	/*int value;
+	sem_getvalue(&(buffer1->full),&value);
+	printf("full - write : %d\n",value);*/
 	size_t debut = buffer1->cursor;
 	struct nombre cursor = buffer1->memory[buffer1->cursor];
 	while (cursor.nombre != 0) {
@@ -77,12 +99,10 @@ int writeBuffer(struct buffer *buffer1, struct nombre nombre1)
 		if (buffer1->cursor == buffer1->size) {
 			buffer1->cursor = 0;
 		}
-		if (buffer1->cursor == debut) {
-			return 1;
-		}
-		printf("set at buffer [%lu] - begin : %lu \n",buffer1->cursor,debut);
+		//printf("set at buffer [%lu] - begin : %lu \n",buffer1->cursor,debut);
 		cursor = buffer1->memory[buffer1->cursor];
 	}
+	buffer1->nbrelem++;
 	buffer1->memory[buffer1->cursor] = nombre1;
 	pthread_mutex_unlock(&(buffer1)->lock); // déverouille l'accès à la mémoire
 	sem_post(&(buffer1->full)); // augment le nombre de slot rempli

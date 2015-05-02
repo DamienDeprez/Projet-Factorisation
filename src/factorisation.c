@@ -153,24 +153,14 @@ void searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 {
 	int curseur = 0;
 	int indice = 0; // nombre de case(s) remplie(s) dans la liste de nombre(s) premier(s) unique
-	struct facteurPremier* resultat = (struct facteurPremier*) malloc(sizeof resultat);
-	if(resultat ==NULL){
-		EXIT_FAILURE;
-	}
-	else {
-		int i = 0;
-		for (i; i < sizeof resultat; i++) {
-			resultat[i].nombre = 0;
-			resultat[i].multiplicite = 0;
-			resultat[i].file = "\0";
-		}
-	}
+	int boolean = 0;
+	struct facteurPremier* resultat = calloc(sizeof facteurPremier1[0],0); 	//verifier calloc
 	for (curseur; curseur < *size; curseur++){
 		if (facteurPremier1[curseur].multiplicite == 1){
-			if(resultat[indice-1].nombre == 0){
+			if(resultat[indice-1].nombre ==0){
 				void *pointeurResultat = resultat;
 				void **ptrx = *(&pointeurResultat);
-				realloc_s (ptrx,(sizeof *resultat) + 1);
+				realloc_s (ptrx,(sizeof *resultat) * 2);
 			}
 			resultat[indice].nombre = facteurPremier1[curseur].nombre;
 			resultat[indice].multiplicite = facteurPremier1[curseur].multiplicite;

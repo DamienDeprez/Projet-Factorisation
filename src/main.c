@@ -14,6 +14,10 @@
 #include <unistd.h>
 #include "buffer.h"
 #include "producteur.h"
+#include "consommateur.h"
+
+int isProducing;
+pthread_mutex_t lock;
 
 void exit_on_error(char * msg)
 {
@@ -23,15 +27,20 @@ void exit_on_error(char * msg)
 
 int main (int argc, char ** argv)
 {
-	long maxthreads=1;
+	isProducing=0;
+	pthread_mutex_init(&lock,NULL);
+
+	long maxthreads=2;
 	int threadNum=0;
 	int numofThread=0;
-	pthread_t* pthread= (pthread_t*) malloc(sizeof(*pthread)*(argc+maxthreads)); // talbeau de thread
+	pthread_t* prodcuteur= (pthread_t*) malloc(sizeof(*prodcuteur)*argc);// talbeau de thread producteur
+	pthread_t* consommateur=(pthread_t*) malloc(sizeof(*consommateur)*maxthreads);
 	char* argerror;
 	char* internet="http://";
 	struct buffer* buffer1 = newBuffer(128);
 	printf("Programme de factorisation de nombre\n");
 	if(argc>1) {
+		isProducing=1;
 		int i;
 		for (i = 1; i < argc; i++)
 		{
@@ -39,7 +48,7 @@ int main (int argc, char ** argv)
 			{
 				//lecture depuis stdin
 				printf("lecture depuis stdin\n");
-				struct thread_param* param=(struct thread_param*)malloc(sizeof(*param));
+				struct producteur_param* param=(struct producteur_param*)malloc(sizeof(*param));
 				if(param==NULL)
 				{
 					printf("erreur, pas assez de place\n");
@@ -50,7 +59,7 @@ int main (int argc, char ** argv)
 					param->buffer1=buffer1;
 					param->fd_read=0;
 					param->fd_write=1;
-					pthread_create(&pthread[threadNum],NULL,produceFromFD,param);
+					pthread_create(&prodcuteur[threadNum],NULL,produceFromFD,param);
 					numofThread++;
 					threadNum++;
 				}
@@ -63,26 +72,29 @@ int main (int argc, char ** argv)
 				{
 					printf("erreur, pas assez d'argument\n");
 				}
-				else
-				{
-					maxthreads = strtol(argv[i],&argerror,10); // converti en long
-					if(*argerror != '\0') // si erreur dans la conversion
+				else {
+					maxthreads = strtol(argv[i], &argerror, 10); // converti en long
+					if (*argerror != '\0') // si erreur dans la conversion
 					{
 						printf("erreur, argument invalide\n");
 						i--;
-						maxthreads=1;
+						maxthreads = 1;
 					}
+					else
+					{
+						pthread_t* temp = realloc(consommateur,sizeof(*consommateur)*maxthreads);
+						if(temp==NULL)
+						{
+							printf("erreur de realloc de consommateur\n");
+						}
+						else
+						{
+							consommateur=temp;
+						}
+					}
+
 				}
 				printf("nombre maximum de consommateur : %ld\n",maxthreads);
-				pthread_t* temp = realloc(pthread,sizeof(*pthread)*(argc+maxthreads));
-				if(temp != NULL)
-				{
-					pthread=temp;
-				}
-				else
-				{
-					printf("erreur de realloc pour les threads");
-				}
 			}
 			else if(strstr(argv[i],internet)!=NULL)
 			{
@@ -92,8 +104,8 @@ int main (int argc, char ** argv)
 				pipe(fd);
 				//fcntl(fd[0],F_SETFL,O_NONBLOCK);
 				//fcntl(fd[1],F_SETFL,O_NONBLOCK);
-				struct thread_param* param1=(struct thread_param*)malloc(sizeof(*param1));
-				struct thread_param* param2=(struct thread_param*)malloc(sizeof(*param2));
+				struct producteur_param* param1=(struct producteur_param*)malloc(sizeof(*param1));
+				struct producteur_param* param2=(struct producteur_param*)malloc(sizeof(*param2));
 				if(param1==NULL)
 				{
 					printf("erreur pas assez de mémoire\n");
@@ -108,10 +120,10 @@ int main (int argc, char ** argv)
 					param2->inputName=argv[i];
 					param2->fd_read=fd[0];
 					param2->fd_write=fd[1];
-					pthread_create(&pthread[threadNum],NULL,produceFromInternet,param1);
+					pthread_create(&prodcuteur[threadNum],NULL,produceFromInternet,param1);
 					numofThread++;
 					threadNum++;
-					pthread_create(&pthread[threadNum],NULL,produceFromFD,param2);
+					pthread_create(&prodcuteur[threadNum],NULL,produceFromFD,param2);
 					threadNum++;
 					numofThread++;
 				}
@@ -129,7 +141,7 @@ int main (int argc, char ** argv)
 				else
 				{
 
-					struct thread_param* param = (struct thread_param*)malloc(sizeof(*param));
+					struct producteur_param* param = (struct producteur_param*)malloc(sizeof(*param));
 					if(param==NULL)
 					{
 						printf("erreur pas assez de mémoire\n");
@@ -140,23 +152,47 @@ int main (int argc, char ** argv)
 						param->inputName=argv[i];
 						param->fd_read=fd;
 						param->fd_write=1;
-						pthread_create(&pthread[threadNum],NULL,produceFromFD,param);
+						pthread_create(&prodcuteur[threadNum],NULL,produceFromFD,param);
 						printf("lecure depuis le fichier : %s\n",argv[i]);
 						numofThread++;
+						threadNum++;
 					}
 
 				}
 			}
 		}
+		printf("threadNum : %d\n",threadNum);
+		struct consommateur_param* param = (struct consommateur_param*)malloc(sizeof(*param));
+		param->buffer1=buffer1;
+		param->lock=&lock;
+		param->isProducing=&isProducing;
+		pthread_create(&consommateur[0],NULL,consumme,param);
+
+		struct consommateur_param* param1 = (struct consommateur_param*)malloc(sizeof(*param));
+		param1->buffer1=buffer1;
+		param1->lock=&lock;
+		param1->isProducing=&isProducing;
+		pthread_create(&consommateur[1],NULL,consumme,param1);
+
 		int cursor;
 		printf("number of thread to join : %d\n",numofThread);
 		for(cursor=0;cursor<numofThread;cursor++)
 		{
-			printf("join thread #%d\n",cursor);
-			pthread_join(pthread[cursor],NULL);
+			printf("join thread producteur #%d\n",cursor);
+			pthread_join(prodcuteur[cursor],NULL);
+		}
+		printf("fin des producteur \n");
+		pthread_mutex_lock(&lock);
+		isProducing=0;
+		pthread_mutex_unlock(&lock);
+		for(cursor=0;cursor<maxthreads;cursor++)
+		{
+			printf("joint thread consommateur #%d\n",cursor);
+			pthread_join(consommateur[cursor],NULL);
 		}
 		freeBuffer(buffer1);
-		free(pthread);
+		free(prodcuteur);
+		pthread_mutex_destroy(&lock);
 		printf("end\n");
 	}
 	return EXIT_SUCCESS;

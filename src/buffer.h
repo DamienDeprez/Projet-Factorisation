@@ -24,6 +24,7 @@ struct buffer
 {
 	struct nombre* memory;
 	int size;
+	int nbrelem;
 	size_t cursor;
 	pthread_mutex_t lock;
 	sem_t empty;
@@ -51,11 +52,16 @@ int freeBuffer(struct buffer* buffer1);
  * @buffer pointeur vers le buffer
  * @return structure nombre se trouvant à l'emplacement curseur
  */
-struct nombre readBuffer (struct buffer* buffer1);
+int readBuffer (struct buffer* buffer1, struct nombre* nombre1 );
 
 /*
  * fonction mettant la structure nombre à la place du curseur si c'est vide et avance le curseur.
  *
  */
 int writeBuffer(struct buffer* buffer1,const struct nombre nombre1);
+
+/*
+ * fonction permettant de savoir si le buffer est vide
+ */
+int isBufferEmpty(struct buffer* buffer1);
 #endif //FACTORISATION_BUFFER_H

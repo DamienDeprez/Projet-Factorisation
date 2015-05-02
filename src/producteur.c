@@ -64,7 +64,6 @@ struct nombre readOneFromFD (const int fd, char* inputName)
 			nombre = nombre << toRead*8;
 			temp = temp | nombre;
 			toRead=toRead-isReadOK;
-
 		}
 		nombre = be64toh(temp);
 		retour.nombre=nombre;
@@ -76,7 +75,7 @@ struct nombre readOneFromFD (const int fd, char* inputName)
 void* produceFromFD(void* param)
 {
 	printf("lancement producefromFD\n");
-	struct thread_param* threadParam = (struct thread_param*)param;
+	struct producteur_param* threadParam = (struct producteur_param*)param;
 	printf("thread param : fd:%d\n",threadParam->fd_read);
 	struct nombre nombre1 = {0,"null"};
 	printf("condition : %d\n",!strcmp(nombre1.file,"eof"));
@@ -84,7 +83,10 @@ void* produceFromFD(void* param)
 	{
 		nombre1 = readOneFromFD(threadParam->fd_read,threadParam->inputName);
 		printf("read number %"PRIu64" from %s\n",nombre1.nombre,nombre1.file);
-		writeBuffer(threadParam->buffer1,nombre1);
+		if(strcmp(nombre1.file,"eof"))
+		{
+			writeBuffer(threadParam->buffer1,nombre1);
+		}
 	}
 	if(threadParam->fd_read!=STDIN_FILENO) //si le descripteur de lecture n'est pas stdin, on le ferme
 	{
@@ -105,7 +107,7 @@ void* produceFromFD(void* param)
  */
 void* produceFromInternet(void* param) // écrit
 {
-	struct thread_param* threadParam = (struct thread_param*)param;
+	struct producteur_param* threadParam = (struct producteur_param*)param;
 	printf("produceFromInternet : %s\n",threadParam->inputName);
 	CURLcode error;
 	CURL* url;
