@@ -11,10 +11,7 @@
 
 #include <stdint.h>
 
-/*
- *  searchUniquePrime cherche dans la liste globale le(s) nombre(s) premier(s) dont la multiplicite est unique
- */
-struct facteurPremier *searchUniquePrime (struct facteurPremier *facteurPremier1, int *size);
+
 
 
 
