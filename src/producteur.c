@@ -100,7 +100,7 @@ void* produceFromFD(void* param)
 		close(threadParam->fd_write);
 	}*/
 	//printf("fin de produceFromFD\n");
-	printf("count read : %lu\n",count);
+	//printf("count read : %lu\n",count);
 	free(param);
 	return NULL;
 }
