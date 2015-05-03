@@ -5,7 +5,7 @@
 #ifndef FACTORISATION_BUFFER_H
 #define FACTORISATION_BUFFER_H
 
-#define N 4 // nombre de slot du buffer
+#define TIMEOUTNANO 10000000
 
 #include <stddef.h>
 #include <semaphore.h>

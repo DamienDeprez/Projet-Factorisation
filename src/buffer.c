@@ -46,17 +46,19 @@ int freeBuffer(struct buffer *buffer1)
 
 int readBuffer(struct buffer *buffer1, struct nombre* nombre1)
 {
-	int test = sem_trywait(&(buffer1->full));// test s'il y a un slot rempli
-	pthread_mutex_lock(&(buffer1->lock)); // verouille l'accès à la mémoire
+	struct timespec timeout;
+	clock_gettime(CLOCK_REALTIME,&timeout);
+	timeout.tv_nsec=timeout.tv_nsec+TIMEOUTNANO;
+	int test = sem_timedwait(&(buffer1->full),&timeout);// test s'il y a un slot rempli
 	 if(test==-1)
 	 {
-		 if(errno == EAGAIN)
+		 if(errno == ETIMEDOUT)
 		 {
-			 pthread_mutex_unlock(&(buffer1->lock));
+			 //pthread_mutex_unlock(&(buffer1->lock));
 			 return 1;
 		 }
 	 }
-
+	pthread_mutex_lock(&(buffer1->lock)); // verouille l'accès à la mémoire
 	/*int value;
 	sem_getvalue(&(buffer1->full),&value);
 	printf("full - read : %d\n",value);*/
