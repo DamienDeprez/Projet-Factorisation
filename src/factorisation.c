@@ -76,7 +76,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 		}
 	}
 
-	for (i = 3; i < r ; i=i+2) {
+	for (i = 3; i <= r ; i=i+2) {
 		while (leNombre % i == 0) {
 			leNombre = leNombre / i;
 			count++;
