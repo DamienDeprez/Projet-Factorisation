@@ -121,26 +121,25 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			}
 			curseur2 ++;
 		}
-		if (true == 0  && indice == *size) {
+		if (true == 0) {
+			if(indice == *size) {
 
-			void *pointeurFacteurPremier = facteurPremier1;
-			void **ptrx = *(&pointeurFacteurPremier);
-			realloc_s (ptrx,(sizeof *facteurPremier1) + (sizeof facteurPremier1[0]));		// verifier le +1
-			facteurPremier1[indice].file = nbr->file;
-			facteurPremier1[indice].nombre = (uint32_t) leNombre;
-			facteurPremier1[indice].multiplicite = 1;
-			indice ++;
-		}
-		else if(true == 0 && (facteurPremier1[indice].nombre) == 0) {
+				void *pointeurFacteurPremier = facteurPremier1;
+				void **ptrx = *(&pointeurFacteurPremier);
+				realloc_s (ptrx,(sizeof *facteurPremier1) + (sizeof facteurPremier1[0]));		// verifier le +1
+			}
+			if (facteurPremier1[indice].nombre == 0) {
 
-			facteurPremier1[indice].file = nbr->file;
-			facteurPremier1[indice].nombre = (uint32_t) leNombre;
-			facteurPremier1[indice].multiplicite = 1;
-			indice ++;
+				facteurPremier1[indice].file = nbr->file;
+				facteurPremier1[indice].nombre = (uint32_t) leNombre;
+				facteurPremier1[indice].multiplicite = 1;
+				indice++;
+			}
 		}
 	}
 	return 0;
 }
+
 
 void realloc_s (void **ptr, size_t taille)
 {
@@ -150,6 +149,7 @@ void realloc_s (void **ptr, size_t taille)
 		*ptr = ptr_realloc;
 	}
 }
+
 
 void searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 {
@@ -175,12 +175,14 @@ void searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 	int curseur2 = 0;
 	for(curseur2 = 0; curseur2 < indice; curseur2++){
 
-		printf("%d\n Le nombre premier : ",resultat[curseur2].nombre);
-		printf("%d apparait : ",resultat[curseur2].multiplicite);
-		printf("%s seule fois dans tout les fichiers et provient du fichier : ",resultat[curseur2].file);
+		printf("%d\n\n Le nombre premier : ",resultat[curseur2].nombre);
+		//printf("%d\n apparait : ",resultat[curseur2].multiplicite);
+		printf("%s\n seule fois dans tout les fichiers et provient du fichier : ",resultat[curseur2].file);
+		//printf("", );	// le temps d'exectution
+
 	}
 	if (indice == 0){
-		printf("\n Il n'y a pas de nombre premier unique dans ces fichiers. ");
+		printf("%d\n\n Erreur, pas de nombre premier unique : ",EXIT_FAILURE);
 	}
 	free(resultat);
 }

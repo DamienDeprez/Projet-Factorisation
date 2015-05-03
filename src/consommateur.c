@@ -51,7 +51,7 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 	pthread_mutex_lock(protectGlobalList);
 	int indice = 0;
 	int nbr = 0;
-	int countUpdate = 0;
+	int countUpdate = 0; 		// nombre d'element ajouté
 
 	while (facteurPremierG[indice].nombre != 0 && indice < *size)
 	{
