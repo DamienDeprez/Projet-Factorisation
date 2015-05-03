@@ -86,6 +86,7 @@ void* produceFromFD(void* param)
 		//printf("read number %"PRIu64" from %s\n",nombre1.nombre,nombre1.file);
 		if(strcmp(nombre1.file,"eof") && strcmp(nombre1.file,"err"))
 		{
+			//printf("producteur #%d - n : %"PRIu64"\n",threadParam->num,nombre1.nombre);
 			writeBuffer(threadParam->buffer1,nombre1);
 			count++;
 		}

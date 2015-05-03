@@ -43,14 +43,14 @@ void* consumme(void* param)
 				n1.file = "end";
 			}
 			else {
-				//printf("n1 : %"PRIu64"\n",n1.nombre);
+				//printf("consomateur # %d - n1 : %"PRIu64"\n",consommateurParam->num,n1.nombre);
 				factorisation(&n1,local,&size);
 				//printf("size : %d\n",size);
 				count++;
 			}
 		}
 	}
-	printf("count : %d\n",count);
+	//printf("count : %d\n",count);
 	free(param);
 	free(local);
 	return NULL;

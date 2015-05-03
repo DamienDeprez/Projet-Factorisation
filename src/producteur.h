@@ -25,6 +25,7 @@ struct producteur_param
     char* inputName;
     int fd_read;
     int fd_write;
+    int num;
 };
 
 /**

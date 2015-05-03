@@ -24,6 +24,7 @@ struct consommateur_param
 	struct buffer* buffer1;
 	pthread_mutex_t* lock;
 	int* isProducing;
+	int num;
 };
 
 /*

@@ -44,7 +44,7 @@ int main (int argc, char ** argv)
 	char* argerror;
 	char* internet="http://";
 	struct buffer* buffer1 = newBuffer(2048);
-	printf("Programme de factorisation de nombre\n");
+	//printf("Programme de factorisation de nombre\n");
 	if(argc>1) {
 		isProducing=1;
 		int i;
@@ -65,6 +65,7 @@ int main (int argc, char ** argv)
 					param->buffer1=buffer1;
 					param->fd_read=0;
 					param->fd_write=1;
+					param->num=threadNum;
 					pthread_create(&prodcuteur[threadNum],NULL,produceFromFD,param);
 					numofThread++;
 					threadNum++;
@@ -100,7 +101,7 @@ int main (int argc, char ** argv)
 					}
 
 				}
-				printf("nombre maximum de consommateur : %ld\n",maxthreads);
+				//printf("nombre maximum de consommateur : %ld\n",maxthreads);
 			}
 			else if(strstr(argv[i],internet)!=NULL)
 			{
@@ -122,10 +123,12 @@ int main (int argc, char ** argv)
 					param1->inputName=argv[i];
 					param1->fd_read=fd[0];
 					param1->fd_write=fd[1];
+					param1->num=threadNum;
 					param2->buffer1=buffer1;
 					param2->inputName=argv[i];
 					param2->fd_read=fd[0];
 					param2->fd_write=fd[1];
+					param2->num=threadNum+1;
 					pthread_create(&prodcuteur[threadNum],NULL,produceFromInternet,param1);
 					numofThread++;
 					threadNum++;
@@ -142,7 +145,7 @@ int main (int argc, char ** argv)
 				int fd=open(argv[i],O_RDONLY);
 				if(fd==-1)
 				{
-					printf("erreur de d'ouverture\n");
+					printf("erreur de d'ouverture du ficher : %s\n",argv[i]);
 				}
 				else
 				{
@@ -158,8 +161,9 @@ int main (int argc, char ** argv)
 						param->inputName=argv[i];
 						param->fd_read=fd;
 						param->fd_write=1;
+						param->num=threadNum;
 						pthread_create(&prodcuteur[threadNum],NULL,produceFromFD,param);
-						printf("lecure depuis le fichier : %s\n",argv[i]);
+						//printf("lecure depuis le fichier : %s\n",argv[i]);
 						numofThread++;
 						threadNum++;
 					}
@@ -167,7 +171,7 @@ int main (int argc, char ** argv)
 				}
 			}
 		}
-		printf("threadNum : %d\n",threadNum);
+		//printf("threadNum : %d\n",threadNum);
 		int j;
 		for(j = 0; j<maxthreads;j++)
 		{
@@ -175,23 +179,24 @@ int main (int argc, char ** argv)
 			param->lock=&lock;
 			param->buffer1=buffer1;
 			param->isProducing=&isProducing;
+			param->num=j;
 			pthread_create(&consommateur[j],NULL,consumme,param);
 		}
 
 		int cursor;
-		printf("number of thread to join : %d\n",numofThread);
+		//printf("number of thread to join : %d\n",numofThread);
 		for(cursor=0;cursor<numofThread;cursor++)
 		{
-			printf("join thread producteur #%d\n",cursor);
+			//printf("join thread producteur #%d\n",cursor);
 			pthread_join(prodcuteur[cursor],NULL);
 		}
-		printf("fin des producteur \n");
+		//printf("fin des producteur \n");
 		pthread_mutex_lock(&lock);
 		isProducing=0;
 		pthread_mutex_unlock(&lock);
 		for(cursor=0;cursor<maxthreads;cursor++)
 		{
-			printf("joint thread consommateur #%d\n",cursor);
+			//printf("joint thread consommateur #%d\n",cursor);
 			pthread_join(consommateur[cursor],NULL);
 		}
 		if(gettimeofday(&stop,NULL) == -1)
@@ -199,7 +204,8 @@ int main (int argc, char ** argv)
 			perror("clock gettime\n");
 		}
 		long int sec = stop.tv_sec-start.tv_sec;
-		long long int nano = (stop.tv_usec-start.tv_usec);
+		long long int nano = (1000000-start.tv_usec+stop.tv_usec);
+		//printf("start : %ld.%lld - stop : %ld.%lld\n",start.tv_sec,start.tv_usec,stop.tv_sec,stop.tv_usec);
 		printf("elapsed time : %ld.%lld s\n",sec,nano);
 		freeBuffer(buffer1);
 		free(consommateur);
