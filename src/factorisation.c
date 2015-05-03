@@ -59,6 +59,8 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
 				realloc_s (ptrx,((size_t) *size) * 2);
+				*size = *size * 2 ;
+				realloc_zeros(indice, facteurPremier1, size);
 			}
 			if(facteurPremier1[indice].nombre == 0) {
 				//printf("coucou1""\n");
@@ -96,6 +98,8 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 					void *pointeurFacteurPremier = facteurPremier1;
 					void **ptrx = *(&pointeurFacteurPremier);
 					realloc_s (ptrx,((size_t) *size) * 2);
+					*size = *size * 2 ;
+					realloc_zeros(indice, facteurPremier1, size);
 				}
 				if (facteurPremier1[indice].nombre == 0) {
 
@@ -127,6 +131,8 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
 				realloc_s (ptrx, ((size_t) *size) + 64);
+				*size = *size + 64 ;
+				realloc_zeros(indice, facteurPremier1, size);
 			}
 			if (facteurPremier1[indice].nombre == 0) {
 
@@ -151,6 +157,17 @@ void realloc_s (void **ptr, size_t taille)
 }
 
 
+void realloc_zeros(int indiceInitial, struct facteurPremier* facteurPremier1, int *size)
+{
+	int zeros = indiceInitial;
+	for (zeros; zeros < *size; zeros++) {
+		facteurPremier1[zeros].nombre = (uint32_t) 0;
+		facteurPremier1[zeros].multiplicite = 0;
+		facteurPremier1[zeros].file = '\0';
+	}
+}
+
+
 int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 {
 	int curseur = 0;
@@ -163,7 +180,9 @@ int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 
 				void *pointeurResultat = resultat;
 				void **ptrx = *(&pointeurResultat);
-				realloc_s (ptrx,((size_t) *size) + 64);
+				realloc_s (ptrx,(sizeof resultat) + 64);
+				int tailleR = sizeof facteurPremier1[0];
+				realloc_zeros(indice, resultat, &tailleR);
 			}
 			resultat[indice].nombre = facteurPremier1[curseur].nombre;
 			resultat[indice].multiplicite = facteurPremier1[curseur].multiplicite;
