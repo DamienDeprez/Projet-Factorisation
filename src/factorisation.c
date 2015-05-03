@@ -130,7 +130,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx, (((size_t) *size) + 32) * (sizeof *facteurPremier1));
+				realloc_s (ptrx, (((size_t) *size) + 64) * (sizeof *facteurPremier1));
 				*size = *size + 64 ;
 				realloc_zeros(indice, facteurPremier1, size);
 			}
@@ -203,3 +203,4 @@ int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 		return 1;
 	}
 }
+valgrind --log-file=valgind.log ./bin/programme res/40k >programme.log
