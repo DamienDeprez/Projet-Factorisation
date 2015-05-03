@@ -18,8 +18,8 @@ struct buffer * newBuffer(int size)
 	sem_init(&(buffer1->empty),0,size);
 	sem_init(&(buffer1->full),0,0);
 	pthread_mutex_init(&(buffer1->lock),NULL);
-	printf("taille memory : %lu\n", sizeof(struct nombre)*size);
-	printf("taille memory : %lu\n", sizeof(*(buffer1->memory))*size);
+	//printf("taille memory : %lu\n", sizeof(struct nombre)*size);
+	//printf("taille memory : %lu\n", sizeof(*(buffer1->memory))*size);
 	buffer1->memory = (struct nombre *) malloc(sizeof(*(buffer1->memory)) * size);
 	buffer1->cursor = 0;
 	buffer1->size = size;
@@ -47,14 +47,16 @@ int freeBuffer(struct buffer *buffer1)
 int readBuffer(struct buffer *buffer1, struct nombre* nombre1)
 {
 	int test = sem_trywait(&(buffer1->full));// test s'il y a un slot rempli
+	pthread_mutex_lock(&(buffer1->lock)); // verouille l'accès à la mémoire
 	 if(test==-1)
 	 {
 		 if(errno == EAGAIN)
 		 {
+			 pthread_mutex_unlock(&(buffer1->lock));
 			 return 1;
 		 }
 	 }
-	pthread_mutex_lock(&(buffer1->lock)); // verouille l'accès à la mémoire
+
 	/*int value;
 	sem_getvalue(&(buffer1->full),&value);
 	printf("full - read : %d\n",value);*/

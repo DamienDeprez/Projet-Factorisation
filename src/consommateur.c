@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include <inttypes.h>
 #include <bits/pthreadtypes.h>
+#include <unistd.h>
 #include "consommateur.h"
 //#include "factorisation.h"
 //#include "buffer.h"
@@ -13,7 +14,15 @@
 void* consumme(void* param)
 {
 	struct consommateur_param* consommateurParam=(struct consommateur_param*)param;
-	struct facteurPremier* local = malloc(sizeof(*local)*SIZE);
+	int size = SIZE;
+	struct facteurPremier* local = (struct facteurPremier*) malloc(sizeof(*local)*size);
+	int i;
+	for(i=0;i<size;i++)
+	{
+		local[i].nombre=0;
+		local[i].multiplicite=0;
+		local[i].file='\0';
+	}
 	struct nombre n1;
 	int count=0;
 	if(local)
@@ -35,7 +44,8 @@ void* consumme(void* param)
 				n1.file = "end";
 			}
 			else {
-				printf("n1 : %"PRIu64"\n",n1.nombre);
+				//printf("n1 : %"PRIu64"\n",n1.nombre);
+				factorisation(&n1,local,&size);
 				count++;
 			}
 		}
