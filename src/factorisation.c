@@ -58,7 +58,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			if(indice == *size) {
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx,(sizeof *facteurPremier1) + (128 * (sizeof facteurPremier1[0])) );
+				realloc_s (ptrx,(sizeof *facteurPremier1) + 128 );
 			}
 			if(facteurPremier1[indice].nombre == 0) {
 				//printf("coucou1""\n");
@@ -95,7 +95,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 					void *pointeurFacteurPremier = facteurPremier1;
 					void **ptrx = *(&pointeurFacteurPremier);
-					realloc_s (ptrx,(sizeof *facteurPremier1) + (128 * (sizeof facteurPremier1[0])) );
+					realloc_s (ptrx,(sizeof *facteurPremier1) + 128 );
 				}
 				if (facteurPremier1[indice].nombre == 0) {
 
@@ -126,7 +126,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx,(sizeof *facteurPremier1) + (1 * (sizeof facteurPremier1[0])) );
+				realloc_s (ptrx,(sizeof *facteurPremier1) + 1);
 			}
 			if (facteurPremier1[indice].nombre == 0) {
 
@@ -163,7 +163,7 @@ int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 
 				void *pointeurResultat = resultat;
 				void **ptrx = *(&pointeurResultat);
-				realloc_s (ptrx,(sizeof *resultat) + (1 * (sizeof facteurPremier1[0])) );
+				realloc_s (ptrx,(sizeof *resultat) + 1);
 			}
 			resultat[indice].nombre = facteurPremier1[curseur].nombre;
 			resultat[indice].multiplicite = facteurPremier1[curseur].multiplicite;
