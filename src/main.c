@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <sys/time.h>
 #include "buffer.h"
 #include "producteur.h"
 #include "consommateur.h"
@@ -27,6 +28,11 @@ void exit_on_error(char * msg)
 
 int main (int argc, char ** argv)
 {
+	struct timeval start,stop;
+	if(gettimeofday(&start,NULL) == -1)
+	{
+		perror("clock gettime\n");
+	}
 	isProducing=0;
 	pthread_mutex_init(&lock,NULL);
 
@@ -37,7 +43,7 @@ int main (int argc, char ** argv)
 	pthread_t* consommateur=(pthread_t*) malloc(sizeof(*consommateur)*maxthreads);
 	char* argerror;
 	char* internet="http://";
-	struct buffer* buffer1 = newBuffer(128);
+	struct buffer* buffer1 = newBuffer(2048);
 	printf("Programme de factorisation de nombre\n");
 	if(argc>1) {
 		isProducing=1;
@@ -188,10 +194,17 @@ int main (int argc, char ** argv)
 			printf("joint thread consommateur #%d\n",cursor);
 			pthread_join(consommateur[cursor],NULL);
 		}
+		if(gettimeofday(&stop,NULL) == -1)
+		{
+			perror("clock gettime\n");
+		}
+		long int sec = stop.tv_sec-start.tv_sec;
+		long long int nano = (stop.tv_usec-start.tv_usec);
+		printf("elapsed time : %ld.%lld s\n",sec,nano);
 		freeBuffer(buffer1);
+		free(consommateur);
 		free(prodcuteur);
 		pthread_mutex_destroy(&lock);
-		printf("end\n");
 	}
 	return EXIT_SUCCESS;
 }

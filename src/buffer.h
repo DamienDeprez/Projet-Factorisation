@@ -40,7 +40,7 @@ struct buffer
  * @size: nombre de slot du buffer
  * @return le pointeur vers le buffer sur le HEAP ou NULL si erreur
  */
-struct buffer* newBuffer (int size);
+struct buffer* newBuffer (unsigned int size);
 
 /*
  * fonction libérant la mémoire allouée au buffer
