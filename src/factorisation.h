@@ -23,6 +23,8 @@ struct facteurPremier
 	uint32_t nombre;
 	int multiplicite;
 	char * file;
+	struct facteurPremier* previous;
+
 };
 
 /*
@@ -47,7 +49,8 @@ struct nombre
  * @return : 0 si pas d'erreur et 1 si erreur liste ou nombre1 sont NULL ou nombre1 n'est pas factorisable (cas 0 et 1)
  */
 
-int factorisation (struct nombre* nombre1, struct facteurPremier* facteurPremier1, int *size);
+int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, int *size);
+
 
 /*
  * Version sécurisée de realloc
