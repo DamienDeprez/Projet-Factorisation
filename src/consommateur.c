@@ -44,7 +44,8 @@ void* consumme(void* param)
 			}
 			else {
 				//printf("n1 : %"PRIu64"\n",n1.nombre);
-				//factorisation(&n1,local,&size);
+				factorisation(&n1,local,&size);
+				//printf("size : %d\n",size);
 				count++;
 			}
 		}

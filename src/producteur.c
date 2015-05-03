@@ -80,11 +80,11 @@ void* produceFromFD(void* param)
 	//printf("thread param : fd:%d\n",threadParam->fd_read);
 	struct nombre nombre1 = {0,"null"};
 	//printf("condition : %d\n",!strcmp(nombre1.file,"eof"));
-	while(strcmp(nombre1.file,"eof") || strcmp(nombre1.file,"err"))
+	while(strcmp(nombre1.file,"eof") && strcmp(nombre1.file,"err"))
 	{
 		nombre1 = readOneFromFD(threadParam->fd_read,threadParam->inputName);
 		//printf("read number %"PRIu64" from %s\n",nombre1.nombre,nombre1.file);
-		if(strcmp(nombre1.file,"eof") || strcmp(nombre1.file,"err"))
+		if(strcmp(nombre1.file,"eof") && strcmp(nombre1.file,"err"))
 		{
 			writeBuffer(threadParam->buffer1,nombre1);
 			count++;
