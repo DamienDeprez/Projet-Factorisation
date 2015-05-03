@@ -81,7 +81,7 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 
 				void *pointeurFacteurPremierG = facteurPremierG;
 				void **ptrx = *(&pointeurFacteurPremierG);
-				realloc_s (ptrx,(sizeof *facteurPremierG) * 2);
+				realloc_s (ptrx,(sizeof *facteurPremierG) + (128 * (sizeof facteurPremierG[0])) );
 			}
 			if(facteurPremierG[indice].nombre == 0) {
 

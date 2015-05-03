@@ -58,7 +58,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			if(indice == *size) {
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx,(sizeof *facteurPremier1) * 2);
+				realloc_s (ptrx,(sizeof *facteurPremier1) + (128 * (sizeof facteurPremier1[0])) );
 			}
 			if(facteurPremier1[indice].nombre == 0) {
 				//printf("coucou1""\n");
@@ -95,7 +95,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 					void *pointeurFacteurPremier = facteurPremier1;
 					void **ptrx = *(&pointeurFacteurPremier);
-					realloc_s (ptrx,(sizeof *facteurPremier1) * 2);
+					realloc_s (ptrx,(sizeof *facteurPremier1) + (128 * (sizeof facteurPremier1[0])) );
 				}
 				if (facteurPremier1[indice].nombre == 0) {
 
@@ -126,7 +126,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx,(sizeof *facteurPremier1) + (sizeof facteurPremier1[0]));		// verifier le +1
+				realloc_s (ptrx,(sizeof *facteurPremier1) * ((sizeof *facteurPremier1) + 1));
 			}
 			if (facteurPremier1[indice].nombre == 0) {
 
@@ -151,7 +151,7 @@ void realloc_s (void **ptr, size_t taille)
 }
 
 
-void searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
+int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 {
 	int curseur = 0;
 	int indice = 0; // nombre de case(s) remplie(s) dans la liste de nombre(s) premier(s) unique.
@@ -163,7 +163,7 @@ void searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 
 				void *pointeurResultat = resultat;
 				void **ptrx = *(&pointeurResultat);
-				realloc_s (ptrx,(sizeof *resultat) * 2);
+				realloc_s (ptrx,(sizeof *resultat) + (1 * (sizeof facteurPremier1[0])) );
 			}
 			resultat[indice].nombre = facteurPremier1[curseur].nombre;
 			resultat[indice].multiplicite = facteurPremier1[curseur].multiplicite;
@@ -172,17 +172,15 @@ void searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 		}
 	}
 	printf("resultat(s) : ");
-	int curseur2 = 0;
-	for(curseur2 = 0; curseur2 < indice; curseur2++){
+	if(indice != 0){
 
-		printf("%d\n\n Le nombre premier : ",resultat[curseur2].nombre);
-		//printf("%d\n apparait : ",resultat[curseur2].multiplicite);
-		printf("%s\n seule fois dans tout les fichiers et provient du fichier : ",resultat[curseur2].file);
-		//printf("", );	// le temps d'exectution
-
+		printf("%d\n\n Le nombre premier : ",resultat[0].nombre);
+		printf("%s\n apparait 1 seule fois dans tout les fichiers et provient du fichier : ",resultat[0].file);
+		free(resultat);
+		return 0;
 	}
-	if (indice == 0){
-		printf("%d\n\n Erreur, pas de nombre premier unique : ",EXIT_FAILURE);
+	else {
+		free(resultat);
+		return 1;
 	}
-	free(resultat);
 }
