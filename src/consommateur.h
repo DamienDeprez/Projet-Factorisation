@@ -25,6 +25,9 @@ struct consommateur_param
 	pthread_mutex_t* lock;
 	int* isProducing;
 	int num;
+	struct facteurPremier* global;
+	pthread_mutex_t* lockGlobal;
+	int* size;
 };
 
 /*

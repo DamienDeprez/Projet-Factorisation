@@ -19,8 +19,12 @@
 
 int isProducing;
 pthread_mutex_t lock;
+pthread_mutex_t lockGlobal;
+struct facteurPremier* global;
+int size;
 
-void exit_on_error(char * msg)
+
+		void exit_on_error(char * msg)
 {
 	perror(msg);
 	exit(EXIT_FAILURE);
@@ -33,8 +37,24 @@ int main (int argc, char ** argv)
 	{
 		perror("clock gettime\n");
 	}
-	isProducing=0;
+	pthread_mutex_init(&lockGlobal,NULL);
 	pthread_mutex_init(&lock,NULL);
+	pthread_mutex_lock(&lockGlobal);
+	size = 2048;
+	global = (struct facteurPremier*) malloc(sizeof(*global)*size);
+	int i;
+	for(i=0;i<size;i++)
+	{
+		global[i].nombre=0;
+		global[i].multiplicite=0;
+		global[i].file='\0';
+	}
+	pthread_mutex_unlock(&lockGlobal);
+
+	pthread_mutex_lock(&lock);
+	isProducing=0;
+	pthread_mutex_unlock(&lock);
+
 
 	long maxthreads=1;
 	int threadNum=0;
@@ -180,6 +200,9 @@ int main (int argc, char ** argv)
 			param->buffer1=buffer1;
 			param->isProducing=&isProducing;
 			param->num=j;
+			param->global=global;
+			param->lockGlobal=&lockGlobal;
+			param->size=&size;
 			pthread_create(&consommateur[j],NULL,consumme,param);
 		}
 
@@ -199,6 +222,7 @@ int main (int argc, char ** argv)
 			//printf("joint thread consommateur #%d\n",cursor);
 			pthread_join(consommateur[cursor],NULL);
 		}
+		int succes = searchUniquePrime(global,&size);
 		if(gettimeofday(&stop,NULL) == -1)
 		{
 			perror("clock gettime\n");
@@ -206,12 +230,14 @@ int main (int argc, char ** argv)
 		long int sec = stop.tv_sec-start.tv_sec;
 		long long int nano = (1000000-start.tv_usec+stop.tv_usec);
 		//printf("start : %ld.%lld - stop : %ld.%lld\n",start.tv_sec,start.tv_usec,stop.tv_sec,stop.tv_usec);
+
 		printf("elapsed time : %ld.%lld s\n",sec,nano);
 		freeBuffer(buffer1);
 		free(consommateur);
 		free(prodcuteur);
+		pthread_mutex_destroy(&lockGlobal);
 		pthread_mutex_destroy(&lock);
+		return succes;
 	}
-	return EXIT_SUCCESS;
 }
 

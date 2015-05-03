@@ -5,10 +5,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <inttypes.h>
-#include <bits/pthreadtypes.h>
-#include <unistd.h>
 #include "consommateur.h"
-#include "buffer.h"
 
 void* consumme(void* param)
 {
@@ -51,6 +48,7 @@ void* consumme(void* param)
 		}
 	}
 	//printf("count : %d\n",count);
+	publish_result(consommateurParam->global,consommateurParam->size,local,&size,consommateurParam->lockGlobal);
 	free(param);
 	free(local);
 	return NULL;
