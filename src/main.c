@@ -43,7 +43,7 @@ int main (int argc, char ** argv)
 	pthread_t* consommateur=(pthread_t*) malloc(sizeof(*consommateur)*maxthreads);
 	char* argerror;
 	char* internet="http://";
-	struct buffer* buffer1 = newBuffer(128);
+	struct buffer* buffer1 = newBuffer(2048);
 	printf("Programme de factorisation de nombre\n");
 	if(argc>1) {
 		isProducing=1;
@@ -202,9 +202,9 @@ int main (int argc, char ** argv)
 		long long int nano = (stop.tv_usec-start.tv_usec);
 		printf("elapsed time : %ld.%lld s\n",sec,nano);
 		freeBuffer(buffer1);
+		free(consommateur);
 		free(prodcuteur);
 		pthread_mutex_destroy(&lock);
-		printf("end\n");
 	}
 	return EXIT_SUCCESS;
 }

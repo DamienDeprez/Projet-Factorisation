@@ -8,8 +8,8 @@
 #include <bits/pthreadtypes.h>
 #include <unistd.h>
 #include "consommateur.h"
-//#include "factorisation.h"
-//#include "buffer.h"
+#include "factorisation.h"
+#include "buffer.h"
 
 void* consumme(void* param)
 {
@@ -45,7 +45,7 @@ void* consumme(void* param)
 			}
 			else {
 				//printf("n1 : %"PRIu64"\n",n1.nombre);
-				factorisation(&n1,local,&size);
+				//factorisation(&n1,local,&size);
 				count++;
 			}
 		}
@@ -61,7 +61,7 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 	pthread_mutex_lock(protectGlobalList);
 	int indice = 0;
 	int nbr = 0;
-	int countUpdate = 0;
+	int countUpdate = 0; 		// nombre d'element ajouté
 
 	while (facteurPremierG[indice].nombre != 0 && indice < *size)
 	{
@@ -91,7 +91,7 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 
 				void *pointeurFacteurPremierG = facteurPremierG;
 				void **ptrx = *(&pointeurFacteurPremierG);
-				realloc_s (ptrx,(sizeof *facteurPremierG) * 2);
+				realloc_s (ptrx,(sizeof *facteurPremierG) + 128 );
 			}
 			if(facteurPremierG[indice].nombre == 0) {
 

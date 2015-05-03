@@ -58,6 +58,6 @@ void realloc_s (void **ptr, size_t taille) ;
 /*
  *  searchUniquePrime cherche dans la liste globale le(s) nombre(s) premier(s) dont la multiplicite est unique
  */
-void searchUniquePrime (struct facteurPremier *facteurPremier1, int *size);
+int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size);
 
 #endif //FACTORISATION_FACTORISATION_H

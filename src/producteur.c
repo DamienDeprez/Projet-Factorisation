@@ -76,16 +76,18 @@ void* produceFromFD(void* param)
 {
 	//printf("lancement producefromFD\n");
 	struct producteur_param* threadParam = (struct producteur_param*)param;
+	unsigned long count=0;
 	//printf("thread param : fd:%d\n",threadParam->fd_read);
 	struct nombre nombre1 = {0,"null"};
 	//printf("condition : %d\n",!strcmp(nombre1.file,"eof"));
-	while(strcmp(nombre1.file,"eof"))
+	while(strcmp(nombre1.file,"eof") || strcmp(nombre1.file,"err"))
 	{
 		nombre1 = readOneFromFD(threadParam->fd_read,threadParam->inputName);
 		//printf("read number %"PRIu64" from %s\n",nombre1.nombre,nombre1.file);
-		if(strcmp(nombre1.file,"eof"))
+		if(strcmp(nombre1.file,"eof") || strcmp(nombre1.file,"err"))
 		{
 			writeBuffer(threadParam->buffer1,nombre1);
+			count++;
 		}
 	}
 	if(threadParam->fd_read!=STDIN_FILENO) //si le descripteur de lecture n'est pas stdin, on le ferme
@@ -98,6 +100,7 @@ void* produceFromFD(void* param)
 		close(threadParam->fd_write);
 	}*/
 	//printf("fin de produceFromFD\n");
+	printf("count read : %lu\n",count);
 	free(param);
 	return NULL;
 }

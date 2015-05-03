@@ -35,8 +35,6 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 	while (facteurPremier1[indice].nombre != 0 && indice < *size)
 	{
-		printf("indice : %d\n",indice);
-		printf("nombre : %"PRIu32"\n",facteurPremier1[indice].nombre);
 		indice++;
 	}
 	while (leNombre % i == 0)
@@ -127,8 +125,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 			void *pointeurFacteurPremier = facteurPremier1;
 			void **ptrx = *(&pointeurFacteurPremier);
-			//printf("size of *facteurPremier1 : %lu\n",sizeof *facteurPremier1);
-			realloc_s (ptrx,(sizeof *facteurPremier1)*(*size +1));		// verifier le +1
+			realloc_s (ptrx,(sizeof *facteurPremier1) + (sizeof facteurPremier1[0]));		// verifier le +1
 			facteurPremier1[indice].file = nbr->file;
 			facteurPremier1[indice].nombre = (uint32_t) leNombre;
 			facteurPremier1[indice].multiplicite = 1;
@@ -154,7 +151,7 @@ void realloc_s (void **ptr, size_t taille)
 	}
 }
 
-void searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
+int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 {
 	int curseur = 0;
 	int indice = 0; // nombre de case(s) remplie(s) dans la liste de nombre(s) premier(s) unique.

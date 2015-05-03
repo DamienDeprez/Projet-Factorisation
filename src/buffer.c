@@ -10,7 +10,7 @@
 #include <errno.h>
 #include "buffer.h"
 
-struct buffer * newBuffer(int size)
+struct buffer * newBuffer(unsigned int size)
 {
 	struct buffer *buffer1 = (struct buffer *) malloc(sizeof(*buffer1));
 	if (buffer1 == NULL)
