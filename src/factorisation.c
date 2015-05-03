@@ -113,36 +113,36 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 		}
 	}
 	//ajoute le dernier élement (qui est toujours un nbr premier) à la liste
-	if (leNombre != 1) {
-		int curseur2 = 0;
-		int true = 0;
-		for (curseur2 = 0; curseur2 < indice && true == 0;curseur2++) {
-			if(facteurPremier1[curseur2].nombre == leNombre) {
+	//if (leNombre != 1) {
+		//int curseur2 = 0;
+		//int true = 0;
+		//for (curseur2 = 0; curseur2 < indice && true == 0;curseur2++) {
+		//	if(facteurPremier1[curseur2].nombre == leNombre) {
 
-				facteurPremier1[curseur2].multiplicite += count;
-				facteurPremier1[curseur2].file = nbr->file;
-				true = 1;
-			}
-			curseur2 ++;
-		}
-		if (true == 0) {
-			if(indice == *size) {
+		//		facteurPremier1[curseur2].multiplicite += count;
+		//		facteurPremier1[curseur2].file = nbr->file;
+		//		true = 1;
+		//	}
+		//	curseur2 ++;
+	//	}
+	//	if (true == 0) {
+		//	if(indice == *size) {
 
-				void *pointeurFacteurPremier = facteurPremier1;
-				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx, (((size_t) *size) + 64) * (sizeof *facteurPremier1));
-				*size = *size + 64 ;
-				realloc_zeros(indice, facteurPremier1, size);
-			}
-			if (facteurPremier1[indice].nombre == 0) {
+		//		void *pointeurFacteurPremier = facteurPremier1;
+		//		void **ptrx = *(&pointeurFacteurPremier);
+		//		realloc_s (ptrx, (((size_t) *size) + 64) * (sizeof *facteurPremier1));
+		//		*size = *size + 64 ;
+		//		realloc_zeros(indice, facteurPremier1, size);
+		//	}
+		//	if (facteurPremier1[indice].nombre == 0) {
 
-				facteurPremier1[indice].file = nbr->file;
-				facteurPremier1[indice].nombre = (uint32_t) leNombre;
-				facteurPremier1[indice].multiplicite = 1;
-				indice++;
-			}
-		}
-	}
+		//		facteurPremier1[indice].file = nbr->file;
+		//		facteurPremier1[indice].nombre = (uint32_t) leNombre;
+		//		facteurPremier1[indice].multiplicite = 1;
+		//		indice++;
+		//	}
+	//	}
+	//}
 	return 0;
 }
 
@@ -203,4 +203,4 @@ int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 		return 1;
 	}
 }
-valgrind --log-file=valgind.log ./bin/programme res/40k >programme.log
+//valgrind --log-file=valgind.log ./bin/programme res/40k >programme.log
