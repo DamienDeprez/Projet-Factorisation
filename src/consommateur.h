@@ -10,7 +10,15 @@
 #define FACTORISATION_CONSOMMATEUR_H
 
 #define SIZE 2048
-
+#include "factorisation.h"
+#include "buffer.h"
+/*
+ * structure représantant les paramètres utilisés par le consommateur
+ *
+ * @buffer1: pointeur vers le buffer pour aller y rechercher les info
+ * @lock: mutex permettant de verouiller l'accès au variable globale utilisée dans le programme
+ * @isProduction: boolean permettant de savoir si des producteurs sont encore actifs
+ */
 struct consommateur_param
 {
 	struct buffer* buffer1;
@@ -18,6 +26,11 @@ struct consommateur_param
 	int* isProducing;
 };
 
+/*
+ * analyse les données contenue dans le buffer
+ *
+ * @param: pointeur vers les paramètes du consommateur
+ */
 void* consumme(void* param);
 
 /*
@@ -27,6 +40,5 @@ void* consumme(void* param);
  * des listes globale et locale.
  */
 int publish_result(struct facteurPremier* facteurPremierG, int *size, struct facteurPremier* resultatsLocaux, int *localSize, pthread_mutex_t *protectGlobalList);
-
 
 #endif //FACTORISATION_CONSOMMATEUR_H

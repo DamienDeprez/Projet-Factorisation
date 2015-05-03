@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <inttypes.h>
-//#include <bits/pthreadtypes.h>
+#include <bits/pthreadtypes.h>
 #include "consommateur.h"
 #include "factorisation.h"
 #include "buffer.h"
@@ -94,11 +94,11 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 		}
 	}
 	pthread_mutex_unlock(protectGlobalList);
-
 	if (countUpdate == nbr) {
 		return 0;
 	}
 	else {
 		return 1;
 	}
+
 }

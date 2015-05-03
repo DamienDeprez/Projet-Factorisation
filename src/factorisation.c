@@ -46,7 +46,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 	if (count != 0)
 	{
 		int curseur = 0;	// indice de deplacement dans le tableau
-		for (curseur; curseur < indice && ajout_element == 0;curseur++) {
+		for (curseur=0; curseur < indice && ajout_element == 0;curseur++) {
 			if(facteurPremier1[curseur].nombre == 2) {
 
 				facteurPremier1[curseur].multiplicite += count;
@@ -83,7 +83,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 		if (count != 0)
 		{
 			int curseur = 0;
-			for(curseur; curseur < indice && ajout_element == 0;curseur++) {
+			for(curseur = 0; curseur < indice && ajout_element == 0;curseur++) {
 
 				if(facteurPremier1[curseur].nombre == i) {
 					facteurPremier1[curseur].multiplicite += count;
@@ -112,7 +112,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 	if (leNombre != 1) {
 		int curseur2 = 0;
 		int true = 0;
-		for (curseur2; curseur2 < indice && true == 0;curseur2++) {
+		for (curseur2 = 0; curseur2 < indice && true == 0;curseur2++) {
 			if(facteurPremier1[curseur2].nombre == leNombre) {
 
 				facteurPremier1[curseur2].multiplicite += count;
@@ -157,7 +157,7 @@ void searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 	int indice = 0; // nombre de case(s) remplie(s) dans la liste de nombre(s) premier(s) unique.
 	struct facteurPremier* resultat = calloc(sizeof facteurPremier1[0],0); 	//verifier calloc.
 
-	for (curseur; curseur < *size; curseur++){
+	for (curseur =0 ;curseur < *size; curseur++){
 		if (facteurPremier1[curseur].multiplicite == 1){
 			if(resultat[indice-1].nombre ==0){
 
@@ -173,7 +173,7 @@ void searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 	}
 	printf("resultat(s) : ");
 	int curseur2 = 0;
-	for(curseur2; curseur2 < indice; curseur2++){
+	for(curseur2 = 0; curseur2 < indice; curseur2++){
 
 		printf("%d\n Le nombre premier : ",resultat[curseur2].nombre);
 		printf("%d apparait : ",resultat[curseur2].multiplicite);

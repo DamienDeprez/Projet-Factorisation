@@ -11,6 +11,14 @@
 
 #include "buffer.h"
 
+/*
+ * Structure constenant les paramètres utilisés par le producteur
+ *
+ * @buffer1: buffer utilisé pour partager les données
+ * @inputName: nom de l'entrée
+ * @fd_read: descripteur de fichier pour la lecture
+ * @fd_write: descripteur de fichier pour l'écriture
+ */
 struct producteur_param
 {
     struct buffer* buffer1;
@@ -31,11 +39,9 @@ struct nombre readOneFromFD (const int fd, char* inputName);
 
 /**
  * produceFromFD
- * lit depuis le descripteur de fichier et le place dans le buffer
+ * lit les données depuis le descripteur de fichier et les place dans le buffer
  *
- * @inputName: nom de l'entrée
- * @fd: file descripteur utilisé pour la lecture
- * @buffer1: pointeur vers le buffer
+ * @param: pointeur vers la structure contenant les paramètre du producteur
  */
 
 void* produceFromFD(void * param);
@@ -44,8 +50,7 @@ void* produceFromFD(void * param);
  * produceFromInternet
  * lit le fichier distant et place le contenu dans un pipe
  *
- * @fileLocation : URL du fichier
- * @fd: pipe où les données lue depuis le serveur seront écrite
+ * @param: pointeur vers la structure contenant les paramètres du producteur
  */
 void* produceFromInternet(void * param);
 
