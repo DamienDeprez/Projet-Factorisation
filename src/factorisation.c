@@ -16,13 +16,11 @@
 int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, int *size)
 {
 	// on ne peut avoir de liste vide
-	if(facteurPremier1 == NULL || nbr == NULL)
-	{
+	if (facteurPremier1 == NULL || nbr == NULL) {
 		return 1;
 	}
 	// 0 et 1 ne sont pas des nombres premiers
-	if(nbr ->nombre == 0 || nbr->nombre == 1)
-	{
+	if (nbr->nombre == 0 || nbr->nombre == 1) {
 		return 1;
 	}
 
@@ -30,24 +28,21 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 	uint64_t leNombre = nbr->nombre;
 	uint64_t r = (uint64_t) sqrt(leNombre);
 	int i = 2;
-	int ajout_element = 0;
-	int indice = 0;		// indice sera le nombre d'element present dans le tableau facteurPremier1 et en sera donc l'indice des cases a parcourir
+	int ajout_element = 0;        // variable qui permet de savoir si un element a ete ajoute ou pas
+	int indice = 0;        // indice sera le nombre d'element present dans le tableau facteurPremier1 et en sera donc l'indice des cases a parcourir
 
-	while (facteurPremier1[indice].nombre != 0 && indice < *size)
-	{
+	while (facteurPremier1[indice].nombre != 0 && indice < *size) {
 		indice++;
 	}
-	while (leNombre % i == 0)
-	{
-		leNombre = leNombre/i;
+	while (leNombre % i == 0) {
+		leNombre = leNombre / i;
 		count++;
 	}
 	// ajout du nombre premier 2 si le nombre de depart est au moins une fois divisible par 2
-	if (count != 0)
-	{
-		int curseur = 0;	// indice de deplacement dans le tableau
-		for (curseur=0; curseur < indice && ajout_element == 0;curseur++) {
-			if(facteurPremier1[curseur].nombre == 2) {
+	if (count != 0) {
+		int curseur = 0;    // indice de deplacement dans le tableau
+		for (curseur = 0; curseur < indice && ajout_element == 0; curseur++) {
+			if (facteurPremier1[curseur].nombre == 2) {
 
 				facteurPremier1[curseur].multiplicite += count;
 				facteurPremier1[curseur].file = nbr->file;
@@ -55,12 +50,15 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			}
 		}
 		if (ajout_element == 0) {
-			if(indice == *size) {
+			if (indice == *size) {
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx,(sizeof *facteurPremier1) * 2);
+
+				realloc_s(ptrx, ((size_t) *size) * 2);
+				*size = *size * 2;
+				realloc_zeros(indice, facteurPremier1, size);
 			}
-			if(facteurPremier1[indice].nombre == 0) {
+			if (facteurPremier1[indice].nombre == 0) {
 				//printf("coucou1""\n");
 				//printf("leNombre1 = %"PRIu64"\n",leNombre);
 				//printf("count1 =  %d\n", count);
@@ -69,40 +67,41 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 				facteurPremier1[indice].nombre = (uint32_t) 2;
 				facteurPremier1[indice].multiplicite = count;
 				facteurPremier1[indice].file = nbr->file;
-				indice ++;
+				indice++;
 			}
 		}
 	}
 
-	for (i = 3; i < r ; i=i+2) {
+	for (i = 3; i < r; i = i + 2) {
 		while (leNombre % i == 0) {
 			leNombre = leNombre / i;
 			count++;
 			ajout_element = 0;
 		}
-		if (count != 0)
-		{
+		if (count != 0) {
 			int curseur = 0;
-			for(curseur = 0; curseur < indice && ajout_element == 0;curseur++) {
+			for (curseur = 0; curseur < indice && ajout_element == 0; curseur++) {
 
-				if(facteurPremier1[curseur].nombre == i) {
+				if (facteurPremier1[curseur].nombre == i) {
 					facteurPremier1[curseur].multiplicite += count;
 					ajout_element = 1;
 				}
 			}
 			if (ajout_element == 0) {
-				if(indice == *size) {
+				if (indice == *size) {
 
 					void *pointeurFacteurPremier = facteurPremier1;
 					void **ptrx = *(&pointeurFacteurPremier);
-					realloc_s (ptrx,(sizeof *facteurPremier1) * 2);
+					realloc_s(ptrx, ((size_t) *size) * 2);
+					*size = *size * 2;
+					realloc_zeros(indice, facteurPremier1, size);
 				}
 				if (facteurPremier1[indice].nombre == 0) {
 
 					facteurPremier1[indice].file = nbr->file;
 					facteurPremier1[indice].nombre = (uint32_t) i;
 					facteurPremier1[indice].multiplicite = count;
-					indice ++;
+					indice++;
 				}
 			}
 			count = 0;
@@ -112,34 +111,34 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 	if (leNombre != 1) {
 		int curseur2 = 0;
 		int true = 0;
-		for (curseur2 = 0; curseur2 < indice && true == 0;curseur2++) {
-			if(facteurPremier1[curseur2].nombre == leNombre) {
+		for (curseur2 = 0; curseur2 < indice && true == 0; curseur2++) {
+			if (facteurPremier1[curseur2].nombre == leNombre) {
 
 				facteurPremier1[curseur2].multiplicite += count;
 				facteurPremier1[curseur2].file = nbr->file;
 				true = 1;
 			}
-			curseur2 ++;
+			curseur2++;
 		}
-		if (true == 0  && indice == *size) {
+		if (true == 0) {
+			if (indice == *size) {
 
-			void *pointeurFacteurPremier = facteurPremier1;
-			void **ptrx = *(&pointeurFacteurPremier);
-			realloc_s (ptrx,(sizeof *facteurPremier1) + (sizeof facteurPremier1[0]));		// verifier le +1
-			facteurPremier1[indice].file = nbr->file;
-			facteurPremier1[indice].nombre = (uint32_t) leNombre;
-			facteurPremier1[indice].multiplicite = 1;
-			indice ++;
-		}
-		else if(true == 0 && (facteurPremier1[indice].nombre) == 0) {
+				void *pointeurFacteurPremier = facteurPremier1;
+				void **ptrx = *(&pointeurFacteurPremier);
+				realloc_s(ptrx, ((size_t) *size) + 64);
+				*size = *size + 64;
+				realloc_zeros(indice, facteurPremier1, size);
+			}
+			if (facteurPremier1[indice].nombre == 0) {
 
-			facteurPremier1[indice].file = nbr->file;
-			facteurPremier1[indice].nombre = (uint32_t) leNombre;
-			facteurPremier1[indice].multiplicite = 1;
-			indice ++;
+				facteurPremier1[indice].file = nbr->file;
+				facteurPremier1[indice].nombre = (uint32_t) leNombre;
+				facteurPremier1[indice].multiplicite = 1;
+				indice++;
+			}
 		}
+		return 0;
 	}
-	return 0;
 }
 
 void realloc_s (void **ptr, size_t taille)
@@ -148,6 +147,18 @@ void realloc_s (void **ptr, size_t taille)
 
 	if (ptr_realloc != NULL) {
 		*ptr = ptr_realloc;
+	}
+}
+
+
+
+void realloc_zeros(int indiceInitial, struct facteurPremier* facteurPremier1, int *size)
+{
+	int zeros = indiceInitial;
+	for (zeros; zeros < *size; zeros++) {
+		facteurPremier1[zeros].nombre = (uint32_t) 0;
+		facteurPremier1[zeros].multiplicite = 0;
+		facteurPremier1[zeros].file = '\0';
 	}
 }
 
@@ -163,7 +174,10 @@ int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 
 				void *pointeurResultat = resultat;
 				void **ptrx = *(&pointeurResultat);
-				realloc_s (ptrx,(sizeof *resultat) * 2);
+
+				realloc_s (ptrx,(sizeof resultat) + 64);
+				int tailleR = sizeof facteurPremier1[0];
+				realloc_zeros(indice, resultat, &tailleR);
 			}
 			resultat[indice].nombre = facteurPremier1[curseur].nombre;
 			resultat[indice].multiplicite = facteurPremier1[curseur].multiplicite;

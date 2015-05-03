@@ -54,6 +54,7 @@ int factorisation (struct nombre* nombre1, struct facteurPremier* facteurPremier
  * source : http://openclassrooms.com/courses/allocation-dynamique-en-c-complement/realloc-prototype-fonctionnement
  */
 void realloc_s (void **ptr, size_t taille) ;
+void realloc_zeros(int indiceInitial, struct facteurPremier* facteurPremier1, int *size);
 
 /*
  *  searchUniquePrime cherche dans la liste globale le(s) nombre(s) premier(s) dont la multiplicite est unique
