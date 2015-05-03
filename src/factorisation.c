@@ -30,7 +30,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 	uint64_t leNombre = nbr->nombre;
 	uint64_t r = (uint64_t) sqrt(leNombre);
 	int i = 2;
-	int ajout_element = 0;
+	int ajout_element = 0;		// variable qui permet de savoir si un element a ete ajoute ou pas
 	int indice = 0;		// indice sera le nombre d'element present dans le tableau facteurPremier1 et en sera donc l'indice des cases a parcourir
 
 	while (facteurPremier1[indice].nombre != 0 && indice < *size)
@@ -58,7 +58,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			if(indice == *size) {
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx,(sizeof *facteurPremier1) + 128 );
+				realloc_s (ptrx,((size_t) *size) * 2);
 			}
 			if(facteurPremier1[indice].nombre == 0) {
 				//printf("coucou1""\n");
@@ -95,7 +95,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 					void *pointeurFacteurPremier = facteurPremier1;
 					void **ptrx = *(&pointeurFacteurPremier);
-					realloc_s (ptrx,(sizeof *facteurPremier1) + 128 );
+					realloc_s (ptrx,((size_t) *size) * 2);
 				}
 				if (facteurPremier1[indice].nombre == 0) {
 
@@ -126,7 +126,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx,(sizeof *facteurPremier1) + 1);
+				realloc_s (ptrx, ((size_t) *size) + 64);
 			}
 			if (facteurPremier1[indice].nombre == 0) {
 
@@ -163,7 +163,7 @@ int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 
 				void *pointeurResultat = resultat;
 				void **ptrx = *(&pointeurResultat);
-				realloc_s (ptrx,(sizeof *resultat) + 1);
+				realloc_s (ptrx,((size_t) *size) + 64);
 			}
 			resultat[indice].nombre = facteurPremier1[curseur].nombre;
 			resultat[indice].multiplicite = facteurPremier1[curseur].multiplicite;

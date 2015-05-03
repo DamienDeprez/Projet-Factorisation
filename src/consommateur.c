@@ -7,7 +7,6 @@
 #include <inttypes.h>
 #include <bits/pthreadtypes.h>
 #include "consommateur.h"
-#include "factorisation.h"
 #include "buffer.h"
 
 void* consumme(void* param)
@@ -81,7 +80,7 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 
 				void *pointeurFacteurPremierG = facteurPremierG;
 				void **ptrx = *(&pointeurFacteurPremierG);
-				realloc_s (ptrx,(sizeof *facteurPremierG) + 128 );
+				realloc_s (ptrx,((size_t) *size) *2);
 			}
 			if(facteurPremierG[indice].nombre == 0) {
 
