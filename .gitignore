@@ -125,3 +125,5 @@ local.properties
 valgrind.xml
 CUnitAutomated-Results.xml
 *.log
+
+gen/
