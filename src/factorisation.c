@@ -58,7 +58,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 			if(indice == *size) {
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx,((size_t) *size) * 2);
+				realloc_s (ptrx,((size_t) *size) * (sizeof *facteurPremier1) * 2);
 				*size = *size * 2 ;
 				realloc_zeros(indice, facteurPremier1, size);
 			}
@@ -97,7 +97,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 					void *pointeurFacteurPremier = facteurPremier1;
 					void **ptrx = *(&pointeurFacteurPremier);
-					realloc_s (ptrx,((size_t) *size) * 2);
+					realloc_s (ptrx,((size_t) *size) * (sizeof *facteurPremier1) * 2);
 					*size = *size * 2 ;
 					realloc_zeros(indice, facteurPremier1, size);
 				}
@@ -130,7 +130,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
 
 				void *pointeurFacteurPremier = facteurPremier1;
 				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s (ptrx, ((size_t) *size) + 64);
+				realloc_s (ptrx, (((size_t) *size) + 64) * (sizeof *facteurPremier1) );
 				*size = *size + 64 ;
 				realloc_zeros(indice, facteurPremier1, size);
 			}
@@ -180,7 +180,7 @@ int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 
 				void *pointeurResultat = resultat;
 				void **ptrx = *(&pointeurResultat);
-				realloc_s (ptrx,(sizeof resultat) + 64);
+				realloc_s (ptrx,(((size_t) *size) + 64) * (sizeof *facteurPremier1) );
 				int tailleR = sizeof facteurPremier1[0];
 				realloc_zeros(indice, resultat, &tailleR);
 			}
