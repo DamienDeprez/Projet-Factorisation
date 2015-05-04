@@ -47,10 +47,10 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 	{
 		int curseur = 0;	// indice de deplacement dans le tableau
 		for (curseur=0; curseur < indice && ajout_element == 0;curseur++) {
-			if(facteurPremier1[curseur]->nombre == 2) {
+			if((*facteurPremier1)[curseur].nombre  == 2) {
 
-				facteurPremier1[curseur]->multiplicite += count;
-				facteurPremier1[curseur]->file = nbr->file;
+				(*facteurPremier1)[curseur].multiplicite =(*facteurPremier1)[curseur].multiplicite + count;
+				(*facteurPremier1)[curseur].file = nbr->file;
 				ajout_element = 1;
 
 
@@ -64,15 +64,15 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 				*size = *size * 2 ;
 				realloc_zeros(indice, *facteurPremier1, size);
 			}
-			if(facteurPremier1[indice]->nombre == 0) {
+			if((*facteurPremier1)[indice].nombre== 0) {
 				//printf("coucou1""\n");
 				//printf("leNombre1 = %"PRIu64"\n",leNombre);
 				//printf("count1 =  %d\n", count);
 				//printf("indice1 =  %d\n", indice);
 				//printf("curseur1 =  %d\n", curseur);
-				facteurPremier1[indice]->nombre = (uint32_t) 2;
-				facteurPremier1[indice]->multiplicite = count;
-				facteurPremier1[indice]->file = nbr->file;
+				(*facteurPremier1)[indice].nombre = (uint32_t) 2;
+				(*facteurPremier1)[indice].multiplicite = count;
+				(*facteurPremier1)[indice].file= nbr->file;
 				indice ++;
 			}
 		}
@@ -89,8 +89,8 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 			int curseur = 0;
 			for(curseur = 0; curseur < indice && ajout_element == 0;curseur++) {
 
-				if(facteurPremier1[curseur]->nombre == i) {
-					facteurPremier1[curseur]->multiplicite += count;
+				if((*facteurPremier1)[curseur].nombre == i) {
+					(*facteurPremier1)[curseur].multiplicite = (*facteurPremier1)[curseur].multiplicite + count;
 					ajout_element = 1;
 
 				}
@@ -104,11 +104,11 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 					*size = *size * 2 ;
 					realloc_zeros(indice, *facteurPremier1, size);
 				}
-				if (facteurPremier1[indice]->nombre == 0) {
+				if ((*facteurPremier1)[indice].nombre == 0) {
 
-					facteurPremier1[indice]->file = nbr->file;
-					facteurPremier1[indice]->nombre = (uint32_t) i;
-					facteurPremier1[indice]->multiplicite = count;
+					(*facteurPremier1)[indice].file = nbr->file;
+					(*facteurPremier1)[indice].nombre  = (uint32_t) i;
+					(*facteurPremier1)[indice].multiplicite  = count;
 					indice ++;
 
 				}
@@ -121,10 +121,10 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 	int curseur2 = 0;
 	int true = 0;
 	for (curseur2 = 0; curseur2 < indice && true == 0;curseur2++) {
-		if(facteurPremier1[curseur2]->nombre == leNombre) {
+		if((*facteurPremier1)[curseur2].nombre  == leNombre) {
 
-			facteurPremier1[curseur2]->multiplicite += count;
-			facteurPremier1[curseur2]->file = nbr->file;
+			(*facteurPremier1)[curseur2].multiplicite = (*facteurPremier1)[curseur2].multiplicite + count;
+			(*facteurPremier1)[curseur2].file = nbr->file;
 			true = 1;
 
 		}
@@ -139,11 +139,11 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 			*size = *size + 64 ;
 			realloc_zeros(indice, *facteurPremier1, size);
 		}
-		if (facteurPremier1[indice]->nombre == 0) {
+		if ((*facteurPremier1)[indice].nombre == 0) {
 
-			facteurPremier1[indice]->file = nbr->file;
-			facteurPremier1[indice]->nombre = (uint32_t) leNombre;
-			facteurPremier1[indice]->multiplicite = 1;
+			(*facteurPremier1)[indice].file= nbr->file;
+			(*facteurPremier1)[indice].nombre = (uint32_t) leNombre;
+			(*facteurPremier1)[indice].multiplicite = 1;
 			indice++;
 
 		}
@@ -179,11 +179,11 @@ int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 	int curseur = 0;
 
 	for (curseur =0 ;curseur < *size; curseur++){
-		printf("nombre %u\n - multiplicité %d\n - file %s\n",facteurPremier1[curseur].nombre,facteurPremier1[curseur].multiplicite,facteurPremier1[curseur].file);
+		printf("nombre %u\n - multiplicité %d\n - file %s\n\n",facteurPremier1[curseur].nombre,facteurPremier1[curseur].multiplicite,facteurPremier1[curseur].file);
 		if (facteurPremier1[curseur].multiplicite == 1) {
 			//printf("resultat(s) : ");
 			printf("%u%s\n Le nombre premier : ", facteurPremier1[curseur].nombre,facteurPremier1[curseur].file);
-			return 0;
+			//return 0;
 		}
 	}
 	return 1;
