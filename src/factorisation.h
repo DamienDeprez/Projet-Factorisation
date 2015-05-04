@@ -22,7 +22,6 @@ struct facteurPremier {
 	uint32_t nombre;
 	int multiplicite;
 	char *file;
-	struct facteurPremier **previous;
 };
 
 
@@ -61,6 +60,6 @@ void realloc_zeros(int indiceInitial, struct facteurPremier** facteurPremier1, i
 /*
  *  searchUniquePrime cherche dans la liste globale le(s) nombre(s) premier(s) dont la multiplicite est unique
  */
-int searchUniquePrime (struct facteurPremier** facteurPremier1, int *size);
+int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size);
 
 #endif //FACTORISATION_FACTORISATION_H

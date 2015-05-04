@@ -168,15 +168,15 @@ void realloc_zeros(int indiceInitial, struct facteurPremier** facteurPremier1, i
 }
 
 
-int searchUniquePrime (struct facteurPremier** facteurPremier1, int *size)
+int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 {
 	int curseur = 0;
 
 	for (curseur =0 ;curseur < *size; curseur++){
-		if (facteurPremier1[curseur]->multiplicite == 1) {
+		if (facteurPremier1[curseur].multiplicite == 1) {
 			printf("resultat(s) : ");
-			printf("%d\n\n Le nombre premier : ", facteurPremier1[curseur]->nombre);
-			printf("%s\n apparait 1 seule fois dans tout les fichiers et provient du fichier : ", facteurPremier1[curseur]->file);
+			printf("%d\n\n Le nombre premier : ", facteurPremier1[curseur].nombre);
+			printf("%s\n apparait 1 seule fois dans tout les fichiers et provient du fichier : ", facteurPremier1[curseur].file);
 			return 0;
 		}
 	}
