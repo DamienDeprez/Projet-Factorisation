@@ -171,36 +171,15 @@ void realloc_zeros(int indiceInitial, struct facteurPremier* facteurPremier1, in
 int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 {
 	int curseur = 0;
-	int indice = 0; // nombre de case(s) remplie(s) dans la liste de nombre(s) premier(s) unique.
-	struct facteurPremier* resultat = calloc(sizeof facteurPremier1[0],0); 	//verifier calloc.
 
 	for (curseur =0 ;curseur < *size; curseur++){
-		if (facteurPremier1[curseur].multiplicite == 1){
-			if(resultat[indice-1].nombre ==0){
-
-				void *pointeurResultat = resultat;
-				void **ptrx = *(&pointeurResultat);
-				realloc_s (ptrx,(((size_t) *size) + 64) * (sizeof *resultat));
-				int tailleR = sizeof facteurPremier1[0];
-				realloc_zeros(indice, resultat, &tailleR);
-			}
-			resultat[indice].nombre = facteurPremier1[curseur].nombre;
-			resultat[indice].multiplicite = facteurPremier1[curseur].multiplicite;
-			resultat[indice].file = facteurPremier1[curseur].file;
-			indice ++;
+		if (facteurPremier1[curseur].multiplicite == 1) {
+			printf("resultat(s) : ");
+			printf("%d\n\n Le nombre premier : ", facteurPremier1[curseur].nombre);
+			printf("%s\n apparait 1 seule fois dans tout les fichiers et provient du fichier : ", facteurPremier1[curseur].file);
+			return 0;
 		}
 	}
-	printf("resultat(s) : ");
-	if(indice != 0){
-
-		printf("%d\n\n Le nombre premier : ",resultat[0].nombre);
-		printf("%s\n apparait 1 seule fois dans tout les fichiers et provient du fichier : ",resultat[0].file);
-		free(resultat);
-		return 0;
-	}
-	else {
-		free(resultat);
-		return 1;
-	}
+	return 1;
 }
 //valgrind --log-file=valgind.log ./bin/programme res/40k >programme.log
