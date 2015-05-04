@@ -61,16 +61,16 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 	int nbr = 0;
 	int countUpdate = 0; 		// nombre d'element ajouté
 
-	while ((*facteurPremierG)[indice].nombre != 0 && indice < *size)
+	while (indice < *size && (*facteurPremierG)[indice].nombre != 0)
 	{
 		indice++;
 	}
-	while (resultatsLocaux[nbr].nombre != 0 && nbr < *localSize) {
+	while (nbr < *localSize && resultatsLocaux[nbr].nombre != 0) {
 		nbr++;
-		printf("l'index = %d", nbr);
-		printf("  le nombre = %d", resultatsLocaux[nbr].nombre);
-		printf("  la multi = %d", resultatsLocaux[nbr].multiplicite);
-		printf(" le fichier = %s\n\n", resultatsLocaux[nbr].file);
+		//printf("l'index = %d", nbr);
+		//printf("  le nombre = %d", resultatsLocaux[nbr].nombre);
+		//printf("  la multi = %d", resultatsLocaux[nbr].multiplicite);
+		//printf(" le fichier = %s\n", resultatsLocaux[nbr].file);
 	}
 
 	int curseur1 = 0;	// curseur voyageant dans la liste locale
@@ -80,10 +80,10 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 		int curseur2 = 0; // curseur voyageant dans la liste globale
 
 		for (curseur2; curseur2 < *size && deja ==0; curseur2++) {
-			if(resultatsLocaux[curseur1].nombre == (*facteurPremierG)[curseur2].nombre) {
+			if((*facteurPremierG)[curseur2].nombre == resultatsLocaux[curseur1].nombre) {
 
 				(*facteurPremierG)[curseur2].multiplicite = resultatsLocaux[curseur1].multiplicite + (*facteurPremierG)[curseur2].multiplicite;
-				(*facteurPremierG)[curseur2].file= resultatsLocaux[curseur1].file;
+				(*facteurPremierG)[curseur2].file = resultatsLocaux[curseur1].file;
 				deja = 1;
 				countUpdate ++;
 			}
@@ -91,8 +91,10 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 		if (deja == 0) {
 			if (indice == *size) {
 
-				realloc_s ((void **) &facteurPremierG,((size_t) *size)* (sizeof *facteurPremierG) * 2);
+				realloc_s ((void **) facteurPremierG,((size_t) *size)* (sizeof *facteurPremierG) * 2);
 				*size = (*size )* 2;
+				printf("size = %d\n ",*size);
+				printf("indice = %d\n ",indice);
 				realloc_zeros(indice, *facteurPremierG, size);
 			}
 			if((*facteurPremierG)[indice].nombre == 0) {
@@ -105,12 +107,13 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 			}
 		}
 	}
-	pthread_mutex_unlock(protectGlobalList);
+
 	if (countUpdate == nbr) {
+		pthread_mutex_unlock(protectGlobalList);
 		return 0;
 	}
 	else {
+		pthread_mutex_unlock(protectGlobalList);
 		return 1;
 	}
-
 }
