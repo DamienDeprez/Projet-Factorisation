@@ -47,7 +47,7 @@ void* consumme(void* param)
 		}
 
 	//printf("count : %d\n",count);
-	printf("size2 : %d \n ", size);
+	//printf("size2 : %d \n ", size);
 	publish_result(consommateurParam->global,consommateurParam->size,local,&size,consommateurParam->lockGlobal);
 	free(param);
 	free(local);
