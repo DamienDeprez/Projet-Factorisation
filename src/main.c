@@ -20,7 +20,7 @@
 int isProducing;
 pthread_mutex_t lock;
 pthread_mutex_t lockGlobal;
-struct facteurPremier* global;
+struct facteurPremier** global;
 int size;
 
 
@@ -41,13 +41,14 @@ int main (int argc, char ** argv)
 	pthread_mutex_init(&lock,NULL);
 	pthread_mutex_lock(&lockGlobal);
 	size = 2048;
-	global = (struct facteurPremier*) malloc(sizeof(*global)*size);
+	global = (struct facteurPremier**)malloc(sizeof(*global));
+	*global = (struct facteurPremier*) malloc(sizeof(**global)*size);
 	int i;
 	for(i=0;i<size;i++)
 	{
-		global[i].nombre=0;
-		global[i].multiplicite=0;
-		global[i].file='\0';
+		(*global[i]).nombre=0;
+		(*global[i]).multiplicite=0;
+		(*global[i]).file='\0';
 	}
 	pthread_mutex_unlock(&lockGlobal);
 
@@ -233,6 +234,14 @@ int main (int argc, char ** argv)
 		//printf("start : %ld.%lld - stop : %ld.%lld\n",start.tv_sec,start.tv_usec,stop.tv_sec,stop.tv_usec);
 
 		printf("elapsed time : %ld.%lld s\n",sec,nano);
+		int nbr = 0;
+		while ((*global)[nbr].nombre != 0 && nbr < size) {
+			nbr++;
+			printf("l'index2 = %d", nbr);
+			printf(" le nombre2 = %d", (*global)[nbr].nombre);
+			printf(" la multi2 = %d", (*global)[nbr].multiplicite);
+			printf(" le fichier2 = %s\n", (*global)[nbr].file);
+		}
 		freeBuffer(buffer1);
 		free(consommateur);
 		free(global);
@@ -240,14 +249,6 @@ int main (int argc, char ** argv)
 		pthread_mutex_destroy(&lockGlobal);
 		pthread_mutex_destroy(&lock);
 
-		int nbr = 0;
-		while (global[nbr].nombre != 0 && nbr < size) {
-			nbr++;
-			printf("l'index2 = %d", nbr);
-			printf(" le nombre2 = %d", global[nbr].nombre);
-			printf(" la multi2 = %d", global[nbr].multiplicite);
-			printf(" le fichier2 = %s\n", global[nbr].file);
-		}
 		return succes;
 	}
 }
