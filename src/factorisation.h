@@ -23,7 +23,7 @@ struct facteurPremier
 	uint32_t nombre;
 	int multiplicite;
 	char * file;
-	struct facteurPremier* previous;
+	struct facteurPremier** previous;
 
 };
 
@@ -49,7 +49,7 @@ struct nombre
  * @return : 0 si pas d'erreur et 1 si erreur liste ou nombre1 sont NULL ou nombre1 n'est pas factorisable (cas 0 et 1)
  */
 
-int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, int *size);
+int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, int *size);
 
 
 /*
@@ -57,11 +57,11 @@ int factorisation (struct nombre* nbr, struct facteurPremier* facteurPremier1, i
  * source : http://openclassrooms.com/courses/allocation-dynamique-en-c-complement/realloc-prototype-fonctionnement
  */
 void realloc_s (void **ptr, size_t taille) ;
-void realloc_zeros(int indiceInitial, struct facteurPremier* facteurPremier1, int *size);
+void realloc_zeros(int indiceInitial, struct facteurPremier** facteurPremier1, int *size);
 
 /*
  *  searchUniquePrime cherche dans la liste globale le(s) nombre(s) premier(s) dont la multiplicite est unique
  */
-int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size);
+int searchUniquePrime (struct facteurPremier** facteurPremier1, int *size);
 
 #endif //FACTORISATION_FACTORISATION_H
