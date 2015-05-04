@@ -61,9 +61,8 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 	int nbr = 0;
 	int countUpdate = 0; 		// nombre d'element ajouté
 
-	while (facteurPremierG[indice].nombre != 0 && indice < *size)
+	while ((*facteurPremierG)[indice].nombre != 0 && indice < *size)
 	{
-		(*facteurPremier1)[indice].nombre
 		indice++;
 	}
 	while (resultatsLocaux[nbr].nombre != 0 && nbr < *localSize) {
@@ -81,10 +80,10 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 		int curseur2 = 0; // curseur voyageant dans la liste globale
 
 		for (curseur2; curseur2 < *size && deja ==0; curseur2++) {
-			if(resultatsLocaux[curseur1].nombre == facteurPremierG[curseur2].nombre) {
+			if(resultatsLocaux[curseur1].nombre == (*facteurPremierG)[curseur2].nombre) {
 
-				facteurPremierG[curseur2].multiplicite = resultatsLocaux[curseur1].multiplicite + facteurPremierG[curseur2].multiplicite;
-				facteurPremierG[curseur2].file = resultatsLocaux[curseur1].file;
+				(*facteurPremierG)[curseur2].multiplicite = resultatsLocaux[curseur1].multiplicite + (*facteurPremierG)[curseur2].multiplicite;
+				(*facteurPremierG)[curseur2].file= resultatsLocaux[curseur1].file;
 				deja = 1;
 				countUpdate ++;
 			}
@@ -94,13 +93,13 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 
 				realloc_s ((void **) &facteurPremierG,((size_t) *size)* (sizeof *facteurPremierG) * 2);
 				*size = (*size )* 2;
-				realloc_zeros(indice, facteurPremierG, size);
+				realloc_zeros(indice, *facteurPremierG, size);
 			}
-			if(facteurPremierG[indice].nombre == 0) {
+			if((*facteurPremierG)[indice].nombre == 0) {
 
-				facteurPremierG[indice].nombre = resultatsLocaux[curseur1].nombre ;
-				facteurPremierG[indice].multiplicite = resultatsLocaux[curseur1].multiplicite;
-				facteurPremierG[indice].file = resultatsLocaux[curseur1].file;
+				(*facteurPremierG)[indice].nombre = resultatsLocaux[curseur1].nombre ;
+				(*facteurPremierG)[indice].multiplicite  = resultatsLocaux[curseur1].multiplicite;
+				(*facteurPremierG)[indice].file  = resultatsLocaux[curseur1].file;
 				indice ++;
 				countUpdate ++;
 			}
