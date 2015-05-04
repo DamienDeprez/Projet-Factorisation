@@ -151,7 +151,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 				//void *pointeurFacteurPremier = facteurPremier1;
 				//void **ptrx = *(&pointeurFacteurPremier);
 				realloc_s((void **) facteurPremier1, ((size_t) *size) * 2 * (sizeof **facteurPremier1));
-				*size = *size + 64;
+				*size = *size * 2;
 				realloc_zeros(indice, *facteurPremier1, size);
 			}
 			if ((*facteurPremier1)[indice].nombre == 0) {

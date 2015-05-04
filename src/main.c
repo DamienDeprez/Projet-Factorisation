@@ -238,13 +238,15 @@ int main (int argc, char ** argv)
 		int nbr = 0;
 		while ((*global)[nbr].nombre != 0 && nbr < *size) {
 			nbr++;
-			printf("l'index2 = %d", nbr);
-			printf(" le nombre2 = %d", (*global)[nbr].nombre);
-			printf(" la multi2 = %d", (*global)[nbr].multiplicite);
-			printf(" le fichier2 = %s\n", (*global)[nbr].file);
+			//printf("l'index2 = %d", nbr);
+			//printf(" le nombre2 = %d", (*global)[nbr].nombre);
+			//printf(" la multi2 = %d", (*global)[nbr].multiplicite);
+			//printf(" le fichier2 = %s\n", (*global)[nbr].file);
 		}
 		freeBuffer(buffer1);
 		free(consommateur);
+		free(size);
+		free(*global);
 		free(global);
 		free(prodcuteur);
 		pthread_mutex_destroy(&lockGlobal);

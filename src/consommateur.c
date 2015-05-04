@@ -91,10 +91,10 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 		if (deja == 0) {
 			if (indice == *size) {
 
-				realloc_s ((void **) facteurPremierG,((size_t) *size)* (sizeof *facteurPremierG) * 2);
+				realloc_s ((void **) facteurPremierG,((size_t) *size) * (sizeof **facteurPremierG) * 2);
 				*size = (*size )* 2;
-				printf("size = %d\n ",*size);
-				printf("indice = %d\n ",indice);
+				//printf("size = %d\n ",*size);
+				//printf("indice = %d\n ",indice);
 				realloc_zeros(indice, *facteurPremierG, size);
 			}
 			if((*facteurPremierG)[indice].nombre == 0) {
