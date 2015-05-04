@@ -47,14 +47,14 @@ void* consumme(void* param)
 		}
 
 	//printf("count : %d\n",count);
-	//printf("%d\n size2 : ", size);
+	printf("size2 : %d \n ", size);
 	publish_result(consommateurParam->global,consommateurParam->size,local,&size,consommateurParam->lockGlobal);
 	free(param);
 	free(local);
 	return NULL;
 }
 
-int publish_result(struct facteurPremier* facteurPremierG, int *size, struct facteurPremier* resultatsLocaux, int *localSize, pthread_mutex_t *protectGlobalList)
+int publish_result(struct facteurPremier** facteurPremierG, int *size, struct facteurPremier* resultatsLocaux, int *localSize, pthread_mutex_t *protectGlobalList)
 {
 	pthread_mutex_lock(protectGlobalList);
 	int indice = 0;
@@ -63,10 +63,15 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 
 	while (facteurPremierG[indice].nombre != 0 && indice < *size)
 	{
+		(*facteurPremier1)[indice].nombre
 		indice++;
 	}
 	while (resultatsLocaux[nbr].nombre != 0 && nbr < *localSize) {
 		nbr++;
+		printf("l'index = %d", nbr);
+		printf("  le nombre = %d", resultatsLocaux[nbr].nombre);
+		printf("  la multi = %d", resultatsLocaux[nbr].multiplicite);
+		printf(" le fichier = %s\n\n", resultatsLocaux[nbr].file);
 	}
 
 	int curseur1 = 0;	// curseur voyageant dans la liste locale
@@ -78,7 +83,7 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 		for (curseur2; curseur2 < *size && deja ==0; curseur2++) {
 			if(resultatsLocaux[curseur1].nombre == facteurPremierG[curseur2].nombre) {
 
-				facteurPremierG[curseur2].multiplicite += resultatsLocaux[curseur1].multiplicite;
+				facteurPremierG[curseur2].multiplicite = resultatsLocaux[curseur1].multiplicite + facteurPremierG[curseur2].multiplicite;
 				facteurPremierG[curseur2].file = resultatsLocaux[curseur1].file;
 				deja = 1;
 				countUpdate ++;
@@ -87,9 +92,7 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 		if (deja == 0) {
 			if (indice == *size) {
 
-				void *pointeurFacteurPremierG = facteurPremierG;
-				void **ptrx = *(&pointeurFacteurPremierG);
-				realloc_s (ptrx,((size_t) *size)* (sizeof *facteurPremierG) * 2);
+				realloc_s ((void **) &facteurPremierG,((size_t) *size)* (sizeof *facteurPremierG) * 2);
 				*size = (*size )* 2;
 				realloc_zeros(indice, facteurPremierG, size);
 			}

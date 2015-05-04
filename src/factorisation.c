@@ -22,6 +22,9 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 	if (nbr->nombre == 0 || nbr->nombre == 1) {
 		return 1;
 	}
+	//printf("sizeof fact** = %lu\n",);
+	//printf("sizeof fact* = %p\n", *facteurPremier1);
+	//printf("size = %d\n",*size);
 
 	int count = 0;
 	uint64_t leNombre = nbr->nombre;
@@ -30,7 +33,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 	int ajout_element = 0;        // variable qui permet de savoir si un element a ete ajoute ou pas
 	int indice = 0;        // indice sera le nombre d'element present dans le tableau facteurPremier1 et en sera donc l'indice des cases a parcourir
 
-	while ((*facteurPremier1)[indice].nombre != 0 && indice < *size) {
+	while (indice < *size && (*facteurPremier1)[indice].nombre != 0 ) {
 		indice++;
 	}
 	while (leNombre % i == 0) {
@@ -52,9 +55,11 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 		}
 		if (ajout_element == 0) {
 			if (indice == *size) {
-				void *pointeurFacteurPremier = facteurPremier1;
-				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s(ptrx, ((size_t) *size) * (sizeof **facteurPremier1) * 2);
+				//void *pointeurFacteurPremier = facteurPremier1;
+				//void **ptrx = *(&pointeurFacteurPremier);
+				//printf("sizeof fact = %lu\n",(sizeof **facteurPremier1));
+				//printf("size = %d\n",*size);
+				realloc_s((void **) facteurPremier1, ((size_t) *size) * (sizeof **facteurPremier1) * 2);
 				*size = *size * 2;
 				realloc_zeros(indice, *facteurPremier1, size);
 			}
@@ -97,9 +102,10 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 			if (ajout_element == 0) {
 				if (indice == *size) {
 
-					void *pointeurFacteurPremier = facteurPremier1;
-					void **ptrx = *(&pointeurFacteurPremier);
-					realloc_s(ptrx, ((size_t) *size) * (sizeof **facteurPremier1) * 2);
+					//void *pointeurFacteurPremier = facteurPremier1;
+					//void **ptrx = *(&pointeurFacteurPremier);
+
+					realloc_s((void **) facteurPremier1, ((size_t) *size) * (sizeof **facteurPremier1) * 2);
 					*size = *size * 2;
 					realloc_zeros(indice, *facteurPremier1, size);
 				}
@@ -142,9 +148,9 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 		if (true == 0) {
 			if (indice == *size) {
 
-				void *pointeurFacteurPremier = facteurPremier1;
-				void **ptrx = *(&pointeurFacteurPremier);
-				realloc_s(ptrx, (((size_t) *size) + 64) * (sizeof **facteurPremier1));
+				//void *pointeurFacteurPremier = facteurPremier1;
+				//void **ptrx = *(&pointeurFacteurPremier);
+				realloc_s((void **) facteurPremier1, ((size_t) *size) * 2 * (sizeof **facteurPremier1));
 				*size = *size + 64;
 				realloc_zeros(indice, *facteurPremier1, size);
 			}
@@ -160,6 +166,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 		}
 		return 0;
 	}
+	return 1;
 }
 
 
@@ -169,6 +176,7 @@ void realloc_s (void **ptr, size_t taille)
 
 	if (ptr_realloc != NULL) {
 		*ptr = ptr_realloc;
+		//printf("ptr_realloc = %p\n", ptr_realloc);
 	}
 }
 
@@ -187,14 +195,14 @@ void realloc_zeros(int indiceInitial, struct facteurPremier* facteurPremier1, in
 int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 {
 	int curseur = 0;
-
+	//printf("size = %d\n", *size);
 	for (curseur =0 ;curseur < *size; curseur++){
 		//printf("nombre %u\n -                     multiplicité %d\n - file %s\n\n",facteurPremier1[curseur].nombre,facteurPremier1[curseur].multiplicite,facteurPremier1[curseur].file);
 		if (facteurPremier1[curseur].multiplicite == 1) {
 			//printf("resultat(s) : ");
-			printf("le nombre premier est : ");
-			printf("%u\n dans : ", facteurPremier1[curseur].nombre);
-			printf("%s\n  ", facteurPremier1[curseur].file);
+			printf("Un nombre premier unique est : ");
+			printf("%u\ndans : ", facteurPremier1[curseur].nombre);
+			printf("%s\n", facteurPremier1[curseur].file);
 			return 0;
 		}
 	}

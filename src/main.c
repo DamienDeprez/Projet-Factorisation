@@ -200,7 +200,7 @@ int main (int argc, char ** argv)
 			param->buffer1=buffer1;
 			param->isProducing=&isProducing;
 			param->num=j;
-			param->global=global;
+			param->global=&global;
 			param->lockGlobal=&lockGlobal;
 			param->size=&size;
 			pthread_create(&consommateur[j],NULL,consumme,param);
@@ -239,6 +239,15 @@ int main (int argc, char ** argv)
 		free(prodcuteur);
 		pthread_mutex_destroy(&lockGlobal);
 		pthread_mutex_destroy(&lock);
+
+		int nbr = 0;
+		while (global[nbr].nombre != 0 && nbr < size) {
+			nbr++;
+			printf("l'index2 = %d", nbr);
+			printf(" le nombre2 = %d", global[nbr].nombre);
+			printf(" la multi2 = %d", global[nbr].multiplicite);
+			printf(" le fichier2 = %s\n", global[nbr].file);
+		}
 		return succes;
 	}
 }
