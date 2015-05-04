@@ -169,7 +169,7 @@ void test_factorisation_null(void)
 		CU_ASSERT_EQUAL(list1[cursor].multiplicite,0);
 		CU_ASSERT_EQUAL(list1[cursor].file,'\0');
 	}
-	CU_ASSERT_TRUE(factorisation(NULL,list1,&size));
+	CU_ASSERT_TRUE(factorisation(NULL,&list1,&size));
 	CU_ASSERT_EQUAL(size,N);
 	for(cursor=0;cursor<size;cursor++)
 	{
@@ -187,7 +187,7 @@ void test_nombre_infactorisable(void)
 	nbr2->file="file1";
 	int size = N;
 	int cursor;
-	CU_ASSERT_TRUE(factorisation(nbr1,list1,&size));
+	CU_ASSERT_TRUE(factorisation(nbr1,&list1,&size));
 	CU_ASSERT_EQUAL(size,N);
 	for(cursor=0;cursor<size;cursor++)
 	{
@@ -195,7 +195,7 @@ void test_nombre_infactorisable(void)
 		CU_ASSERT_EQUAL(list1[cursor].multiplicite,0);
 		CU_ASSERT_EQUAL(list1[cursor].file,'\0');
 	}
-	CU_ASSERT_TRUE(factorisation(nbr2,list1,&size));
+	CU_ASSERT_TRUE(factorisation(nbr2,&list1,&size));
 	//CU_ASSERT_EQUAL(se,N);
 	for(cursor=0;cursor<size;cursor++)
 	{
@@ -217,19 +217,19 @@ void test_nombre_premier(void)
 	nbr4->file="file25";
 	int size1 = N;
 	int size2 = N;
-	CU_ASSERT_FALSE(factorisation(nbr1,list1,&size1));
+	CU_ASSERT_FALSE(factorisation(nbr1,&list1,&size1));
 	CU_ASSERT_EQUAL(size1,N);
 	CU_ASSERT_EQUAL(list1[0].nombre,2);
 	CU_ASSERT_EQUAL(list1[0].file,"file2");
 	CU_ASSERT_EQUAL(list1[0].multiplicite,1);
 
-	CU_ASSERT_FALSE(factorisation(nbr2,list1,&size1));
+	CU_ASSERT_FALSE(factorisation(nbr2,&list1,&size1));
 	CU_ASSERT_EQUAL(size1,N);
 	CU_ASSERT_EQUAL(list1[0].nombre,2);
 	CU_ASSERT_EQUAL(list1[0].multiplicite,3);
 	CU_ASSERT_EQUAL(list1[0].file,"file4");
 
-	CU_ASSERT_FALSE(factorisation(nbr3,list1,&size1));
+	CU_ASSERT_FALSE(factorisation(nbr3,&list1,&size1));
 	CU_ASSERT_EQUAL(size1,N);
 	CU_ASSERT_EQUAL(list1[0].nombre,2);
 	CU_ASSERT_EQUAL(list1[0].multiplicite,3);
@@ -244,7 +244,7 @@ void test_nombre_premier(void)
 	CU_ASSERT_EQUAL(list1[3].multiplicite,1);
 	CU_ASSERT_EQUAL(list1[3].file,"file2");
 
-	CU_ASSERT_FALSE(factorisation(nbr4,list2,&size2))
+	CU_ASSERT_FALSE(factorisation(nbr4,&list2,&size2))
 	CU_ASSERT_EQUAL(size2,N);
 	CU_ASSERT_EQUAL(list2[0].nombre,5);
 	CU_ASSERT_EQUAL(list2[0].file,"file25")

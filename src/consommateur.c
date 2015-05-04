@@ -21,8 +21,7 @@ void* consumme(void* param)
 	}
 	struct nombre n1;
 	int count=0;
-	if(local)
-	{
+
 		int isBufferEmpty=0;
 		/*pthread_mutex_lock(consommateurParam->lock);
 		int isProducing=*(consommateurParam->isProducing);
@@ -41,13 +40,14 @@ void* consumme(void* param)
 			}
 			else {
 				//printf("consomateur # %d - n1 : %"PRIu64"\n",consommateurParam->num,n1.nombre);
-				factorisation(&n1,local,&size);
+				factorisation(&n1,&local,&size);
 				//printf("size : %d\n",size);
 				count++;
 			}
 		}
-	}
-	//printf("count : %d\n",count);
+
+	printf("count : %d\n",count);
+	printf("%d\n size2 : ", size);
 	publish_result(consommateurParam->global,consommateurParam->size,local,&size,consommateurParam->lockGlobal);
 	free(param);
 	free(local);
@@ -90,7 +90,7 @@ int publish_result(struct facteurPremier* facteurPremierG, int *size, struct fac
 				void *pointeurFacteurPremierG = facteurPremierG;
 				void **ptrx = *(&pointeurFacteurPremierG);
 				realloc_s (ptrx,((size_t) *size)* (sizeof *facteurPremierG) * 2);
-				*size = *size * 2;
+				*size = (*size )* 2;
 				realloc_zeros(indice, facteurPremierG, size);
 			}
 			if(facteurPremierG[indice].nombre == 0) {

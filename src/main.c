@@ -222,6 +222,7 @@ int main (int argc, char ** argv)
 			//printf("joint thread consommateur #%d\n",cursor);
 			pthread_join(consommateur[cursor],NULL);
 		}
+		//printf("%d\n size : ", size);
 		int succes = searchUniquePrime(global,&size);
 		if(gettimeofday(&stop,NULL) == -1)
 		{
@@ -234,6 +235,7 @@ int main (int argc, char ** argv)
 		printf("elapsed time : %ld.%lld s\n",sec,nano);
 		freeBuffer(buffer1);
 		free(consommateur);
+		free(global);
 		free(prodcuteur);
 		pthread_mutex_destroy(&lockGlobal);
 		pthread_mutex_destroy(&lock);
