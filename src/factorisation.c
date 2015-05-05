@@ -80,6 +80,7 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 	}
 
 	for (i = 3; i <= r; i = i + 2) {
+		count = 0;
 		while (leNombre % i == 0) {
 			leNombre = leNombre / i;
 			count++;
@@ -120,10 +121,8 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 					//printf("nbrapres =  %d\n", (*facteurPremier1)[indice].nombre);
 					//printf("multapres =  %d\n\n", (*facteurPremier1)[indice].multiplicite);
 					indice++;
-
 				}
 			}
-			count = 0;
 		}
 	}
 	//ajoute le dernier élement (qui est toujours un nbr premier) à la liste
@@ -164,9 +163,8 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 			}
 
 		}
-		return 0;
 	}
-	return 1;
+	return 0;
 }
 
 

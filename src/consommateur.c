@@ -66,11 +66,11 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 		indice++;
 	}
 	while (nbr < *localSize && resultatsLocaux[nbr].nombre != 0) {
-		nbr++;
-		//printf("l'index = %d", nbr);
-		//printf("  le nombre = %d", resultatsLocaux[nbr].nombre);
-		//printf("  la multi = %d", resultatsLocaux[nbr].multiplicite);
-		//printf(" le fichier = %s\n", resultatsLocaux[nbr].file);
+		nbr ++;
+		printf("l'index = %d", nbr);
+		printf("  le nombre = %d", resultatsLocaux[nbr].nombre);
+		printf("  la multi = %d", resultatsLocaux[nbr].multiplicite);
+		printf(" le fichier = %s\n", resultatsLocaux[nbr].file);
 	}
 
 	int curseur1 = 0;	// curseur voyageant dans la liste locale
