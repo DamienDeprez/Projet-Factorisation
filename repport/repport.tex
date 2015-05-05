@@ -1,0 +1,24 @@
+\chapter{Rapport}
+
+\section{Architecture}
+
+	\textit{programme consruit sur base d'un producteur consommateur.}
+	
+		\textbf{producteur : }
+			2 typre : celui qui lit directemet depuis un file descriptor, par exemple stdin, pipe, fichier local. Et le second qui va lire un fichier distant et place le contenu dans un pipe. Une lecture fichier internet inclu lire depuis un fichier et écrire dans un pipe puis lit depuis le pipe et écrit dans le buffer.
+			
+		\textbf{consommateur :}
+			1 type : Il va d'abord lire dans le buffer et vériffier que un producteur au minimum travail encore puis il va factoriser et stocker dans une liste locale. Il va ensuite recommencer ces 3 étapes jussqu'à ce que plus de producteur ne tournent et que le bufffer soit vide. A partir de ce moment, il va publier ses résultats dans la liste globale.
+			
+		\textbf{buffer :}
+			possède 2 fonctions principales : une de lecture et une d'écriture. La fonction d'écriture est bloquante c'est à dire qu'elle attend une place de libre dans le buffer pour pouvoir écrire tandis la fonction de lecture n'est pas bloquante et donc ci cette dernière n'a pas pus accéder au buffer en lecture dans un certain delai, une erreur est retournée. Le buffer est représenté en mémoire comme un tableau cicrulaire.
+			
+		\textbf{factorisation : }
+			L'algorithme de factorisation est de complexité O(n²). La fonction va effectuer des divisions par 2 puis par 3 et ensuite par tout les nombres impairs inférieur à la racine carrée du nombre à factorisé. Factorisation va stocker les facteurs premiers dans une liste locale sans doublons. Le stockage de ses nombre sdans la liste est sous forme de structure.
+			
+
+\section{Analyse des performances}
+
+
+	Cette section peut être découper en deux cas : les petits nombre, de 0 à 2¹⁶ et les nombres plus conséquent, de 0 à 2⁶⁴.
+

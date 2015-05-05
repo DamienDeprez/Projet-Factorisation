@@ -159,7 +159,6 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
 				(*facteurPremier1)[indice].nombre = (uint32_t) leNombre;
 				(*facteurPremier1)[indice].multiplicite = 1;
 				indice++;
-
 			}
 
 		}
