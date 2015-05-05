@@ -1,24 +1,34 @@
-\chapter{Rapport}
+\documentclass[12pt]{article}
 
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+
+\title{Analyse du Projet II de SINF-1252}
+\author{Damien Deprez \\ Louis Gérard}
+\maketitle
 \section{Architecture}
+L'architecture globale du programme est une architecture de type consommateur-producteur : 
+\begin{itemize}
+\item \textbf{Le producteur} lit les nombres depuis les différentes entrées du programme (stdin, fichier et url) et stocke les nombres dans un buffer. Le producteur distingue deux cas pour l'entrée : 
+\begin{itemize}
+\item entrée standard ou fichier : lecture depuis un file descriptor et écriture dans le buffer.
+\item url : Le premier thread lit le contenu de l'url et le copie dans un pipe. Le second thread lit le contenu du pipe et le stocke dans le buffer
+\end{itemize}
+\item \textbf{Le consommateur} récupère les informations contenues dans le buffer et les factorise. Il stocke les résultats de la factorisation de manière locale en attendant qu'il n'y ait plus de nombres à traiter. À ce moment là, il publie ses résultats dans la liste globale tenue par le programme.
 
-	\textit{programme consruit sur base d'un producteur consommateur.}
-	
-		\textbf{producteur : }
-			2 typre : celui qui lit directemet depuis un file descriptor, par exemple stdin, pipe, fichier local. Et le second qui va lire un fichier distant et place le contenu dans un pipe. Une lecture fichier internet inclu lire depuis un fichier et écrire dans un pipe puis lit depuis le pipe et écrit dans le buffer.
-			
-		\textbf{consommateur :}
-			1 type : Il va d'abord lire dans le buffer et vériffier que un producteur au minimum travail encore puis il va factoriser et stocker dans une liste locale. Il va ensuite recommencer ces 3 étapes jussqu'à ce que plus de producteur ne tournent et que le bufffer soit vide. A partir de ce moment, il va publier ses résultats dans la liste globale.
-			
-		\textbf{buffer :}
-			possède 2 fonctions principales : une de lecture et une d'écriture. La fonction d'écriture est bloquante c'est à dire qu'elle attend une place de libre dans le buffer pour pouvoir écrire tandis la fonction de lecture n'est pas bloquante et donc ci cette dernière n'a pas pus accéder au buffer en lecture dans un certain delai, une erreur est retournée. Le buffer est représenté en mémoire comme un tableau cicrulaire.
-			
-		\textbf{factorisation : }
-			L'algorithme de factorisation est de complexité O(n²). La fonction va effectuer des divisions par 2 puis par 3 et ensuite par tout les nombres impairs inférieur à la racine carrée du nombre à factorisé. Factorisation va stocker les facteurs premiers dans une liste locale sans doublons. Le stockage de ses nombre sdans la liste est sous forme de structure.
-			
+\item \textbf{Le buffer} stocke temporairement les résultats du producteur en attendant que le consommateur les traite. Si le buffer est plein, l'écriture est bloquée et attend la libération d'un slot. Par contre, si le buffer est vide, la lecture échoue après un certain temps défini (10 ms).
+\end{itemize}
+
+\section{Algorithme de factorisation}
+L'algorithme de factorisation utilisé pour ce programme a une complexité temporelle de $O(n^2)$. Pour factoriser un nombre, l'algorithme compte d'abord le nombre d'occurrences du facteur premier 2 dans ce nombre. Par la suite, il vérifie si le nombre est divisible par chaque nombre impair entre 3 et sa racine. Si c'est le cas, il compte le nombre d'occurrences du facteur premier. Il stocke les résultats dans la liste passée en paramètre par le consommateur. Si la liste n'est pas assez grande, il lui alloue plus de place.
 
 \section{Analyse des performances}
 
+Deux types de test de performance ont été effectué sur le programme : 
+\begin{itemize}
+\item calcul sur des fichiers avec beaucoup de petits nombres (inférieur à  $2^{32}$).
+\item calcul sur des fichiers avec peu de grands nombres (supérieur à $2^{32}$)
+\end{itemize}
 
-	Cette section peut être découper en deux cas : les petits nombre, de 0 à 2¹⁶ et les nombres plus conséquent, de 0 à 2⁶⁴.
-
+\end{document}
