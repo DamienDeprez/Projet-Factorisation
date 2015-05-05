@@ -1,6 +1,9 @@
 \documentclass[12pt]{article}
 
 \usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 
 \begin{document}
 
@@ -13,7 +16,7 @@ L'architecture globale du programme est une architecture de type consommateur-pr
 \item \textbf{Le producteur} lit les nombres depuis les différentes entrées du programme (stdin, fichier et url) et stocke les nombres dans un buffer. Le producteur distingue deux cas pour l'entrée : 
 \begin{itemize}
 \item entrée standard ou fichier : lecture depuis un file descriptor et écriture dans le buffer.
-\item url : Le premier thread lit le contenu de l'url et le copie dans un pipe. Le second thread lit le contenu du pipe et le stocke dans le buffer
+\item url : Le premier thread lit le contenu de l'url et le copie dans un pipe. Le second thread lit le contenu du pipe et le stocke dans le buffer.
 \end{itemize}
 \item \textbf{Le consommateur} récupère les informations contenues dans le buffer et les factorise. Il stocke les résultats de la factorisation de manière locale en attendant qu'il n'y ait plus de nombres à traiter. À ce moment là, il publie ses résultats dans la liste globale tenue par le programme.
 
@@ -21,7 +24,7 @@ L'architecture globale du programme est une architecture de type consommateur-pr
 \end{itemize}
 
 \section{Algorithme de factorisation}
-L'algorithme de factorisation utilisé pour ce programme a une complexité temporelle de $O(n^2)$. Pour factoriser un nombre, l'algorithme compte d'abord le nombre d'occurrences du facteur premier 2 dans ce nombre. Par la suite, il vérifie si le nombre est divisible par chaque nombre impair entre 3 et sa racine. Si c'est le cas, il compte le nombre d'occurrences du facteur premier. Il stocke les résultats dans la liste passée en paramètre par le consommateur. Si la liste n'est pas assez grande, il lui alloue plus de place.
+L'algorithme de factorisation utilisé pour ce programme a une complexité temporelle de $O(n^2)$. Pour factoriser un nombre, l'algorithme compte d'abord le nombre d'occurrences du facteur premier 2 dans ce nombre. Par la suite, il vérifie si le nombre est divisible par chaque nombre impair entre 3 et sa racine. Si c'est le cas, il compte le nombre d'occurrences de ce nombre diviseur qui est un facteur premier. Il stocke les résultats dans la liste passée en paramètre par le consommateur. Si la liste n'est pas assez grande, il lui alloue plus de place.
 
 \section{Analyse des performances}
 
@@ -30,5 +33,4 @@ Deux types de test de performance ont été effectué sur le programme :
 \item calcul sur des fichiers avec beaucoup de petits nombres (inférieur à  $2^{32}$).
 \item calcul sur des fichiers avec peu de grands nombres (supérieur à $2^{32}$)
 \end{itemize}
-
 \end{document}
