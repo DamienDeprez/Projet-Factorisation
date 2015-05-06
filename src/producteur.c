@@ -1,7 +1,3 @@
-//
-// Created by damien on 22/04/15.
-//
-
 #include "producteur.h"
 
 
@@ -15,41 +11,35 @@
 static size_t WriteMemoryPipe (void * ptr, size_t size, size_t nmem, void* data)
 {
 	int* fd  = (int*) data; // pointeur vers le pipe
-	//printf("pipe : fd %d\n",*fd);
 	ssize_t retour = write(*fd,ptr,size*nmem); // écris dans le pipe
-	//printf("writen return : %lu\t donnée à lire %lu\n",retour,size*nmem);
 	return (size_t ) retour;
 }
 
 struct nombre readOneFromFD (const int fd, char* inputName)
 {
-	struct nombre retour={0,"\0"};
+	struct nombre retour={0,"\0",0};
 	uint64_t nombre;
 	ssize_t isReadOK = read(fd,&nombre,sizeof(nombre));
-	//printf("isReadOK %d\n",isReadOK);
 	if(isReadOK == 0)
 	{
-		//printf("isReadOK %lu\n",isReadOK);
-		retour.file="eof";
+		retour.err=1;
 	}
 	else if (isReadOK == -1)
 	{
-		//printf("erreur de lecture %d : %s\n",errno,strerror(errno));
-		//printf("file descriptore : %d\n",fd);
-		retour.file="err";
+		retour.err=-1;
 	}
 	else if(isReadOK == sizeof(uint64_t))
 	{
 		nombre = be64toh(nombre);
 		retour.nombre=nombre;
 		retour.file=inputName;
+		retour.err=0;
 	}
 	else{ // cas où la lecture est incomplète
 		size_t toRead=sizeof(nombre)-isReadOK;
 		uint64_t temp=nombre;
 		while(toRead != 0 && isReadOK !=0)
 		{
-			//printf("to read : %lu - temp : %"PRIx64"\n",toRead,temp);
 			isReadOK=read(fd,&nombre,toRead);
 			nombre = nombre << toRead*8;
 			temp = temp | nombre;
@@ -58,69 +48,53 @@ struct nombre readOneFromFD (const int fd, char* inputName)
 		nombre = be64toh(temp);
 		retour.nombre=nombre;
 		retour.file=inputName;
+		retour.err=0;
 	}
 	return retour;
 }
 
 void* produceFromFD(void* param)
 {
-	//printf("lancement producefromFD\n");
 	struct producteur_param* threadParam = (struct producteur_param*)param;
-	unsigned long count=0;
-	//printf("thread param : fd:%d\n",threadParam->fd_read);
 	struct nombre nombre1 = {0,"null"};
-	//printf("condition : %d\n",!strcmp(nombre1.file,"eof"));
-	while(strcmp(nombre1.file,"eof") && strcmp(nombre1.file,"err"))
+	while(nombre1.err==0) // tant que l'on est pas à la fin du fichier ou qu'il n'y a pas d'erreur
 	{
 		nombre1 = readOneFromFD(threadParam->fd_read,threadParam->inputName);
-		//printf("read number %"PRIu64" from %s\n",nombre1.nombre,nombre1.file);
-		if(strcmp(nombre1.file,"eof") && strcmp(nombre1.file,"err"))
+		if(nombre1.err==0)
 		{
-			//printf("producteur #%d - n : %"PRIu64"\n",threadParam->num,nombre1.nombre);
 			writeBuffer(threadParam->buffer1,nombre1);
-			count++;
 		}
 	}
 	if(threadParam->fd_read!=STDIN_FILENO) //si le descripteur de lecture n'est pas stdin, on le ferme
 	{
-		//printf("close fd : %d\n",threadParam->fd_read);
 		close(threadParam->fd_read);
 	}
-	/*if(threadParam->fd_write!=STDERR_FILENO && threadParam->fd_write != STDOUT_FILENO) // si le descritpeur d'écriture n'est pas stdout ou stderr, on le ferme
-	{
-		close(threadParam->fd_write);
-	}*/
-	//printf("fin de produceFromFD\n");
-	//printf("count read : %lu\n",count);
 	free(param);
+	param=NULL;
 	return NULL;
 }
 
-/*
- * TODO modifier pour utiliser le heap au lieux d'un fichier
- */
-void* produceFromInternet(void* param) // écrit
+void* produceFromInternet(void* param)
 {
 	struct producteur_param* threadParam = (struct producteur_param*)param;
-	//printf("produceFromInternet : %s\n",threadParam->inputName);
+
 	CURLcode error;
 	CURL* url;
-	url=curl_easy_init();
+	url=curl_easy_init(); // initialisation
 	if(url)
 	{
 		curl_easy_setopt(url,CURLOPT_FAILONERROR,1); // retourne un erreur pour les serveurs http
-		curl_easy_setopt(url,CURLOPT_WRITEFUNCTION,WriteMemoryPipe);
-		curl_easy_setopt(url,CURLOPT_WRITEDATA,&threadParam->fd_write);
-		//curl_easy_setopt(url,CURLOPT_VERBOSE,1);
-		curl_easy_setopt(url,CURLOPT_URL,threadParam->inputName);
-		error = curl_easy_perform(url);
+		curl_easy_setopt(url,CURLOPT_WRITEFUNCTION,WriteMemoryPipe); // fonction d'écriture des données
+		curl_easy_setopt(url,CURLOPT_WRITEDATA,&threadParam->fd_write); // paramètre de la fonction d'écriture des données
+		curl_easy_setopt(url,CURLOPT_URL,threadParam->inputName); // url du fichier
+		error = curl_easy_perform(url); // lancement
 		if(error != CURLE_OK) {
 			printf("erreur dans l'ouverture de l'url : %s\n\t%s\n", threadParam->inputName, curl_easy_strerror(error));
 		}
 	}
-	curl_easy_cleanup(url);
+	curl_easy_cleanup(url); // netoyage
 	close(threadParam->fd_write);
-	//produceFromFD(param);
 	free(param);
+	param=NULL;
 	return NULL;
 }

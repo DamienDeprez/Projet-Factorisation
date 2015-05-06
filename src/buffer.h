@@ -1,7 +1,3 @@
-//
-// Created by damien on 26/04/15.
-//
-
 #ifndef FACTORISATION_BUFFER_H
 #define FACTORISATION_BUFFER_H
 
@@ -9,9 +5,12 @@
 
 #include <stddef.h>
 #include <semaphore.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <inttypes.h>
+#include <pthread.h>
+#include <errno.h>
 #include "factorisation.h"
-
-// %TODO complèter la doc
 
 /*
  * structure représentant le buffer
@@ -61,6 +60,9 @@ int readBuffer (struct buffer* buffer1, struct nombre* nombre1 );
 
 /*
  * fonction mettant la structure nombre à la première place vide à partir du curseur. Attend si le buffer est plein
+ *
+ * @buffer1: pointeur vers le buffer
+ * @nombre1: nombre à écrire dans le buffer
  */
 void writeBuffer(struct buffer* buffer1,const struct nombre nombre1);
 

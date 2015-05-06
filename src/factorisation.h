@@ -1,7 +1,3 @@
-//
-// Created by damien on 22/04/15.
-//
-
 /**
  * Liste de fonctions utilisées pour la décomposition de nombre en facteur premier et l'analyse des résultats
  */
@@ -34,11 +30,13 @@ struct facteurPremier {
  *
  * @nombre : valeur du nombre
  * @file : fichier source du nombre
+ * @err: indique si il y a eu une erreur (fin du fichier :1 ou autre:-1 )
  */
 struct nombre
 {
 	uint64_t nombre;
 	char * file;
+	int err;
 };
 
 /*
@@ -59,10 +57,24 @@ int factorisation (struct nombre* nbr, struct facteurPremier** facteurPremier1, 
  * source : http://openclassrooms.com/courses/allocation-dynamique-en-c-complement/realloc-prototype-fonctionnement
  */
 void realloc_s (void **ptr, size_t taille) ;
+
+/*
+ * realloc_zeros
+ * met à 0 la mémoire de la partie réallouée
+ *
+ * @indiceInitial: position de départ de la mise à 0 de la liste
+ * @facteurPremier1: liste des facteurs premier
+ * @size: taille de la liste
+ */
 void realloc_zeros(int indiceInitial, struct facteurPremier* facteurPremier1, int *size);
 
 /*
- *  searchUniquePrime cherche dans la liste globale le(s) nombre(s) premier(s) dont la multiplicite est unique
+ *  searchUniquePrime
+ *  cherche dans la liste globale le(s) nombre(s) premier(s) dont la multiplicite est unique7
+ *
+ *   @facteurPremier1: liste globale des facteur premier
+ *   @size: taille de la liste
+ *   @return 0 si un facteur premier a été trouvé et 1 sinon
  */
 int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size);
 

@@ -1,7 +1,3 @@
-//
-// Created by damien on 22/04/15.
-//
-
 /**
  * Fonction principale du programme
  */
@@ -60,15 +56,12 @@ int main (int argc, char ** argv)
 	char* argerror;
 	char* internet="http://";
 	struct buffer* buffer1 = newBuffer(128);
-	//printf("Programme de factorisation de nombre\n");
 	if(argc>1) {
 		isProducing=1;
 		for (i = 1; i < argc; i++)
 		{
 			if(!strcmp(argv[i],"-stdin"))
 			{
-				//lecture depuis stdin
-				printf("lecture depuis stdin\n");
 				struct producteur_param* param=(struct producteur_param*)malloc(sizeof(*param));
 				if(param==NULL)
 				{
@@ -87,7 +80,6 @@ int main (int argc, char ** argv)
 			}
 			else if(!strcmp(argv[i],"-maxthreads"))
 			{
-				// max threads
 				i++;
 				if(i>=argc)
 				{
@@ -115,16 +107,11 @@ int main (int argc, char ** argv)
 					}
 
 				}
-				//printf("nombre maximum de consommateur : %ld\n",maxthreads);
 			}
 			else if(strstr(argv[i],internet)!=NULL)
 			{
-				//lecture depuis internet
-				printf("lecture depuis l'URL : %s\n",argv[i]);
 				int fd[2];
 				pipe(fd);
-				//fcntl(fd[0],F_SETFL,O_NONBLOCK);
-				//fcntl(fd[1],F_SETFL,O_NONBLOCK);
 				struct producteur_param* param1=(struct producteur_param*)malloc(sizeof(*param1));
 				struct producteur_param* param2=(struct producteur_param*)malloc(sizeof(*param2));
 				if(param1==NULL)
@@ -148,8 +135,6 @@ int main (int argc, char ** argv)
 					threadNum++;
 					numofThread++;
 				}
-
-				//struct thread_param param2={buffer1,argv[i],fd[0],fd[1]};
 			}
 			else
 			{
@@ -174,7 +159,6 @@ int main (int argc, char ** argv)
 						param->fd_read=fd;
 						param->fd_write=1;
 						pthread_create(&prodcuteur[threadNum],NULL,produceFromFD,param);
-						//printf("lecure depuis le fichier : %s\n",argv[i]);
 						numofThread++;
 						threadNum++;
 					}
@@ -182,7 +166,6 @@ int main (int argc, char ** argv)
 				}
 			}
 		}
-		//printf("threadNum : %d\n",threadNum);
 		int j;
 		for(j = 0; j<maxthreads;j++)
 		{
@@ -198,22 +181,18 @@ int main (int argc, char ** argv)
 		}
 
 		int cursor;
-		//printf("number of thread to join : %d\n",numofThread);
 		for(cursor=0;cursor<numofThread;cursor++)
 		{
-			//printf("join thread producteur #%d\n",cursor);
 			pthread_join(prodcuteur[cursor],NULL);
 		}
-		//printf("fin des producteur \n");
 		pthread_mutex_lock(&lock);
 		isProducing=0;
 		pthread_mutex_unlock(&lock);
 		for(cursor=0;cursor<maxthreads;cursor++)
 		{
-			//printf("joint thread consommateur #%d\n",cursor);
 			pthread_join(consommateur[cursor],NULL);
 		}
-		//printf("%d\n size : ", size);
+
 		int succes = searchUniquePrime(*global,size);
 		if(gettimeofday(&stop,NULL) == -1)
 		{
@@ -221,23 +200,18 @@ int main (int argc, char ** argv)
 		}
 		long int sec = stop.tv_sec-start.tv_sec;
 		long long int usec = (1000000-start.tv_usec+stop.tv_usec);
-		//printf("start : %ld.%lld - stop : %ld.%lld\n",start.tv_sec,start.tv_usec,stop.tv_sec,stop.tv_usec);
-
 		printf("%ld.%lld s\n",sec,usec/1000);
-		int nbr = 0;
-		while ((*global)[nbr].nombre != 0 && nbr < *size) {
-			nbr++;
-			//printf("l'index2 = %d", nbr);
-			//printf(" le nombre2 = %d", (*global)[nbr].nombre);
-			//printf(" la multi2 = %d", (*global)[nbr].multiplicite);
-			//printf(" le fichier2 = %s\n", (*global)[nbr].file);
-		}
 		freeBuffer(buffer1);
 		free(consommateur);
 		free(size);
 		free(*global);
 		free(global);
 		free(prodcuteur);
+		consommateur=NULL;
+		size=NULL;
+		*global=NULL;
+		global=NULL;
+		prodcuteur=NULL;
 		pthread_mutex_destroy(&lockGlobal);
 		pthread_mutex_destroy(&lock);
 

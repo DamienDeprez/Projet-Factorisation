@@ -1,13 +1,3 @@
-//
-// Created by damien on 26/04/15.
-//
-
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include <pthread.h>
-#include <errno.h>
 #include "buffer.h"
 
 struct buffer * newBuffer(unsigned int size)
@@ -18,8 +8,6 @@ struct buffer * newBuffer(unsigned int size)
 	sem_init(&(buffer1->empty),0,size);
 	sem_init(&(buffer1->full),0,0);
 	pthread_mutex_init(&(buffer1->lock),NULL);
-	//printf("taille memory : %lu\n", sizeof(struct nombre)*size);
-	//printf("taille memory : %lu\n", sizeof(*(buffer1->memory))*size);
 	buffer1->memory = (struct nombre *) malloc(sizeof(*(buffer1->memory)) * size);
 	buffer1->cursor = 0;
 	buffer1->size = size;
@@ -40,7 +28,7 @@ int freeBuffer(struct buffer *buffer1)
 	sem_destroy(&(buffer1->empty));
 	pthread_mutex_destroy(&(buffer1->lock));
 	free(buffer1);
-	//buffer1 = NULL;
+	buffer1 = NULL;
 	return EXIT_SUCCESS;
 }
 
@@ -54,14 +42,10 @@ int readBuffer(struct buffer *buffer1, struct nombre* nombre1)
 	 {
 		 if(errno == ETIMEDOUT)
 		 {
-			 //pthread_mutex_unlock(&(buffer1->lock));
 			 return 1;
 		 }
 	 }
 	pthread_mutex_lock(&(buffer1->lock)); // verouille l'accès à la mémoire
-	/*int value;
-	sem_getvalue(&(buffer1->full),&value);
-	printf("full - read : %d\n",value);*/
 	size_t debut = buffer1->cursor;
 	nombre1->nombre=buffer1->memory[buffer1->cursor].nombre;
 	nombre1->file=buffer1->memory[buffer1->cursor].file;
@@ -71,7 +55,6 @@ int readBuffer(struct buffer *buffer1, struct nombre* nombre1)
 		{
 			buffer1->cursor = 0;
 		}
-		//printf("get at buffer [%lu] - begin : %lu \n",buffer1->cursor,debut);
 		if (buffer1->cursor == debut)
 		{
 			pthread_mutex_unlock(&buffer1->lock);
@@ -93,16 +76,12 @@ void writeBuffer(struct buffer *buffer1, struct nombre nombre1)
 {
 	sem_wait(&(buffer1->empty)); // attente d'un slot vide
 	pthread_mutex_lock(&(buffer1->lock)); // verouille l'accès à la mémoire
-	/*int value;
-	sem_getvalue(&(buffer1->full),&value);
-	printf("full - write : %d\n",value);*/
 	struct nombre cursor = buffer1->memory[buffer1->cursor];
 	while (cursor.nombre != 0) {
 		buffer1->cursor++;
 		if (buffer1->cursor == buffer1->size) {
 			buffer1->cursor = 0;
 		}
-		//printf("set at buffer [%lu] - begin : %lu \n",buffer1->cursor,debut);
 		cursor = buffer1->memory[buffer1->cursor];
 	}
 	buffer1->nbrelem++;

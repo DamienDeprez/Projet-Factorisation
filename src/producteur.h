@@ -1,7 +1,3 @@
-//
-// Created by damien on 22/04/15.
-//
-
 /**
  * Liste des fonctions utlisées par le producteur
  */

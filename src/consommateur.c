@@ -1,6 +1,3 @@
-//
-// Created by damien on 22/04/15.
-//
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -20,12 +17,8 @@ void* consumme(void* param)
 		local[i].file='\0';
 	}
 	struct nombre n1;
-	int count=0;
 
 		int isBufferEmpty=0;
-		/*pthread_mutex_lock(consommateurParam->lock);
-		int isProducing=*(consommateurParam->isProducing);
-		pthread_mutex_unlock(consommateurParam->lock);*/
 		int isProducing=1;
 
 		while(isProducing || !isBufferEmpty)
@@ -36,21 +29,17 @@ void* consumme(void* param)
 			isBufferEmpty = readBuffer(consommateurParam->buffer1, &n1);
 			if (isBufferEmpty != 0 || n1.nombre==0) {
 				n1.nombre = 0;
-				n1.file = "end";
+				n1.file = "\0";
 			}
 			else {
-				//printf("consomateur # %d - n1 : %"PRIu64"\n",consommateurParam->num,n1.nombre);
 				factorisation(&n1,&local,&size);
-				//printf("size : %d\n",size);
-				count++;
 			}
 		}
-
-	//printf("count : %d\n",count);
-	//printf("size2 : %d \n ", size);
 	publish_result(consommateurParam->global,consommateurParam->size,local,&size,consommateurParam->lockGlobal);
 	free(param);
 	free(local);
+	param=NULL;
+	local=NULL;
 	return NULL;
 }
 
@@ -67,10 +56,6 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 	}
 	while (nbr < *localSize && resultatsLocaux[nbr].nombre != 0) {
 		nbr ++;
-		//printf("l'index = %d", nbr);
-		//printf("  le nombre = %d", resultatsLocaux[nbr].nombre);
-		//printf("  la multi = %d", resultatsLocaux[nbr].multiplicite);
-		//printf(" le fichier = %s\n", resultatsLocaux[nbr].file);
 	}
 
 	int curseur1 = 0;	// curseur voyageant dans la liste locale
@@ -92,8 +77,6 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 
 				realloc_s ((void **) facteurPremierG,((size_t) *size) * (sizeof **facteurPremierG) * 2);
 				*size = (*size )* 2;
-				//printf("size = %d\n ",*size);
-				//printf("indice = %d\n ",indice);
 				realloc_zeros(indice, *facteurPremierG, size);
 			}
 			if((*facteurPremierG)[indice].nombre == 0) {
