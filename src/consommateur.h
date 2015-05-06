@@ -9,7 +9,7 @@
 #ifndef FACTORISATION_CONSOMMATEUR_H
 #define FACTORISATION_CONSOMMATEUR_H
 
-#define SIZE 2048
+#define SIZE 16
 #include "factorisation.h"
 #include "buffer.h"
 /*

@@ -24,12 +24,6 @@ struct facteurPremier** global;
 int *size;
 
 
-		void exit_on_error(char * msg)
-{
-	perror(msg);
-	exit(EXIT_FAILURE);
-}
-
 int main (int argc, char ** argv)
 {
 	struct timeval start,stop;
@@ -65,11 +59,10 @@ int main (int argc, char ** argv)
 	pthread_t* consommateur=(pthread_t*) malloc(sizeof(*consommateur)*maxthreads);
 	char* argerror;
 	char* internet="http://";
-	struct buffer* buffer1 = newBuffer(2048);
+	struct buffer* buffer1 = newBuffer(128);
 	//printf("Programme de factorisation de nombre\n");
 	if(argc>1) {
 		isProducing=1;
-		int i;
 		for (i = 1; i < argc; i++)
 		{
 			if(!strcmp(argv[i],"-stdin"))
@@ -87,7 +80,6 @@ int main (int argc, char ** argv)
 					param->buffer1=buffer1;
 					param->fd_read=0;
 					param->fd_write=1;
-					param->num=threadNum;
 					pthread_create(&prodcuteur[threadNum],NULL,produceFromFD,param);
 					numofThread++;
 					threadNum++;
@@ -145,12 +137,10 @@ int main (int argc, char ** argv)
 					param1->inputName=argv[i];
 					param1->fd_read=fd[0];
 					param1->fd_write=fd[1];
-					param1->num=threadNum;
 					param2->buffer1=buffer1;
 					param2->inputName=argv[i];
 					param2->fd_read=fd[0];
 					param2->fd_write=fd[1];
-					param2->num=threadNum+1;
 					pthread_create(&prodcuteur[threadNum],NULL,produceFromInternet,param1);
 					numofThread++;
 					threadNum++;
@@ -183,7 +173,6 @@ int main (int argc, char ** argv)
 						param->inputName=argv[i];
 						param->fd_read=fd;
 						param->fd_write=1;
-						param->num=threadNum;
 						pthread_create(&prodcuteur[threadNum],NULL,produceFromFD,param);
 						//printf("lecure depuis le fichier : %s\n",argv[i]);
 						numofThread++;
@@ -231,10 +220,10 @@ int main (int argc, char ** argv)
 			perror("clock gettime\n");
 		}
 		long int sec = stop.tv_sec-start.tv_sec;
-		long long int nano = (1000000-start.tv_usec+stop.tv_usec);
+		long long int usec = (1000000-start.tv_usec+stop.tv_usec);
 		//printf("start : %ld.%lld - stop : %ld.%lld\n",start.tv_sec,start.tv_usec,stop.tv_sec,stop.tv_usec);
 
-		printf("elapsed time : %ld.%lld s\n",sec,nano);
+		printf("%ld.%lld s\n",sec,usec/1000);
 		int nbr = 0;
 		while ((*global)[nbr].nombre != 0 && nbr < *size) {
 			nbr++;
@@ -254,5 +243,6 @@ int main (int argc, char ** argv)
 
 		return succes;
 	}
+	return EXIT_FAILURE;
 }
 

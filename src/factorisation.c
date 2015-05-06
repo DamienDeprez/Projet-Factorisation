@@ -2,11 +2,8 @@
 // Created by damien on 22/04/15.
 //
 
-#include <stdlib.h>
-#include <math.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <inttypes.h>
+
+
 
 #include "factorisation.h"
 
@@ -197,8 +194,7 @@ int searchUniquePrime (struct facteurPremier* facteurPremier1, int *size)
 		//printf("nombre %u\n -                     multiplicité %d\n - file %s\n\n",facteurPremier1[curseur].nombre,facteurPremier1[curseur].multiplicite,facteurPremier1[curseur].file);
 		if (facteurPremier1[curseur].multiplicite == 1) {
 			//printf("resultat(s) : ");
-			printf("Number : ");
-			printf("%u\nfile : ", facteurPremier1[curseur].nombre);
+			printf("%u\n", facteurPremier1[curseur].nombre);
 			printf("%s\n", facteurPremier1[curseur].file);
 			return 0;
 		}

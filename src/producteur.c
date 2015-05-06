@@ -2,16 +2,6 @@
 // Created by damien on 22/04/15.
 //
 
-#include <stdio.h>
-#include <unistd.h>
-#include <errno.h>
-#include <string.h>
-#include <curl/curl.h>
-#include <inttypes.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <fcntl.h>
-
 #include "producteur.h"
 
 
@@ -28,7 +18,7 @@ static size_t WriteMemoryPipe (void * ptr, size_t size, size_t nmem, void* data)
 	//printf("pipe : fd %d\n",*fd);
 	ssize_t retour = write(*fd,ptr,size*nmem); // écris dans le pipe
 	//printf("writen return : %lu\t donnée à lire %lu\n",retour,size*nmem);
-	return size*nmem;
+	return (size_t ) retour;
 }
 
 struct nombre readOneFromFD (const int fd, char* inputName)

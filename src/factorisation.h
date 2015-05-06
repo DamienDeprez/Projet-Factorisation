@@ -10,6 +10,10 @@
 #define FACTORISATION_FACTORISATION_H
 
 #include <stdint.h>
+#include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
+#include <inttypes.h>
 
 /*
  * structure représentant un facteur premier

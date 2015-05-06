@@ -9,6 +9,16 @@
 #ifndef FACTORISATION_PRODUCTEUR_H
 #define FACTORISATION_PRODUCTEUR_H
 
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#include <string.h>
+#include <curl/curl.h>
+#include <inttypes.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <fcntl.h>
+
 #include "buffer.h"
 
 /*
@@ -25,7 +35,6 @@ struct producteur_param
     char* inputName;
     int fd_read;
     int fd_write;
-    int num;
 };
 
 /**

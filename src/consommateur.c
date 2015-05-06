@@ -75,7 +75,6 @@ int publish_result(struct facteurPremier** facteurPremierG, int *size, struct fa
 
 	int curseur1 = 0;	// curseur voyageant dans la liste locale
 	for (curseur1; curseur1 < *localSize; curseur1++) {
-
 		int deja = 0;	//booleen qui sert a savoir si l'update a ete faite apres parcours de toute la liste ou si il faut ajouter un nouvel element a la liste globale
 		int curseur2 = 0; // curseur voyageant dans la liste globale
 

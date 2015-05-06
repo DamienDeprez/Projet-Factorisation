@@ -1,6 +1,6 @@
 CC=gcc
-CFLAG=-Wall -c -g
-LFLAG=-Wall -g
+CFLAG=-Wall -c -g -pg
+LFLAG=-Wall -g -pg
 SRC=src/
 TEST=src/
 BIN=bin/
